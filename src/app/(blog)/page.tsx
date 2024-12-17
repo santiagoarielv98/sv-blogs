@@ -58,7 +58,6 @@ const Page = () => {
             </HStack>
             <Grid
               templateColumns={{
-                // "repeat(3, minmax(0, 1fr))"
                 base: "repeat(1, 1fr)",
                 md: "repeat(2, 1fr)",
                 lg: "repeat(3, 1fr)",

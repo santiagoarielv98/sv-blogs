@@ -56,7 +56,15 @@ const Page = () => {
                 <Text color="fg.muted">January 1, 2024</Text>
               </Stack>
             </HStack>
-            <Grid templateColumns="repeat(3, minmax(0, 1fr))" gap={8}>
+            <Grid
+              templateColumns={{
+                // "repeat(3, minmax(0, 1fr))"
+                base: "repeat(1, 1fr)",
+                md: "repeat(2, 1fr)",
+                lg: "repeat(3, 1fr)",
+              }}
+              gap={8}
+            >
               {Array.from({ length: 3 }).map((_, index) => (
                 <GridItem key={index}>
                   <Stack gap={6}>

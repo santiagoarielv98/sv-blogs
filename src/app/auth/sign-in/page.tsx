@@ -6,10 +6,11 @@ import {
   Heading,
   HStack,
   Input,
-  Link,
+  Link as ChakraLink,
   Stack,
   Text,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import React from "react";
 
 const SignInPage = () => {
@@ -37,15 +38,12 @@ const SignInPage = () => {
         </Stack>
         <Stack gap={4}>
           <Button size="lg">Sign in</Button>
-          <Button variant="outline" size="lg">
-            Sign up
-          </Button>
         </Stack>
         <Text textAlign="center" color="fg.muted">
           Don&apos;t have an account?{" "}
-          <Link color="primary" href="/auth/sign-up">
-            Sign up
-          </Link>
+          <ChakraLink color="primary" asChild>
+            <Link href="/auth/sign-up">Sign up</Link>
+          </ChakraLink>
         </Text>
       </Stack>
     </Container>

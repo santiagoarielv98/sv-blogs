@@ -10,6 +10,7 @@ import {
   IconButton,
   Stack,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import { LuAlignRight } from "react-icons/lu";
 
 const layout = ({
@@ -52,7 +53,9 @@ const layout = ({
                 <ChakraLink>About</ChakraLink>
                 <ChakraLink>Contact</ChakraLink>
               </HStack>
-              <Button>Sign In</Button>
+              <Button asChild>
+                <Link href="/auth/sign-in">Sign In</Link>
+              </Button>
               <Collapsible.Trigger asChild display={{ md: "none" }}>
                 <IconButton>
                   <LuAlignRight />

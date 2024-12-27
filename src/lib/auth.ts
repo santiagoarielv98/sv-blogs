@@ -15,24 +15,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       authorize: async (credentials) => {
         try {
-          const { data, error } = await loginSchema.safeParseAsync(credentials);
+          const { email, password } = await loginSchema.parseAsync(credentials);
 
-          if (error) {
-            throw new Error(error.errors.join(", "));
-          }
-
-          const user = await prisma.user.findFirst({
+          const user = await prisma.user.findFirstOrThrow({
             where: {
-              email: data.email,
+              email: email,
             },
           });
 
-          if (!user) {
-            throw new Error("No user found");
-          }
-
           const passwordMatches = await bcrypt.compare(
-            data.password,
+            password,
             user.password!,
           );
 

@@ -14,32 +14,36 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => {
-        const { data, error } = await loginSchema.safeParseAsync(credentials);
+        try {
+          const { data, error } = await loginSchema.safeParseAsync(credentials);
 
-        if (error) {
-          throw new Error(error.errors.join(", "));
+          if (error) {
+            throw new Error(error.errors.join(", "));
+          }
+
+          const user = await prisma.user.findFirst({
+            where: {
+              email: data.email,
+            },
+          });
+
+          if (!user) {
+            throw new Error("No user found");
+          }
+
+          const passwordMatches = await bcrypt.compare(
+            data.password,
+            user.password!,
+          );
+
+          if (!passwordMatches) {
+            throw new Error("Password is not valid");
+          }
+
+          return user;
+        } catch {
+          return null;
         }
-
-        const user = await prisma.user.findFirst({
-          where: {
-            email: data.email,
-          },
-        });
-
-        if (!user) {
-          throw new Error("No user found");
-        }
-
-        const passwordMatches = await bcrypt.compare(
-          data.password,
-          user.password!,
-        );
-
-        if (!passwordMatches) {
-          throw new Error("Password is not valid");
-        }
-
-        return user;
       },
     }),
   ],

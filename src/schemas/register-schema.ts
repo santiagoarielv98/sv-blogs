@@ -14,7 +14,6 @@ export const registerSchema = z.object({
     .min(1, "La contraseña es requerida")
     .min(6, "La contraseña debe tener más de 6 caracteres")
     .max(32, "La contraseña debe tener menos de 32 caracteres"),
-  isTherapist: z.boolean(),
 });
 
 export type RegisterSchema = z.infer<typeof registerSchema>;

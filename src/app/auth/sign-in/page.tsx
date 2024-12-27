@@ -45,8 +45,6 @@ const SignInPage = () => {
     }
   };
 
-  console.log(errors);
-
   return (
     <Container maxW="md" paddingBlock={24}>
       <Stack gap={8} as="form" onSubmit={handleSubmit(onSubmit)}>

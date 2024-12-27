@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import { prisma } from "./prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcryptjs";
+import { loginSchema } from "@/schemas/login-schema";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -13,9 +14,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => {
+        const { data, error } = await loginSchema.safeParseAsync(credentials);
+
+        if (error) {
+          throw new Error(error.errors.join(", "));
+        }
+
         const user = await prisma.user.findFirst({
           where: {
-            email: credentials.email!,
+            email: data.email,
           },
         });
 
@@ -24,7 +31,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         const passwordMatches = await bcrypt.compare(
-          credentials.password as string,
+          data.password,
           user.password!,
         );
 
@@ -36,4 +43,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
     }),
   ],
+  pages: {
+    signIn: "/auth/sign-in",
+    newUser: "/auth/sign-up",
+  },
 });

@@ -10,14 +10,25 @@ import {
   IconButton,
   Stack,
 } from "@chakra-ui/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { LuAlignRight } from "react-icons/lu";
+import {
+  MenuContent,
+  MenuItem,
+  MenuRoot,
+  MenuTrigger,
+  MenuSeparator,
+} from "@/components/ui/menu";
+import { Avatar } from "@/components/ui/avatar";
 
-const layout = ({
+const BlogLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+  const { data: session } = useSession();
+  console.log(session);
   return (
     <>
       <Box position="fixed" zIndex="docked" top={6} insetX={4}>
@@ -53,9 +64,29 @@ const layout = ({
                 <ChakraLink>About</ChakraLink>
                 <ChakraLink>Contact</ChakraLink>
               </HStack>
-              <Button asChild>
-                <Link href="/auth/sign-in">Sign In</Link>
-              </Button>
+              {session ? (
+                <MenuRoot>
+                  <MenuTrigger>
+                    <Avatar
+                      name="Oshigaki Kisame"
+                      src="https://bit.ly/broken-link"
+                    />
+                  </MenuTrigger>
+                  <MenuContent>
+                    <MenuItem value="new-txt">Profile</MenuItem>
+                    <MenuItem value="new-file">Settings</MenuItem>
+                    <MenuSeparator />
+                    <MenuItem value="new-folder" onClick={() => signOut()}>
+                      Sign Out
+                    </MenuItem>
+                  </MenuContent>
+                </MenuRoot>
+              ) : (
+                // <Button onClick={() => signOut()}>Sign Out</Button>
+                <Button asChild>
+                  <Link href="/auth/sign-in">Sign In</Link>
+                </Button>
+              )}
               <Collapsible.Trigger asChild display={{ md: "none" }}>
                 <IconButton>
                   <LuAlignRight />
@@ -83,4 +114,4 @@ const layout = ({
   );
 };
 
-export default layout;
+export default BlogLayout;

@@ -15,9 +15,11 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 const SignInPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -30,7 +32,6 @@ const SignInPage = () => {
       password: "",
     },
   });
-
   const onSubmit = async (data: LoginSchema) => {
     const response = await signIn("credentials", {
       email: data.email,
@@ -42,6 +43,8 @@ const SignInPage = () => {
         type: "manual",
         message: "Las credenciales no son válidas",
       });
+    } else {
+      router.push("/");
     }
   };
 

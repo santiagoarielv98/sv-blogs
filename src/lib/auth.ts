@@ -32,6 +32,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             throw new Error("Password is not valid");
           }
 
+          console.log("User", user);
           return user;
         } catch {
           return null;
@@ -42,5 +43,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/auth/sign-in",
     newUser: "/auth/sign-up",
+  },
+  session: {
+    strategy: "jwt",
   },
 });

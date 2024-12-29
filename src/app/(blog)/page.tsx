@@ -12,7 +12,28 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-const Page = () => {
+export const getData = async () => {
+  const data = await fetch("http://localhost:3000/api/blog");
+  const posts = await data.json();
+
+  return posts;
+};
+
+const Page = async () => {
+  const posts = await getData();
+
+  const latestPost = posts[0] || {
+    title: "Lorem Ipsum",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget semper orci",
+    author: {
+      name: "John Doe",
+      email: "john@doe.com",
+    },
+  };
+  const remainingPosts = posts.slice(1);
+
+  console.log(latestPost, remainingPosts);
   return (
     <Box as="main">
       <Box bg="colorPalette.600">
@@ -41,19 +62,16 @@ const Page = () => {
               <Stack gap={0.5}>
                 <Text textStyle="sm">Industry Insights</Text>
                 <Heading as="h2" size="4xl">
-                  The Future of SaaS: Trends to Watch in 2024
+                  {latestPost.title}
                 </Heading>
               </Stack>
-              <Text textStyle="lg">
-                Discover the latest trends in SaaS that are shaping the future
-                of digital solutions and how your business can benefit.
-              </Text>
+              <Text textStyle="lg">{latestPost.description}</Text>
             </Stack>
             <HStack gap="4">
               <Avatar name="John Doe" size="md" />
               <Stack gap="0" fontSize="sm" lineHeight="1.25rem">
-                <Text fontWeight="medium">John Doe</Text>
-                <Text color="fg.muted">January 1, 2024</Text>
+                <Text fontWeight="medium">{latestPost.author.name}</Text>
+                <Text color="fg.muted">{latestPost.author.email}</Text>
               </Stack>
             </HStack>
             <Grid
@@ -64,8 +82,8 @@ const Page = () => {
               }}
               gap={8}
             >
-              {Array.from({ length: 3 }).map((_, index) => (
-                <GridItem key={index}>
+              {remainingPosts.map((post) => (
+                <GridItem key={post.id}>
                   <Stack gap={6}>
                     <AspectRatio bg="bg.muted" ratio={16 / 9}>
                       <Center fontSize="xl">16 / 9</Center>
@@ -74,20 +92,16 @@ const Page = () => {
                       <Stack gap={0.5}>
                         <Text textStyle="sm">Industry Insights</Text>
                         <Heading as="h2" size="2xl">
-                          The Future of SaaS: Trends to Watch in 2024
+                          {post.title}
                         </Heading>
                       </Stack>
-                      <Text textStyle="md">
-                        Discover the latest trends in SaaS that are shaping the
-                        future of digital solutions and how your business can
-                        benefit.
-                      </Text>
+                      <Text textStyle="md">{post.description}</Text>
                     </Stack>
                     <HStack gap="4">
                       <Avatar name="John Doe" size="md" />
                       <Stack gap="0" fontSize="sm" lineHeight="1.25rem">
-                        <Text fontWeight="medium">John Doe</Text>
-                        <Text color="fg.muted">January 1, 2024</Text>
+                        <Text fontWeight="medium">{post.author.name}</Text>
+                        <Text color="fg.muted">{post.author.email}</Text>
                       </Stack>
                     </HStack>
                   </Stack>

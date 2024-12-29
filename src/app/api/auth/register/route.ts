@@ -6,13 +6,13 @@ import bcrypt from "bcryptjs";
 export const POST = async (req: Request) => {
   try {
     const data = await req.json();
-    console.log(data);
 
     const values = await registerSchema.parseAsync(data);
 
     await prisma.$transaction(async (tx) => {
       const user = await tx.user.create({
         data: {
+          name: values.name,
           email: values.email,
           password: await bcrypt.hash(values.password, 10),
           emailVerified: new Date(),

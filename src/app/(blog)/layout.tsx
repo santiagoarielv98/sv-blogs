@@ -67,14 +67,14 @@ const BlogLayout = ({
               {session ? (
                 <MenuRoot>
                   <MenuTrigger>
-                    <Avatar
-                      name="Oshigaki Kisame"
-                      src="https://bit.ly/broken-link"
-                    />
+                    <Avatar name={session.user!.name!} />
                   </MenuTrigger>
                   <MenuContent>
-                    <MenuItem value="new-txt">Profile</MenuItem>
-                    <MenuItem value="new-file">Settings</MenuItem>
+                    <MenuItem value="create-blog" asChild>
+                      <Link href="/create">Create Blog</Link>
+                    </MenuItem>
+                    <MenuItem value="profile">Profile</MenuItem>
+                    <MenuItem value="settings">Settings</MenuItem>
                     <MenuSeparator />
                     <MenuItem value="new-folder" onClick={() => signOut()}>
                       Sign Out

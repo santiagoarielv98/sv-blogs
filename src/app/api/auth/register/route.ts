@@ -14,7 +14,6 @@ export const POST = async (req: Request) => {
         name: values.name,
         email: values.email,
         password: await hashPassword(values.password),
-        emailVerified: new Date(),
       },
     });
 

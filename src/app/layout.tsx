@@ -4,6 +4,8 @@ import { Outfit } from "next/font/google";
 import { auth } from "@/lib/auth";
 import NextAuthProvider from "@/app/provider";
 
+import "@/app/globals.css";
+
 export const metadata: Metadata = {
   title: "Sv - Blogs",
   description: "Mi blog personal",

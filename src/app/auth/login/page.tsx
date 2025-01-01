@@ -1,18 +1,19 @@
-import { signIn } from "@/lib/auth";
-import React from "react";
+"use client";
+import { signIn } from "next-auth/react";
 
 const LoginPage = () => {
-  const loginAction = async (formData: FormData) => {
-    "use server";
-    await signIn("credentials", formData);
+  const credentialsAction = (formData: FormData) => {
+    signIn("credentials", {
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+    });
   };
-
   return (
     <div>
       <h1>Login Page</h1>
       <p>This is the login page</p>
 
-      <form action={loginAction}>
+      <form action={credentialsAction}>
         <label>
           Email:
           <input type="text" name="email" autoComplete="email" autoFocus />

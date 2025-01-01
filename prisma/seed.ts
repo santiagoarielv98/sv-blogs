@@ -15,6 +15,7 @@ async function main() {
       username: "demouser",
       name: "demo",
       password: await hashPassword("password"),
+      emailVerified: new Date(),
       posts: {
         create: Array.from({ length: 10 }).map(() => {
           const title = faker.lorem.sentence();
@@ -29,7 +30,22 @@ async function main() {
       },
     },
   });
-  console.log({ demo });
+  await prisma.account.upsert({
+    where: {
+      userId: demo.id,
+      provider_providerAccountId: {
+        provider: "credentials",
+        providerAccountId: demo.id,
+      },
+    },
+    update: {},
+    create: {
+      userId: demo.id,
+      provider: "credentials",
+      providerAccountId: demo.id,
+      type: "credentials",
+    },
+  });
 }
 
 main()

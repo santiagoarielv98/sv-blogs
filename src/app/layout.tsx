@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: "Mi blog personal",
 };
 
-const outfit = Outfit({});
+const outfit = Outfit();
 
 export default async function RootLayout({
   children,

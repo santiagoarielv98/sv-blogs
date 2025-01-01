@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { registerSchema } from "@/schemas/register-schema";
+import { hashPassword } from "@/utils/password";
 import { ZodError } from "zod";
-import bcrypt from "bcryptjs";
 
 export const POST = async (req: Request) => {
   try {
@@ -9,26 +9,15 @@ export const POST = async (req: Request) => {
 
     const values = await registerSchema.parseAsync(data);
 
-    await prisma.$transaction(async (tx) => {
-      const user = await tx.user.create({
-        data: {
-          name: values.name,
-          email: values.email,
-          password: await bcrypt.hash(values.password, 10),
-          emailVerified: new Date(),
-        },
-      });
-      await tx.account.create({
-        data: {
-          userId: user.id,
-          type: "credentials",
-          provider: "credentials",
-          providerAccountId: user.id,
-        },
-      });
-
-      return user;
+    await prisma.user.create({
+      data: {
+        name: values.name,
+        email: values.email,
+        password: await hashPassword(values.password),
+        emailVerified: new Date(),
+      },
     });
+
     return Response.json(
       {
         success: true,

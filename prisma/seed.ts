@@ -30,22 +30,7 @@ async function main() {
       },
     },
   });
-  await prisma.account.upsert({
-    where: {
-      userId: demo.id,
-      provider_providerAccountId: {
-        provider: "credentials",
-        providerAccountId: demo.id,
-      },
-    },
-    update: {},
-    create: {
-      userId: demo.id,
-      provider: "credentials",
-      providerAccountId: demo.id,
-      type: "credentials",
-    },
-  });
+  console.log({ demo });
 }
 
 main()

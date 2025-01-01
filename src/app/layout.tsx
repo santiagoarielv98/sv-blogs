@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth";
 import NextAuthProvider from "@/app/provider";
 
 import "@/app/globals.css";
+import Header from "@/components/header";
 
 export const metadata: Metadata = {
   title: "Sv - Blogs",
@@ -22,7 +23,10 @@ export default async function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={`${outfit.className} antialiased`}>
-        <NextAuthProvider session={session}>{children}</NextAuthProvider>
+        <NextAuthProvider session={session}>
+          <Header />
+          {children}
+        </NextAuthProvider>
       </body>
     </html>
   );

@@ -4,10 +4,10 @@ export const getPosts = async () => {
   return await prisma.post.findMany();
 };
 
-export const getPost = async (id: string) => {
-  return await prisma.post.findUnique({
+export const getPostBySlug = async (slug: string) => {
+  return await prisma.post.findFirst({
     where: {
-      id,
+      slug,
     },
   });
 };

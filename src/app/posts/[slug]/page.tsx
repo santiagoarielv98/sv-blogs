@@ -1,9 +1,14 @@
-import { getPost } from "@/lib/api";
+import { getPostBySlug } from "@/lib/api";
 import { notFound } from "next/navigation";
 
-const PostDetail = async ({ params }: { params: Promise<{ id: string }> }) => {
-  const { id } = await params;
-  const post = await getPost(id);
+const PostDetail = async ({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) => {
+  const { slug } = await params;
+
+  const post = await getPostBySlug(slug);
 
   if (!post) {
     return notFound();

@@ -39,3 +39,24 @@ export const getPostBySlug = async (slug: string) => {
     },
   });
 };
+
+export const getUserByUsername = async (username: string) => {
+  return await prisma.user.findFirst({
+    where: {
+      username,
+    },
+    select: {
+      id: true,
+      name: true,
+      image: true,
+      username: true,
+      posts: {
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+        },
+      },
+    },
+  });
+};

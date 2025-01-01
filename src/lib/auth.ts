@@ -1,9 +1,9 @@
+import { prisma } from "@/lib/prisma";
+import { loginSchema } from "@/schemas/login-schema";
+import { comparePassword } from "@/utils/password";
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { prisma } from "./prisma";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import bcrypt from "bcryptjs";
-import { loginSchema } from "@/schemas/login-schema";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -15,7 +15,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       authorize: async (credentials) => {
         try {
-          const { email, password } = await loginSchema.parseAsync(credentials);
+          const { email, password } = loginSchema.parse(credentials);
 
           const user = await prisma.user.findFirstOrThrow({
             where: {
@@ -23,7 +23,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             },
           });
 
-          const passwordMatches = await bcrypt.compare(
+          const passwordMatches = await comparePassword(
             password,
             user.password!,
           );
@@ -42,9 +42,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/auth/sign-in",
     newUser: "/auth/sign-up",
-  },
-  session: {
-    strategy: "jwt",
   },
   callbacks: {
     jwt({ token, user }) {

@@ -12,6 +12,7 @@ async function main() {
     create: {
       image: faker.image.avatar(),
       email: "demo@example.com",
+      username: "demouser",
       name: "demo",
       password: await hashPassword("password"),
       posts: {
@@ -22,6 +23,7 @@ async function main() {
             content: faker.lorem.paragraphs(20),
             slug: generateSlug(title),
             published: true,
+            publishedAt: new Date(),
           };
         }),
       },

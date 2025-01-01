@@ -8,7 +8,6 @@ const Home = async () => {
       {posts.map((post) => (
         <div key={post.id}>
           <h1>{post.title}</h1>
-          <p className="line-clamp-2">{post.content}</p>
           <Link href={`/posts/${post.slug}`}>Read more</Link>
         </div>
       ))}

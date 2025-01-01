@@ -1,4 +1,5 @@
 import { getPostBySlug } from "@/lib/api";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 const PostDetail = async ({
@@ -20,7 +21,12 @@ const PostDetail = async ({
       <h1>{post.title}</h1>
       <p>{post.content}</p>
       <p>
-        <small>By {post.author.name}</small>
+        <small>
+          By{" "}
+          <Link href={`/users/${post.author.username}`}>
+            {post.author.name}
+          </Link>
+        </small>
       </p>
     </div>
   );

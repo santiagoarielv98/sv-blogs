@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
 import { hashPassword } from "../src/utils/password";
-import { uniqueSlug } from "../src/utils/slugify";
+import { generateSlug } from "../src/utils/slugify";
 
 const prisma = new PrismaClient();
 
@@ -10,6 +10,7 @@ async function main() {
     where: { email: "demo@example.com" },
     update: {},
     create: {
+      image: faker.image.avatar(),
       email: "demo@example.com",
       name: "demo",
       password: await hashPassword("password"),
@@ -19,7 +20,7 @@ async function main() {
           return {
             title,
             content: faker.lorem.paragraphs(20),
-            slug: uniqueSlug(title),
+            slug: generateSlug(title),
             published: true,
           };
         }),

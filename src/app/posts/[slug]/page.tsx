@@ -9,6 +9,7 @@ const PostDetail = async ({
   const { slug } = await params;
 
   const post = await getPostBySlug(slug);
+  console.log(post);
 
   if (!post) {
     return notFound();
@@ -18,6 +19,9 @@ const PostDetail = async ({
     <div>
       <h1>{post.title}</h1>
       <p>{post.content}</p>
+      <p>
+        <small>By {post.author.name}</small>
+      </p>
     </div>
   );
 };

@@ -217,6 +217,14 @@ export async function updatePost({
   authorId: string;
   tags: string[];
 }) {
+  const existingPost = await prisma.post.findUnique({
+    where: { slug },
+    include: { tags: true },
+  });
+
+  const oldSlugs = existingPost?.tags?.map((t) => t.slug) ?? [];
+  const newSlugs = tags.map((t) => generateSlug(t));
+
   return prisma.post.update({
     where: { slug, authorId },
     data: {
@@ -225,6 +233,9 @@ export async function updatePost({
       published,
       publishedAt: published ? new Date() : null,
       tags: {
+        disconnect: oldSlugs
+          .filter((slug) => !newSlugs.includes(slug))
+          .map((slug) => ({ slug })),
         connectOrCreate: tags.map((tag) => ({
           where: { slug: generateSlug(tag) },
           create: { name: tag, slug: generateSlug(tag) },

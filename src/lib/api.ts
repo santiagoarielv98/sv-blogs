@@ -22,6 +22,27 @@ export const getPosts = async (
   });
 };
 
+export const getPostBySlug = async (slug: string) => {
+  return await prisma.post.findFirst({
+    where: {
+      slug,
+    },
+    select: {
+      id: true,
+      title: true,
+      content: true,
+      author: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          username: true,
+        },
+      },
+    },
+  });
+};
+
 export const getUserByUsername = async (username: string) => {
   return await prisma.user.findFirst({
     where: {
@@ -59,4 +80,38 @@ export const registerUser = async (data: {
   });
 
   return user;
+};
+
+export const getTags = async (
+  paginate: { take?: number; skip?: number } = {},
+) => {
+  return await prisma.tag.findMany({
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+    },
+    ...paginate,
+  });
+};
+
+export const getPostsByTag = async (
+  tagSlug: string,
+  paginate: { take?: number; skip?: number } = {},
+) => {
+  return await prisma.post.findMany({
+    where: {
+      tags: {
+        some: {
+          slug: tagSlug,
+        },
+      },
+    },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+    },
+    ...paginate,
+  });
 };

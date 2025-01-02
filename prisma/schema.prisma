@@ -34,8 +34,18 @@ model Post {
   published   Boolean   @default(false)
   slug        String?   @unique
   author      User      @relation(fields: [authorId], references: [id])
+  tags        Tag[]
   authorId    String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   publishedAt DateTime?
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String
+  slug      String   @unique
+  posts     Post[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

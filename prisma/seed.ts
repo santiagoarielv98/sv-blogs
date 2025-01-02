@@ -5,7 +5,24 @@ import { generateSlug } from "../src/utils/slugify";
 
 const prisma = new PrismaClient();
 
+const _tags = [
+  { name: "JavaScript", slug: "javascript" },
+  { name: "TypeScript", slug: "typescript" },
+  { name: "React", slug: "react" },
+  { name: "Next.js", slug: "nextjs" },
+];
+
 async function main() {
+  const tags = await Promise.all(
+    _tags.map((tag) =>
+      prisma.tag.upsert({
+        where: { slug: tag.slug },
+        update: {},
+        create: tag,
+      }),
+    ),
+  );
+
   const demo = await prisma.user.upsert({
     where: { email: "demo@example.com" },
     update: {},
@@ -25,6 +42,11 @@ async function main() {
             slug: generateSlug(title),
             published: true,
             publishedAt: new Date(),
+            tags: {
+              connect: faker.helpers
+                .arrayElements(tags, { min: 1, max: 3 })
+                .map((tag) => ({ slug: tag.slug })),
+            },
           };
         }),
       },

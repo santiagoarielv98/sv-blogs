@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { hashPassword } from "@/utils/password";
 
 export const getPosts = async () => {
   return await prisma.post.findMany({
@@ -59,4 +60,22 @@ export const getUserByUsername = async (username: string) => {
       },
     },
   });
+};
+
+export const registerUser = async (data: {
+  email: string;
+  username: string;
+  name: string;
+  password: string;
+}) => {
+  const user = await prisma.user.create({
+    data: {
+      email: data.email,
+      username: data.username,
+      name: data.name,
+      password: await hashPassword(data.password),
+    },
+  });
+
+  return user;
 };

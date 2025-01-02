@@ -1,9 +1,9 @@
-import { auth } from "@/lib/auth";
+"use client";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import React from "react";
 
-const Header = async () => {
-  const session = await auth();
+const Header = () => {
+  const { data: session } = useSession();
 
   return (
     <header>
@@ -11,7 +11,13 @@ const Header = async () => {
         <Link href="/">Posts</Link>
         <Link href="/tags">Tags</Link>
         {session?.user ? (
-          <Link href="/logout">Logout</Link>
+          <button
+            onClick={() => {
+              signOut();
+            }}
+          >
+            Logout
+          </button>
         ) : (
           <>
             <Link href="/auth/login">Login</Link>

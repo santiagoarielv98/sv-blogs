@@ -1,9 +1,11 @@
 "use client";
 
-import { redirect, RedirectType } from "next/navigation";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 const NewPostPage = () => {
+  const router = useRouter();
+
   async function createPostAction(formData: FormData) {
     const response = await fetch("/api/posts", {
       method: "POST",
@@ -24,7 +26,7 @@ const NewPostPage = () => {
 
     const post = await response.json();
 
-    redirect(`/${post.author.username}/${post.slug}/edit`, RedirectType.push);
+    router.replace(`/${post.author.username}/${post.slug}/edit`);
   }
 
   return (

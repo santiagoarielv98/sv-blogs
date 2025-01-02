@@ -6,6 +6,7 @@ const LoginPage = () => {
     signIn("credentials", {
       email: formData.get("email") as string,
       password: formData.get("password") as string,
+      redirectTo: "/",
     });
   };
   return (

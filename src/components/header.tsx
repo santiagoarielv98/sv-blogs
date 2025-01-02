@@ -12,7 +12,7 @@ const Header = () => {
         <Link href="/tags">Tags</Link>
         {session?.user ? (
           <>
-            <Link href={`/${session.user}`}>Profile</Link>
+            <Link href={`/profile`}>Profile</Link>
             <button
               onClick={() => {
                 signOut();

@@ -14,7 +14,7 @@ const HomePage = async () => {
               <small key={tag.id}>{tag.name}</small>
             ))}
           </div>
-          <Link href={`/posts/${post.slug}`}>Read more</Link>
+          <Link href={`/${post.author.username}/${post.slug}`}>Read more</Link>
         </div>
       ))}
     </div>

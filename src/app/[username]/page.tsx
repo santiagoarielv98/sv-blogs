@@ -11,6 +11,7 @@ const UserDetail = async ({
   const { username } = await params;
 
   const user = await getUserByUsername(username);
+  console.log(user);
 
   if (!user) {
     return notFound();
@@ -31,7 +32,7 @@ const UserDetail = async ({
       <ul className="space-y-4">
         {user.posts.map((post) => (
           <li key={post.id}>
-            <Link href={`/posts/${post.slug}`}>{post.title}</Link>
+            <Link href={`${user.username}/${post.slug}`}>{post.title}</Link>
           </li>
         ))}
       </ul>

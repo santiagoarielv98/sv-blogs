@@ -21,10 +21,7 @@ const PostDetail = async ({
       <p>{post.content}</p>
       <p>
         <small>
-          By{" "}
-          <Link href={`/users/${post.author.username}`}>
-            {post.author.name}
-          </Link>
+          By <Link href={`/${post.author.username}`}>{post.author.name}</Link>
         </small>
       </p>
     </div>

@@ -72,6 +72,13 @@ export const getUserByUsername = async (username: string) => {
           id: true,
           title: true,
           slug: true,
+          tags: {
+            select: {
+              id: true,
+              name: true,
+              slug: true,
+            },
+          },
         },
       },
     },
@@ -125,7 +132,31 @@ export const getPostsByTag = async (
       id: true,
       title: true,
       slug: true,
+      author: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          username: true,
+        },
+      },
+      tags: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
     },
     ...paginate,
+  });
+};
+
+export const getProfile = async (email?: string) => {
+  return await prisma.user.findUnique({
+    where: { email },
+    select: {
+      username: true,
+    },
   });
 };

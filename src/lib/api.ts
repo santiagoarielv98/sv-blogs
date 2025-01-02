@@ -30,6 +30,7 @@ export const getPosts = async (
     ...paginate,
   });
 };
+
 export const getPostBySlug = async (slug: string) => {
   return await prisma.post.findFirst({
     where: {
@@ -113,6 +114,13 @@ export const getTags = async (
       id: true,
       name: true,
       slug: true,
+    },
+    where: {
+      posts: {
+        some: {
+          published: true,
+        },
+      },
     },
     ...paginate,
   });

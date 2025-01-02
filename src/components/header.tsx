@@ -8,7 +8,8 @@ const Header = () => {
   return (
     <header>
       <nav className="space-x-4 p-4">
-        <Link href="/">Posts</Link>
+        <Link href="/">Home</Link>
+        <Link href="/posts">Posts</Link>
         <Link href="/tags">Tags</Link>
         {session?.user ? (
           <button

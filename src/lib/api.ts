@@ -1,7 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/utils/password";
 
-export const getPosts = async () => {
+export const getPosts = async (
+  paginate: { take?: number; skip?: number } = {},
+) => {
   return await prisma.post.findMany({
     select: {
       id: true,
@@ -16,28 +18,7 @@ export const getPosts = async () => {
         },
       },
     },
-  });
-};
-
-export const getPostBySlug = async (slug: string) => {
-  return await prisma.post.findFirst({
-    where: {
-      slug,
-    },
-    select: {
-      id: true,
-      title: true,
-      content: true,
-      slug: true,
-      author: {
-        select: {
-          id: true,
-          name: true,
-          image: true,
-          username: true,
-        },
-      },
-    },
+    ...paginate,
   });
 };
 

@@ -17,7 +17,7 @@ async function main() {
       password: await hashPassword("password"),
       emailVerified: new Date(),
       posts: {
-        create: Array.from({ length: 10 }).map(() => {
+        create: Array.from({ length: 100 }).map(() => {
           const title = faker.lorem.sentence();
           return {
             title,

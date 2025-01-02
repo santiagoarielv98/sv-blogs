@@ -10,7 +10,6 @@ const PostDetail = async ({
   const { slug } = await params;
 
   const post = await getPostBySlug(slug);
-  console.log(post);
 
   if (!post) {
     return notFound();

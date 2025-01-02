@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 
 import { auth } from "@/lib/auth";
-import NextAuthProvider from "@/app/provider";
+
+import { SessionProvider } from "next-auth/react";
 
 import "@/app/globals.css";
-import Header from "@/components/header";
 
 export const metadata: Metadata = {
   title: "Sv - Blogs",
@@ -23,10 +23,7 @@ export default async function RootLayout({
   return (
     <html lang="es" suppressHydrationWarning>
       <body className={`${outfit.className} antialiased`}>
-        <NextAuthProvider session={session}>
-          <Header />
-          {children}
-        </NextAuthProvider>
+        <SessionProvider session={session}>{children}</SessionProvider>
       </body>
     </html>
   );

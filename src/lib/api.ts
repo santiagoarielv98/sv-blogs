@@ -39,6 +39,7 @@ export const getPostBySlug = async (slug: string) => {
       id: true,
       title: true,
       content: true,
+      slug: true,
       author: {
         select: {
           id: true,
@@ -186,6 +187,46 @@ export async function createPost(postData: {
       content,
       authorId,
       slug,
+      published,
+      publishedAt: published ? new Date() : null,
+    },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      author: {
+        select: {
+          id: true,
+          username: true,
+        },
+      },
+    },
+  });
+}
+
+export async function updatePost({
+  slug,
+  title,
+  content,
+  published,
+}: {
+  slug: string;
+  title: string;
+  content: string;
+  published?: boolean;
+}) {
+  let uniqueSlug = slug;
+
+  if (title && published) {
+    uniqueSlug = await generateUniqueSlug(title, !published);
+  }
+
+  return prisma.post.update({
+    where: { slug },
+    data: {
+      slug: uniqueSlug,
+      title,
+      content,
       published,
       publishedAt: published ? new Date() : null,
     },

@@ -1,4 +1,6 @@
+import CreatePostForm from "@/components/create-post-form";
 import { getPostBySlug } from "@/lib/api";
+import type { Post } from "@prisma/client";
 import { notFound } from "next/navigation";
 
 const EditPostPage = async ({
@@ -8,7 +10,7 @@ const EditPostPage = async ({
 }) => {
   const { slug } = await params;
 
-  const post = await getPostBySlug(slug);
+  const post = (await getPostBySlug(slug)) as Post | null;
 
   if (!post) {
     return notFound();
@@ -18,30 +20,7 @@ const EditPostPage = async ({
     <div>
       <h1>Edit Post</h1>
       <p>This is the new post page.</p>
-
-      <form>
-        <label>
-          Title:
-          <input type="text" name="title" defaultValue={post.title} />
-        </label>
-
-        <br />
-
-        <label>
-          Content:
-          <textarea name="content" defaultValue={post.content} />
-        </label>
-
-        <br />
-
-        <button>Save</button>
-
-        <br />
-
-        <button type="submit" name="publish" value="true">
-          Publish
-        </button>
-      </form>
+      <CreatePostForm post={post} slug={slug} />
     </div>
   );
 };

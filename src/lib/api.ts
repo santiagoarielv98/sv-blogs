@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { generateUniqueSlug } from "@/lib/slugify";
 import { hashPassword } from "@/utils/password";
+import { generateSlug } from "@/utils/slugify";
 
 export const getPosts = async (
   paginate: { take?: number; skip?: number } = {},
@@ -167,6 +168,7 @@ export async function createPost(postData: {
   content: string;
   authorId: string;
   published?: boolean;
+  tags: string[];
 }) {
   const { title, content, authorId, published } = postData;
   const slug = await generateUniqueSlug(title);
@@ -179,6 +181,12 @@ export async function createPost(postData: {
       slug,
       published,
       publishedAt: published ? new Date() : null,
+      tags: {
+        connectOrCreate: postData.tags.map((tag) => ({
+          where: { slug: generateSlug(tag) },
+          create: { name: tag, slug: generateSlug(tag) },
+        })),
+      },
     },
     select: {
       id: true,
@@ -199,19 +207,29 @@ export async function updatePost({
   title,
   content,
   published,
+  authorId,
+  tags,
 }: {
   slug: string;
   title: string;
   content: string;
   published?: boolean;
+  authorId: string;
+  tags: string[];
 }) {
   return prisma.post.update({
-    where: { slug },
+    where: { slug, authorId },
     data: {
       title,
       content,
       published,
       publishedAt: published ? new Date() : null,
+      tags: {
+        connectOrCreate: tags.map((tag) => ({
+          where: { slug: generateSlug(tag) },
+          create: { name: tag, slug: generateSlug(tag) },
+        })),
+      },
     },
     select: {
       id: true,
@@ -221,6 +239,13 @@ export async function updatePost({
         select: {
           id: true,
           username: true,
+        },
+      },
+      tags: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
         },
       },
     },

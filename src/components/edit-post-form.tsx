@@ -1,11 +1,19 @@
 "use client";
-import type { Post } from "@prisma/client";
+import type { Post, Tag } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
-const EditPostForm = ({ post, slug }: { post: Post; slug: string }) => {
+const EditPostForm = ({
+  post,
+  slug,
+}: {
+  post: Post & { tags: Tag[] };
+  slug: string;
+}) => {
   const router = useRouter();
 
   async function editPostAction(formData: FormData) {
+    const tags = (formData.get("tags") as string) ?? "";
+
     const response = await fetch("/api/posts", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -14,6 +22,10 @@ const EditPostForm = ({ post, slug }: { post: Post; slug: string }) => {
         title: formData.get("title"),
         content: formData.get("content"),
         published: formData.has("publish"),
+        tags: tags
+          .split(",")
+          .map((tag: string) => tag.trim())
+          .filter((tag: string) => tag.length > 2),
       }),
     });
     if (!response.ok) {
@@ -35,6 +47,17 @@ const EditPostForm = ({ post, slug }: { post: Post; slug: string }) => {
       <label>
         Content:
         <textarea name="content" defaultValue={post.content} />
+      </label>
+
+      <br />
+
+      <label>
+        Tags:
+        <input
+          type="text"
+          name="tags"
+          defaultValue={post.tags.map((tag) => tag.name).join(", ")}
+        />
       </label>
 
       <br />

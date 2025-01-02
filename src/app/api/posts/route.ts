@@ -18,9 +18,8 @@ export const POST = async (req: Request) => {
 
 export const PUT = async (req: Request) => {
   const [data, session] = await Promise.all([req.json(), auth()]);
-  console.log(data, session);
 
-  if (!session?.user) {
+  if (!session?.user?.id) {
     return new Response(null, { status: 401 });
   }
 
@@ -29,6 +28,8 @@ export const PUT = async (req: Request) => {
     title: data.title,
     content: data.content,
     published: data.published,
+    authorId: session.user.id,
+    tags: data.tags,
   });
 
   return Response.json(post);

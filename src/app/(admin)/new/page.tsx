@@ -7,12 +7,17 @@ const NewPostPage = () => {
   const router = useRouter();
 
   async function createPostAction(formData: FormData) {
+    const tags = (formData.get("tags") as string) ?? "";
     const response = await fetch("/api/posts", {
       method: "POST",
       body: JSON.stringify({
         title: formData.get("title"),
         content: formData.get("content"),
         published: formData.has("publish"),
+        tags: tags
+          .split(",")
+          .map((tag: string) => tag.trim())
+          .filter((tag: string) => tag.length > 2),
       }),
       headers: {
         "Content-Type": "application/json",
@@ -45,6 +50,13 @@ const NewPostPage = () => {
         <label>
           Content:
           <textarea name="content" />
+        </label>
+
+        <br />
+
+        <label>
+          Tags:
+          <input type="text" name="tags" />
         </label>
 
         <br />

@@ -10,6 +10,11 @@ const _tags = [
   { name: "TypeScript", slug: "typescript" },
   { name: "React", slug: "react" },
   { name: "Next.js", slug: "nextjs" },
+  { name: "Node.js", slug: "nodejs" },
+  { name: "GraphQL", slug: "graphql" },
+  { name: "Docker", slug: "docker" },
+  { name: "Kubernetes", slug: "kubernetes" },
+  { name: "Python", slug: "python" },
 ];
 
 async function main() {
@@ -34,7 +39,7 @@ async function main() {
       password: await hashPassword("password"),
       emailVerified: new Date(),
       posts: {
-        create: Array.from({ length: 0 }).map(() => {
+        create: Array.from({ length: 100 }).map(() => {
           const title = faker.lorem.sentence();
           return {
             title,
@@ -52,6 +57,41 @@ async function main() {
       },
     },
   });
+
+  await Promise.all(
+    Array.from({ length: 25 }).map(async () => {
+      const email = faker.internet.email();
+      const username = faker.internet.username();
+      return prisma.user.create({
+        data: {
+          image: faker.image.avatar(),
+          email,
+          username,
+          name: faker.person.firstName(),
+          password: await hashPassword("password"),
+          emailVerified: new Date(),
+          posts: {
+            create: Array.from({ length: 100 }).map(() => {
+              const title = faker.lorem.sentence();
+              return {
+                title,
+                content: faker.lorem.paragraphs(5),
+                slug: generateSlug(title),
+                published: true,
+                publishedAt: new Date(),
+                tags: {
+                  connect: faker.helpers
+                    .arrayElements(tags, { min: 1, max: 3 })
+                    .map((tag) => ({ slug: tag.slug })),
+                },
+              };
+            }),
+          },
+        },
+      });
+    }),
+  );
+
   console.log({ demo });
 }
 

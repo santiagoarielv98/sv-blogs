@@ -9,7 +9,7 @@ const TagsPage = async () => {
       {tags.map((tag) => (
         <div key={tag.id}>
           <h1>{tag.name}</h1>
-          <Link href={`/tags/${tag.slug}`}>Read more</Link>
+          <Link href={`/tag/${tag.slug}`}>Read more</Link>
         </div>
       ))}
     </div>

@@ -9,16 +9,18 @@ const Header = () => {
     <header>
       <nav className="space-x-4 p-4">
         <Link href="/">Home</Link>
-        <Link href="/posts">Posts</Link>
         <Link href="/tags">Tags</Link>
         {session?.user ? (
-          <button
-            onClick={() => {
-              signOut();
-            }}
-          >
-            Logout
-          </button>
+          <>
+            <Link href={`/${session.user}`}>Profile</Link>
+            <button
+              onClick={() => {
+                signOut();
+              }}
+            >
+              Logout
+            </button>
+          </>
         ) : (
           <>
             <Link href="/auth/login">Login</Link>

@@ -23,8 +23,8 @@ const Header = () => {
           </>
         ) : (
           <>
-            <Link href="/auth/login">Login</Link>
-            <Link href="/auth/register">Register</Link>
+            <Link href="/login">Login</Link>
+            <Link href="/register">Register</Link>
           </>
         )}
       </nav>

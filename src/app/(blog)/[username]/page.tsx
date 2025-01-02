@@ -11,7 +11,6 @@ const UserDetail = async ({
   const { username } = await params;
 
   const user = await getUserByUsername(username);
-  console.log(user);
 
   if (!user) {
     return notFound();

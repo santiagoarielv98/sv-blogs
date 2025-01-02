@@ -9,6 +9,11 @@ const PostsPage = async () => {
       {posts.map((post) => (
         <div key={post.id}>
           <h1>{post.title}</h1>
+          <div className="space-x-2">
+            {post.tags.map((tag) => (
+              <small key={tag.id}>{tag.name}</small>
+            ))}
+          </div>
           <Link href={`/posts/${post.slug}`}>Read more</Link>
         </div>
       ))}

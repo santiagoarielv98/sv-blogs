@@ -17,6 +17,13 @@ export const getPosts = async (
           username: true,
         },
       },
+      tags: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
     },
     ...paginate,
   });
@@ -37,6 +44,13 @@ export const getPostBySlug = async (slug: string) => {
           name: true,
           image: true,
           username: true,
+        },
+      },
+      tags: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
         },
       },
     },

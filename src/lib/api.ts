@@ -189,5 +189,16 @@ export async function createPost(postData: {
       published,
       publishedAt: published ? new Date() : null,
     },
+    select: {
+      id: true,
+      title: true,
+      slug: true,
+      author: {
+        select: {
+          id: true,
+          username: true,
+        },
+      },
+    },
   });
 }

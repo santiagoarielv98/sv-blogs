@@ -1,10 +1,11 @@
 "use client";
 
+import { redirect, RedirectType } from "next/navigation";
 import React from "react";
 
 const NewPostPage = () => {
-  function createPostAction(formData: FormData) {
-    fetch("/api/posts", {
+  async function createPostAction(formData: FormData) {
+    const response = await fetch("/api/posts", {
       method: "POST",
       body: JSON.stringify({
         title: formData.get("title"),
@@ -15,6 +16,15 @@ const NewPostPage = () => {
         "Content-Type": "application/json",
       },
     });
+
+    if (!response.ok) {
+      console.error("Failed to create post");
+      return;
+    }
+
+    const post = await response.json();
+
+    redirect(`/${post.author.username}/${post.slug}/edit`, RedirectType.push);
   }
 
   return (

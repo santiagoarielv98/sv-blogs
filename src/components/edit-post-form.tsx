@@ -1,10 +1,10 @@
 "use client";
 import type { Post } from "@prisma/client";
 import { useRouter } from "next/navigation";
-import React from "react";
 
-const CreatePostForm = ({ post, slug }: { post: Post; slug: string }) => {
+const EditPostForm = ({ post, slug }: { post: Post; slug: string }) => {
   const router = useRouter();
+
   async function editPostAction(formData: FormData) {
     const response = await fetch("/api/posts", {
       method: "PUT",
@@ -19,13 +19,8 @@ const CreatePostForm = ({ post, slug }: { post: Post; slug: string }) => {
     if (!response.ok) {
       console.error("Failed to edit post");
       return;
-    }
-
-    const editPost = await response.json();
-
-    console.log(editPost, slug);
-    if (editPost.slug !== slug) {
-      router.push(`/${editPost.author.username}/${editPost.slug}/edit`);
+    } else {
+      router.refresh();
     }
   }
   return (
@@ -55,4 +50,4 @@ const CreatePostForm = ({ post, slug }: { post: Post; slug: string }) => {
   );
 };
 
-export default CreatePostForm;
+export default EditPostForm;

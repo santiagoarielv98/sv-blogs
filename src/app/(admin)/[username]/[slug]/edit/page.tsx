@@ -1,4 +1,4 @@
-import CreatePostForm from "@/components/create-post-form";
+import EditPostForm from "@/components/edit-post-form";
 import { getPostBySlug } from "@/lib/api";
 import type { Post } from "@prisma/client";
 import { notFound } from "next/navigation";
@@ -20,7 +20,7 @@ const EditPostPage = async ({
     <div>
       <h1>Edit Post</h1>
       <p>This is the new post page.</p>
-      <CreatePostForm post={post} slug={slug} />
+      <EditPostForm post={post} slug={slug} />
     </div>
   );
 };

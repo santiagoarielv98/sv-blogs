@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
-import { hashPassword } from "@/utils/password";
 import { generateUniqueSlug } from "@/lib/slugify";
+import { hashPassword } from "@/utils/password";
 
 export const getPosts = async (
   paginate: { take?: number; skip?: number } = {},
@@ -29,7 +29,6 @@ export const getPosts = async (
     ...paginate,
   });
 };
-
 export const getPostBySlug = async (slug: string) => {
   return await prisma.post.findFirst({
     where: {
@@ -170,16 +169,7 @@ export async function createPost(postData: {
   published?: boolean;
 }) {
   const { title, content, authorId, published } = postData;
-  const slug = await generateUniqueSlug(title, !published);
-
-  console.log("data a publicar", {
-    title,
-    content,
-    authorId,
-    slug,
-    published,
-    publishedAt: published ? new Date() : undefined,
-  });
+  const slug = await generateUniqueSlug(title);
 
   return prisma.post.create({
     data: {
@@ -215,16 +205,9 @@ export async function updatePost({
   content: string;
   published?: boolean;
 }) {
-  let uniqueSlug = slug;
-
-  if (title && published) {
-    uniqueSlug = await generateUniqueSlug(title, !published);
-  }
-
   return prisma.post.update({
     where: { slug },
     data: {
-      slug: uniqueSlug,
       title,
       content,
       published,

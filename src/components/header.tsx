@@ -12,6 +12,8 @@ const Header = () => {
         <Link href="/tags">Tags</Link>
         {session?.user ? (
           <>
+            <Link href="/dashboard">Dashboard</Link>
+            <Link href="/new">Create Post</Link>
             <Link href={`/profile`}>Profile</Link>
             <button
               onClick={() => {

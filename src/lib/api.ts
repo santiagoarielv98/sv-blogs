@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { hashPassword } from "@/utils/password";
+import { generateUniqueSlug } from "@/lib/slugify";
 
 export const getPosts = async (
   paginate: { take?: number; skip?: number } = {},
@@ -160,3 +161,33 @@ export const getProfile = async (email?: string) => {
     },
   });
 };
+
+export async function createPost(postData: {
+  title: string;
+  content: string;
+  authorId: string;
+  published?: boolean;
+}) {
+  const { title, content, authorId, published } = postData;
+  const slug = await generateUniqueSlug(title, !published);
+
+  console.log("data a publicar", {
+    title,
+    content,
+    authorId,
+    slug,
+    published,
+    publishedAt: published ? new Date() : undefined,
+  });
+
+  return prisma.post.create({
+    data: {
+      title,
+      content,
+      authorId,
+      slug,
+      published,
+      publishedAt: published ? new Date() : null,
+    },
+  });
+}

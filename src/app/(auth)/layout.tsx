@@ -1,19 +1,13 @@
-import Link from "next/link";
+import Header from "@/components/header";
 import React from "react";
 
-const layout = ({ children }: { children: React.ReactNode }) => {
+const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <>
-      <header>
-        <nav className="space-x-4 p-4">
-          <Link href="/">Logo</Link>
-          <Link href="/login">Login</Link>
-          <Link href="/register">Register</Link>
-        </nav>
-      </header>
-      {children}
-    </>
+    <div className="min-h-screen bg-gray-50">
+      <Header variant="auth" />
+      <main className="container max-w-lg mx-auto p-4 mt-8">{children}</main>
+    </div>
   );
 };
 
-export default layout;
+export default AuthLayout;

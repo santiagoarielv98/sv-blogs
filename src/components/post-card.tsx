@@ -1,42 +1,64 @@
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import type { PostWithAuthorAndTags } from "@/types";
-
+import { Calendar, Clock } from "lucide-react";
 import Link from "next/link";
 
 function PostCard({ post }: { post: PostWithAuthorAndTags }) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>
-          <Link
-            className="line-clamp-2 inline"
-            href={`/${post.author.username}/${post.slug}`}
-          >
+    <Card className="hover:shadow-lg transition-shadow">
+      <CardHeader className="space-y-4">
+        <div className="flex items-center space-x-4">
+          <Avatar>
+            <AvatarImage src={post.author.image ?? undefined} />
+            <AvatarFallback>{post.author.name[0]}</AvatarFallback>
+          </Avatar>
+          <div className="space-y-1">
+            <Link
+              href={`/${post.author.username}`}
+              className="text-sm font-medium hover:underline"
+            >
+              {post.author.name}
+            </Link>
+            <div className="flex items-center text-xs text-muted-foreground gap-4">
+              <span className="flex items-center gap-1">
+                <Calendar className="h-3 w-3" />
+                {new Date(post.createdAt).toLocaleDateString()}
+              </span>
+              <span className="flex items-center gap-1">
+                <Clock className="h-3 w-3" />
+                {new Date(post.createdAt).toLocaleTimeString()}
+              </span>
+            </div>
+          </div>
+        </div>
+        <Link href={`/${post.author.username}/${post.slug}`}>
+          <h3 className="text-xl font-semibold hover:text-primary transition-colors">
             {post.title}
-          </Link>
-        </CardTitle>
+          </h3>
+        </Link>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-gray-600 line-clamp-4">{post.content}</p>
+        <p className="text-sm text-muted-foreground line-clamp-3">
+          {post.content}
+        </p>
       </CardContent>
-      <CardFooter className="justify-between gap-4 flex-col md:flex-row">
-        <div className="flex gap-2 mr-auto">
+      <CardFooter>
+        <div className="flex flex-wrap gap-2">
           {post.tags.map((tag) => (
             <Link key={tag.id} href={`/tag/${tag.slug}`}>
-              <Badge variant="secondary">{tag.name}</Badge>
+              <Badge variant="secondary" className="hover:bg-secondary/80">
+                {tag.name}
+              </Badge>
             </Link>
           ))}
         </div>
-        <small className="text-gray-500 ml-auto">
-          {new Date(post.createdAt).toLocaleString()}
-        </small>
       </CardFooter>
     </Card>
   );

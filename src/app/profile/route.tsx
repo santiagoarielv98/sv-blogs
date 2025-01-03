@@ -8,7 +8,7 @@ export const GET = async () => {
   if (session?.user?.email) {
     const user = await getProfile(session.user.email);
     if (user) {
-      return redirect(`${user.username}`);
+      return redirect(`/${user.username}`);
     }
   }
   return { status: 404 };

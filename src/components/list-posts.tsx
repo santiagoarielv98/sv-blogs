@@ -1,7 +1,8 @@
 "use client";
 
+import { getPaginatedPosts } from "@/actions/paginate-post";
 import type { Post } from "@prisma/client";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 interface ListPostsProps {
@@ -28,12 +29,11 @@ export default function ListPosts({
     setLoading(true);
 
     try {
-      const res = await fetch(`/api/posts?take=10&cursor=${_nextCursor || ""}`);
-      const data = await res.json();
+      const { nextCursor, posts } = await getPaginatedPosts(_nextCursor!);
 
-      setPosts((prev) => [...prev, ...data.posts]);
-      setNextCursor(data.nextCursor);
-      setHasMore(data.nextCursor !== null);
+      setPosts((prev) => [...prev, ...posts]);
+      setNextCursor(nextCursor);
+      setHasMore(nextCursor !== null);
     } catch (error) {
       console.error("Error fetching posts:", error);
     } finally {
@@ -44,13 +44,6 @@ export default function ListPosts({
   useEffect(() => {
     if (inView) fetchPosts();
   }, [fetchPosts, inView]);
-
-  useEffect(() => {
-    console.log(
-      "posts",
-      posts.map((post) => post.id),
-    );
-  }, [posts]);
 
   return (
     <div className="posts-container">

@@ -1,17 +1,13 @@
-import { getTags } from "@/lib/api";
-import Link from "next/link";
+import { getFirstPageOfTags } from "@/actions/paginate-tags";
+import ListTags from "@/components/list-tags";
 
 const TagsPage = async () => {
-  const tags = await getTags();
+  const { tags, nextCursor } = await getFirstPageOfTags();
+  console.log({ tags, nextCursor });
 
   return (
     <div className="space-y-4">
-      {tags.map((tag) => (
-        <div key={tag.id}>
-          <h1>{tag.name}</h1>
-          <Link href={`/tag/${tag.slug}`}>Read more</Link>
-        </div>
-      ))}
+      <ListTags tags={tags} nextCursor={nextCursor} />
     </div>
   );
 };

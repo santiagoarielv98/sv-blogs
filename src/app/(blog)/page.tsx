@@ -1,4 +1,4 @@
-import { getFirstPageOfPosts } from "@/actions/paginate-post";
+import { getFirstPageOfPosts } from "@/actions/paginate-posts";
 import ListPosts from "@/components/list-posts";
 
 const HomePage = async () => {

@@ -23,7 +23,13 @@ async function main() {
       prisma.tag.upsert({
         where: { slug: tag.slug },
         update: {},
-        create: tag,
+        create: {
+          ...tag,
+          createdAt: faker.date.between({
+            from: new Date(1735689600000),
+            to: new Date(1787139200000),
+          }),
+        },
       }),
     ),
   );

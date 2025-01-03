@@ -1,18 +1,20 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@prisma/client";
 
-const CONFIG = {
+const CONFIG: Prisma.PostFindManyArgs = {
   take: 10,
   orderBy: { createdAt: "desc" },
-} as const;
+};
 
 export const getFirstPageOfPosts = async () => {
   const posts = await prisma.post.findMany({
     ...CONFIG,
   });
 
-  const nextCursor = posts.length > 0 ? posts[posts.length - 1].id : null;
+  const nextCursor =
+    posts.length > CONFIG.take! ? posts[posts.length - 1].id : null;
 
   return {
     posts,
@@ -23,12 +25,12 @@ export const getFirstPageOfPosts = async () => {
 export const getPaginatedPosts = async (cursor: string) => {
   const posts = await prisma.post.findMany({
     ...CONFIG,
-    take: CONFIG.take + 1,
+    take: CONFIG.take! + 1,
     cursor: { id: cursor },
     skip: 1,
   });
 
-  const hasMore = posts.length > CONFIG.take;
+  const hasMore = posts.length > CONFIG.take!;
   if (hasMore) posts.pop();
 
   return {

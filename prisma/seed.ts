@@ -5,8 +5,8 @@ import { generateSlug } from "../src/utils/slugify";
 
 const prisma = new PrismaClient();
 
-const MAX_USERS = 0;
-const MAX_POSTS = 0;
+const MAX_USERS = 25; // 25
+const MAX_POSTS = 100; // 100
 
 const _tags = [
   { name: "JavaScript", slug: "javascript" },

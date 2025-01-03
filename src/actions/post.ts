@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { generateUniqueSlug } from "@/lib/slugify";
 import { generateSlug } from "@/utils/slugify";
+import type { Prisma } from "@prisma/client";
 
 const CONFIG = {
   take: 10,
@@ -17,11 +18,19 @@ const CONFIG = {
         username: true,
       },
     },
+    tags: {
+      select: {
+        id: true,
+        name: true,
+        slug: true,
+      },
+    },
   },
 } as const;
 
-export const getFirstPageOfPosts = async () => {
+export const getFirstPageOfPosts = async (args?: Prisma.PostFindManyArgs) => {
   const posts = await prisma.post.findMany({
+    ...args,
     ...CONFIG,
   });
 
@@ -33,8 +42,12 @@ export const getFirstPageOfPosts = async () => {
   };
 };
 
-export const getPaginatedPosts = async (cursor: string) => {
+export const getPaginatedPosts = async (
+  cursor: string,
+  args?: Prisma.PostFindManyArgs,
+) => {
   const posts = await prisma.post.findMany({
+    ...args,
     ...CONFIG,
     take: CONFIG.take! + 1,
     cursor: { id: cursor },

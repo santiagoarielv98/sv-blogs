@@ -1,4 +1,5 @@
-import Link from "next/link";
+import { getFirstPageOfPosts } from "@/actions/post";
+import ListPosts from "@/components/list-posts";
 
 const TagDetailPage = async ({
   params,
@@ -6,21 +7,15 @@ const TagDetailPage = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
-  const posts = [];
+  const config = {
+    where: { tags: { some: { slug } } },
+  };
+
+  const { posts, nextCursor } = await getFirstPageOfPosts(config);
 
   return (
     <div className="space-y-4">
-      {posts.map((post) => (
-        <div key={post.id}>
-          <h1>{post.title}</h1>
-          <div className="space-x-2">
-            {post.tags.map((tag) => (
-              <small key={tag.id}>{tag.name}</small>
-            ))}
-          </div>
-          <Link href={`/${post.author.username}/${post.slug}`}>Read more</Link>
-        </div>
-      ))}
+      <ListPosts posts={posts} nextCursor={nextCursor} config={config} />
     </div>
   );
 };

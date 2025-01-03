@@ -6,6 +6,7 @@ import type { Prisma } from "@prisma/client";
 const CONFIG: Prisma.TagFindManyArgs = {
   take: 50,
   orderBy: { name: "asc" },
+  where: { posts: { some: {} } },
 };
 
 export const getFirstPageOfTags = async () => {

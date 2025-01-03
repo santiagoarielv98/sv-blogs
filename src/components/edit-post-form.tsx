@@ -1,37 +1,33 @@
 "use client";
 
+import { postUpsertAction } from "@/actions/post";
 import type { Post, Tag, User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 const EditPostForm = ({
   post,
 }: {
-  post: Post & { tags: Tag[]; author: User };
+  post: Post & {
+    tags: Array<Pick<Tag, "name" | "slug">>;
+    author: Pick<User, "name" | "username">;
+  };
 }) => {
   const router = useRouter();
 
   async function editPostAction(formData: FormData) {
     const tags = (formData.get("tags") as string) ?? "";
 
-    const response = await fetch("/api/posts", {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        slug: post.slug,
-        title: formData.get("title"),
-        content: formData.get("content"),
-        published: formData.has("publish"),
-        tags: tags
-          .split(",")
-          .map((tag: string) => tag.trim())
-          .filter((tag: string) => tag.length > 2),
-      }),
+    await postUpsertAction({
+      title: formData.get("title") as string,
+      content: formData.get("content") as string,
+      slug: post.slug ?? undefined,
+      published: formData.has("publish"),
+      tags: tags
+        .split(",")
+        .map((tag: string) => tag.trim())
+        .filter((tag: string) => tag.length > 2),
     });
-    if (!response.ok) {
-      console.error("Failed to edit post");
-      return;
-    } else {
-      router.refresh();
-    }
+
+    router.refresh();
   }
   return (
     <form action={editPostAction}>

@@ -1,13 +1,23 @@
 "use client";
 
-import { registerAction } from "@/actions/register";
+import { register } from "@/actions/register";
 
 const RegisterPage = () => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    await register({
+      email: formData.get("email") as string,
+      username: formData.get("username") as string,
+      name: formData.get("name") as string,
+      password: formData.get("password") as string,
+    });
+  };
   return (
     <div>
       <h1>Register Page</h1>
 
-      <form action={registerAction}>
+      <form onSubmit={handleSubmit}>
         <label>
           Email:
           <input type="text" name="email" autoComplete="email" autoFocus />

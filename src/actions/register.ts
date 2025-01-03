@@ -1,13 +1,20 @@
 "use server";
 
-import { registerUser } from "@/lib/api";
+import { prisma } from "@/lib/prisma";
+import { hashPassword } from "@/utils/password";
 
-export const registerAction = async (formData: FormData) => {
-  const data = {
-    email: formData.get("email") as string,
-    username: formData.get("username") as string,
-    name: formData.get("name") as string,
-    password: formData.get("password") as string,
-  };
-  registerUser(data);
+export const register = async (data: {
+  email: string;
+  username: string;
+  name: string;
+  password: string;
+}) => {
+  await prisma.user.create({
+    data: {
+      email: data.email,
+      username: data.username,
+      name: data.name,
+      password: await hashPassword(data.password),
+    },
+  });
 };

@@ -142,6 +142,7 @@ export const getPostBySlug = async (slug: string) => {
       title: true,
       content: true,
       slug: true,
+      createdAt: true,
       author: {
         select: {
           id: true,

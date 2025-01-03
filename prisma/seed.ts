@@ -47,6 +47,10 @@ async function main() {
             slug: generateSlug(title),
             published: true,
             publishedAt: new Date(),
+            createdAt: faker.date.between({
+              from: new Date(1735689600000),
+              to: new Date(1787139200000),
+            }),
             tags: {
               connect: faker.helpers
                 .arrayElements(tags, { min: 1, max: 3 })
@@ -79,6 +83,10 @@ async function main() {
                 slug: generateSlug(title),
                 published: true,
                 publishedAt: new Date(),
+                createdAt: faker.date.between({
+                  from: new Date(1735689600000),
+                  to: new Date(1787139200000),
+                }),
                 tags: {
                   connect: faker.helpers
                     .arrayElements(tags, { min: 1, max: 3 })

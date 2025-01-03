@@ -6,7 +6,7 @@ const TagsPage = async () => {
   console.log({ tags, nextCursor });
 
   return (
-    <div className="space-y-4">
+    <div className="container max-w-4xl mx-auto p-4 space-y-4">
       <ListTags tags={tags} nextCursor={nextCursor} />
     </div>
   );

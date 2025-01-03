@@ -1,6 +1,7 @@
 "use client";
 
 import { getPaginatedTags } from "@/actions/tag";
+import { Button } from "@/components/ui/button";
 import type { Tag } from "@prisma/client";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -37,31 +38,26 @@ export default function ListTags({
   }, [loading, hasMore, _nextCursor]);
 
   return (
-    <div className="tags-container">
-      {_tags.map((tag) => (
-        <div key={tag.id} className="tag bg-gray-100 p-4 mb-4 rounded shadow">
-          <Link href={`/tag/${tag.slug}`}>
-            <h2 className="text-lg font-bold">{tag.name}</h2>
-          </Link>
-          <small className="text-gray-500">
-            {new Date(tag.createdAt).toLocaleString()}
-          </small>
-        </div>
-      ))}
-
-      {hasMore ? (
-        <>
-          {loading ? (
-            <p>Loading more tags...</p>
-          ) : (
-            <button onClick={fetchTags} disabled={loading}>
-              Load more tags
-            </button>
-          )}
-        </>
-      ) : (
-        <p>No more tags to show</p>
-      )}
-    </div>
+    <>
+      <div className="flex flex-wrap gap-4">
+        {_tags.map((tag) => {
+          const randomPostsCount = Math.floor(Math.random() * 100);
+          return (
+            <Button key={tag.id} asChild>
+              <Link href={`/tag/${tag.slug}`}>
+                {tag.name} ({randomPostsCount})
+              </Link>
+            </Button>
+          );
+        })}
+      </div>
+      <div className="flex justify-center">
+        {hasMore && (
+          <Button onClick={fetchTags} disabled={loading}>
+            Load more tags
+          </Button>
+        )}
+      </div>
+    </>
   );
 }

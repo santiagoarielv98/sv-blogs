@@ -15,6 +15,7 @@ const TagDetailPage = async ({
 
   return (
     <div className="space-y-4">
+      <h1 className="text-4xl font-bold">Posts tagged with {slug}</h1>
       <ListPosts posts={posts} nextCursor={nextCursor} config={config} />
     </div>
   );

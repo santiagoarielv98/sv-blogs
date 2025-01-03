@@ -1,4 +1,4 @@
-import { getFirstPageOfTags } from "@/actions/paginate-tags";
+import { getFirstPageOfTags } from "@/actions/tag";
 import ListTags from "@/components/list-tags";
 
 const TagsPage = async () => {

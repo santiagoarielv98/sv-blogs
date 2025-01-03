@@ -1,3 +1,4 @@
+import { getUserByUsername } from "@/actions/profile";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -9,7 +10,7 @@ const UserDetail = async ({
 }) => {
   const { username } = await params;
 
-  const user = null;
+  const user = await getUserByUsername(username);
 
   if (!user) {
     return notFound();

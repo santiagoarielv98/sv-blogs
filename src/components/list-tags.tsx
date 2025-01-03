@@ -1,7 +1,8 @@
 "use client";
 
-import { getPaginatedTags } from "@/actions/paginate-tags";
+import { getPaginatedTags } from "@/actions/tag";
 import type { Tag } from "@prisma/client";
+import Link from "next/link";
 import React, { useState } from "react";
 
 interface ListTagsProps {
@@ -39,7 +40,9 @@ export default function ListTags({
     <div className="tags-container">
       {_tags.map((tag) => (
         <div key={tag.id} className="tag bg-gray-100 p-4 mb-4 rounded shadow">
-          <h2 className="text-lg font-bold">{tag.name}</h2>
+          <Link href={`/tag/${tag.slug}`}>
+            <h2 className="text-lg font-bold">{tag.name}</h2>
+          </Link>
           <small className="text-gray-500">
             {new Date(tag.createdAt).toLocaleString()}
           </small>

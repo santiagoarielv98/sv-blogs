@@ -5,16 +5,51 @@ import type { Post, Prisma, User, Tag } from "@prisma/client";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+
+interface PostWithAuthorAndTags extends Post {
+  tags: Pick<Tag, "id" | "name" | "slug">[];
+  author: Pick<User, "username">;
+}
 
 interface ListPostsProps {
-  posts: Array<
-    Post & {
-      author: Pick<User, "username">;
-      tags: Pick<Tag, "id" | "name" | "slug">[];
-    }
-  >;
+  posts: PostWithAuthorAndTags[];
   nextCursor: string | null;
   config?: Prisma.PostFindManyArgs;
+}
+
+function PostCard({ post }: { post: PostWithAuthorAndTags }) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>
+          <p className="line-clamp-2">{post.title}</p>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm text-gray-600 line-clamp-4">{post.content}</p>
+      </CardContent>
+      <CardFooter className="justify-between gap-4">
+        <div className="flex gap-2">
+          {post.tags.map((tag) => (
+            <Link key={tag.id} href={`/tag/${tag.slug}`}>
+              <Badge variant="secondary">{tag.name}</Badge>
+            </Link>
+          ))}
+        </div>
+        <small className="text-gray-500">
+          {new Date(post.createdAt).toLocaleString()}
+        </small>
+      </CardFooter>
+    </Card>
+  );
 }
 
 export default function ListPosts({
@@ -22,14 +57,7 @@ export default function ListPosts({
   nextCursor = null,
   config,
 }: ListPostsProps) {
-  const [_posts, setPosts] = useState<
-    Array<
-      Post & {
-        author: Pick<User, "username">;
-        tags: Pick<Tag, "id" | "name" | "slug">[];
-      }
-    >
-  >(posts);
+  const [_posts, setPosts] = useState<PostWithAuthorAndTags[]>(posts);
   const [_nextCursor, setNextCursor] = useState<string | null>(nextCursor);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(nextCursor !== null);
@@ -64,24 +92,9 @@ export default function ListPosts({
   }, [fetchPosts, inView]);
 
   return (
-    <div className="posts-container">
+    <div className="space-y-6">
       {_posts.map((post) => (
-        <div key={post.id} className="post bg-gray-100 p-4 mb-4 rounded shadow">
-          <Link href={`/${post.author.username}/${post.slug}`}>
-            <h2 className="text-lg font-bold">{post.title}</h2>
-          </Link>
-          <p className="text-sm">{post.content}</p>
-          <div className="space-x-2">
-            {post.tags.map((tag) => (
-              <Link key={tag.id} href={`/tag/${tag.slug}`}>
-                <span className="tag bg-gray-200 p-1 rounded">{tag.name}</span>
-              </Link>
-            ))}
-          </div>
-          <small className="text-gray-500">
-            {new Date(post.createdAt).toLocaleString()}
-          </small>
-        </div>
+        <PostCard key={post.id} post={post} />
       ))}
 
       {hasMore && (

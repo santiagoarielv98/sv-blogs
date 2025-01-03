@@ -4,11 +4,7 @@ import ListPosts from "@/components/list-posts";
 const HomePage = async () => {
   const { posts, nextCursor } = await getFirstPageOfPosts();
 
-  return (
-    <div className="space-y-4">
-      <ListPosts posts={posts} nextCursor={nextCursor} />
-    </div>
-  );
+  return <ListPosts posts={posts} nextCursor={nextCursor} />;
 };
 
 export default HomePage;

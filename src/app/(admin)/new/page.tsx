@@ -1,6 +1,6 @@
 "use client";
 
-import { createPostAction } from "@/actions/post";
+import { postUpsertAction } from "@/actions/post";
 import { useRouter } from "next/navigation";
 
 const NewPostPage = () => {
@@ -8,7 +8,7 @@ const NewPostPage = () => {
 
   async function action(formData: FormData) {
     const tags = (formData.get("tags") as string) ?? "";
-    const post = await createPostAction({
+    const post = await postUpsertAction({
       title: formData.get("title") as string,
       content: formData.get("content") as string,
       tags: tags.split(",").map((tag) => tag.trim()),

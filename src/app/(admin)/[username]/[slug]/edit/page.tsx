@@ -1,5 +1,6 @@
 import EditPostForm from "@/components/edit-post-form";
 import { prisma } from "@/lib/prisma";
+import type { Post, Tag, User } from "@prisma/client";
 import { notFound } from "next/navigation";
 
 const EditPostPage = async ({
@@ -44,7 +45,9 @@ const EditPostPage = async ({
     <div>
       <h1>Edit Post</h1>
       <p>This is the new post page.</p>
-      <EditPostForm post={post} slug={slug} />
+      <EditPostForm
+        post={post as unknown as Post & { tags: Tag[]; author: User }}
+      />
     </div>
   );
 };

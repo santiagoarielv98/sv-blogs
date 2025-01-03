@@ -1,13 +1,11 @@
 "use client";
+
 import type { Post, Tag, User } from "@prisma/client";
 import { useRouter } from "next/navigation";
-
 const EditPostForm = ({
   post,
-  slug,
 }: {
-  post: Post & { tags: Tag[]; author: Omit<User, "password"> };
-  slug: string;
+  post: Post & { tags: Tag[]; author: User };
 }) => {
   const router = useRouter();
 
@@ -18,7 +16,7 @@ const EditPostForm = ({
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        slug,
+        slug: post.slug,
         title: formData.get("title"),
         content: formData.get("content"),
         published: formData.has("publish"),

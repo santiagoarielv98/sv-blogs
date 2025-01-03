@@ -6,11 +6,12 @@ import { generateUniqueSlug } from "@/lib/slugify";
 import { generateSlug } from "@/utils/slugify";
 import type { Prisma } from "@prisma/client";
 
-export const createPostAction = async (postData: {
+export const postUpsertAction = async (postData: {
   title: string;
   content: string;
   published: boolean;
   tags: string[];
+  slug?: string;
 }) => {
   const session = await auth();
 
@@ -18,15 +19,16 @@ export const createPostAction = async (postData: {
     throw new Error("User not authenticated");
   }
 
-  const { title, content, published, tags } = postData;
-  const slug = await generateUniqueSlug(title);
+  const { title, content, published, tags, slug } = postData;
+  const uniqueSlug = slug || (await generateUniqueSlug(title));
 
-  return prisma.post.create({
-    data: {
+  return prisma.post.upsert({
+    where: { slug: uniqueSlug },
+    create: {
       title,
       content,
       authorId: session.user.id,
-      slug,
+      slug: uniqueSlug,
       published,
       publishedAt: published ? new Date() : null,
       tags: {
@@ -36,39 +38,7 @@ export const createPostAction = async (postData: {
         })),
       },
     },
-    select: {
-      id: true,
-      title: true,
-      slug: true,
-      author: {
-        select: {
-          id: true,
-          username: true,
-        },
-      },
-    },
-  });
-};
-
-export const editPostAction = async (postData: {
-  slug: string;
-  title: string;
-  content: string;
-  published: boolean;
-  tags: string[];
-}) => {
-  const session = await auth();
-
-  if (!session?.user?.id) {
-    throw new Error("User not authenticated");
-  }
-
-  const { title, content, published, tags } = postData;
-  const slug = await generateUniqueSlug(title);
-
-  return prisma.post.update({
-    where: { slug, authorId: session.user.id },
-    data: {
+    update: {
       title,
       content,
       published,
@@ -88,14 +58,9 @@ export const editPostAction = async (postData: {
       author: {
         select: {
           id: true,
-          username: true,
-        },
-      },
-      tags: {
-        select: {
-          id: true,
           name: true,
-          slug: true,
+          image: true,
+          username: true,
         },
       },
     },

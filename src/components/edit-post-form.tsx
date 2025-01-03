@@ -1,12 +1,12 @@
 "use client";
-import type { Post, Tag } from "@prisma/client";
+import type { Post, Tag, User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
 const EditPostForm = ({
   post,
   slug,
 }: {
-  post: Post & { tags: Tag[] };
+  post: Post & { tags: Tag[]; author: Omit<User, "password"> };
   slug: string;
 }) => {
   const router = useRouter();

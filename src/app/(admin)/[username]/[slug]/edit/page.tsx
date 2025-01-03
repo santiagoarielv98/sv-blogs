@@ -1,6 +1,5 @@
 import EditPostForm from "@/components/edit-post-form";
-import { getPostBySlug } from "@/lib/api";
-import type { Post } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 
 const EditPostPage = async ({
@@ -10,7 +9,32 @@ const EditPostPage = async ({
 }) => {
   const { slug } = await params;
 
-  const post = (await getPostBySlug(slug)) as Post | null;
+  const post = await prisma.post.findFirst({
+    where: {
+      slug,
+    },
+    select: {
+      id: true,
+      title: true,
+      content: true,
+      slug: true,
+      author: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+          username: true,
+        },
+      },
+      tags: {
+        select: {
+          id: true,
+          name: true,
+          slug: true,
+        },
+      },
+    },
+  });
 
   if (!post) {
     return notFound();

@@ -1,35 +1,19 @@
 "use client";
 
+import { createPostAction } from "@/actions/create-post";
 import { useRouter } from "next/navigation";
-import React from "react";
 
 const NewPostPage = () => {
   const router = useRouter();
 
-  async function createPostAction(formData: FormData) {
+  async function action(formData: FormData) {
     const tags = (formData.get("tags") as string) ?? "";
-    const response = await fetch("/api/posts", {
-      method: "POST",
-      body: JSON.stringify({
-        title: formData.get("title"),
-        content: formData.get("content"),
-        published: formData.has("publish"),
-        tags: tags
-          .split(",")
-          .map((tag: string) => tag.trim())
-          .filter((tag: string) => tag.length > 2),
-      }),
-      headers: {
-        "Content-Type": "application/json",
-      },
+    const post = await createPostAction({
+      title: formData.get("title") as string,
+      content: formData.get("content") as string,
+      tags: tags.split(",").map((tag) => tag.trim()),
+      published: formData.has("publish"),
     });
-
-    if (!response.ok) {
-      console.error("Failed to create post");
-      return;
-    }
-
-    const post = await response.json();
 
     router.replace(`/${post.author.username}/${post.slug}/edit`);
   }
@@ -39,7 +23,7 @@ const NewPostPage = () => {
       <h1>New Post</h1>
       <p>This is the new post page.</p>
 
-      <form action={createPostAction}>
+      <form action={action}>
         <label>
           Title:
           <input type="text" name="title" />

@@ -31,35 +31,6 @@ export const getPosts = async (
   });
 };
 
-export const getPostBySlug = async (slug: string) => {
-  return await prisma.post.findFirst({
-    where: {
-      slug,
-    },
-    select: {
-      id: true,
-      title: true,
-      content: true,
-      slug: true,
-      author: {
-        select: {
-          id: true,
-          name: true,
-          image: true,
-          username: true,
-        },
-      },
-      tags: {
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-        },
-      },
-    },
-  });
-};
-
 export const getUserByUsername = async (username: string) => {
   return await prisma.user.findFirst({
     where: {

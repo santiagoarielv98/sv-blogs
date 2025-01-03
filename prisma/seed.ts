@@ -5,6 +5,9 @@ import { generateSlug } from "../src/utils/slugify";
 
 const prisma = new PrismaClient();
 
+const MAX_USERS = 0;
+const MAX_POSTS = 0;
+
 const _tags = [
   { name: "JavaScript", slug: "javascript" },
   { name: "TypeScript", slug: "typescript" },
@@ -45,7 +48,7 @@ async function main() {
       password: await hashPassword("password"),
       emailVerified: new Date(),
       posts: {
-        create: Array.from({ length: 100 }).map(() => {
+        create: Array.from({ length: MAX_POSTS }).map(() => {
           const title = faker.lorem.sentence();
           return {
             title,
@@ -69,7 +72,7 @@ async function main() {
   });
 
   await Promise.all(
-    Array.from({ length: 25 }).map(async () => {
+    Array.from({ length: MAX_USERS }).map(async () => {
       const email = faker.internet.email();
       const username = faker.internet.username();
       return prisma.user.create({
@@ -81,7 +84,7 @@ async function main() {
           password: await hashPassword("password"),
           emailVerified: new Date(),
           posts: {
-            create: Array.from({ length: 100 }).map(() => {
+            create: Array.from({ length: MAX_POSTS }).map(() => {
               const title = faker.lorem.sentence();
               return {
                 title,

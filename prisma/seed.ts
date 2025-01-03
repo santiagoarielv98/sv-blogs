@@ -8,6 +8,9 @@ const prisma = new PrismaClient();
 const MAX_USERS = 25; // 25
 const MAX_POSTS = 100; // 100
 
+const FROM_DATE = new Date("2024-01-01T00:00:00.000Z"); // 2024-01-01
+const TO_DATE = new Date("2025-01-01T00:00:00.000Z"); // 2025-01-01
+
 const _tags = [
   { name: "JavaScript", slug: "javascript" },
   { name: "TypeScript", slug: "typescript" },
@@ -29,8 +32,8 @@ async function main() {
         create: {
           ...tag,
           createdAt: faker.date.between({
-            from: new Date(1735689600000),
-            to: new Date(1787139200000),
+            from: FROM_DATE,
+            to: TO_DATE,
           }),
         },
       }),
@@ -57,8 +60,8 @@ async function main() {
             published: true,
             publishedAt: new Date(),
             createdAt: faker.date.between({
-              from: new Date(1735689600000),
-              to: new Date(1787139200000),
+              from: FROM_DATE,
+              to: TO_DATE,
             }),
             tags: {
               connect: faker.helpers
@@ -93,8 +96,8 @@ async function main() {
                 published: true,
                 publishedAt: new Date(),
                 createdAt: faker.date.between({
-                  from: new Date(1735689600000),
-                  to: new Date(1787139200000),
+                  from: FROM_DATE,
+                  to: TO_DATE,
                 }),
                 tags: {
                   connect: faker.helpers

@@ -31,6 +31,10 @@ const CONFIG = {
 export const getFirstPageOfPosts = async (args?: Prisma.PostFindManyArgs) => {
   const posts = await prisma.post.findMany({
     ...args,
+    where: {
+      ...args?.where,
+      published: true,
+    },
     ...CONFIG,
   });
 
@@ -49,6 +53,10 @@ export const getPaginatedPosts = async (
   const posts = await prisma.post.findMany({
     ...args,
     ...CONFIG,
+    where: {
+      ...args?.where,
+      published: true,
+    },
     take: CONFIG.take! + 1,
     cursor: { id: cursor },
     skip: 1,

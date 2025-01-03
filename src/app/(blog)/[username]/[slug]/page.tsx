@@ -1,4 +1,4 @@
-import { getPostBySlug } from "@/actions/get-post";
+import { getPostBySlug } from "@/actions/post";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 

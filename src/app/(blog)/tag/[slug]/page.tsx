@@ -1,4 +1,3 @@
-import { getPosts } from "@/lib/api";
 import Link from "next/link";
 
 const TagDetailPage = async ({
@@ -7,16 +6,7 @@ const TagDetailPage = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
-  const posts = await getPosts({
-    take: 10,
-    where: {
-      tags: {
-        some: {
-          slug,
-        },
-      },
-    },
-  });
+  const posts = [];
 
   return (
     <div className="space-y-4">

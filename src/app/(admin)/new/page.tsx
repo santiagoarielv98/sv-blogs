@@ -1,6 +1,6 @@
 "use client";
 
-import { createPostAction } from "@/actions/create-post";
+import { createPostAction } from "@/actions/post";
 import { useRouter } from "next/navigation";
 
 const NewPostPage = () => {

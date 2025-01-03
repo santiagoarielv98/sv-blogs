@@ -1,4 +1,3 @@
-import { getUserByUsername } from "@/lib/api";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -10,7 +9,7 @@ const UserDetail = async ({
 }) => {
   const { username } = await params;
 
-  const user = await getUserByUsername(username);
+  const user = null;
 
   if (!user) {
     return notFound();

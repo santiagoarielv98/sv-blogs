@@ -1,4 +1,4 @@
-import { getProfile } from "@/actions/profile";
+import { getProfile } from "@/actions/user";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 

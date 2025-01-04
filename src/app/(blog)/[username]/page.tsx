@@ -1,4 +1,4 @@
-import { getUserByUsername } from "@/actions/profile";
+import { getUserByUsername } from "@/actions/user";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";

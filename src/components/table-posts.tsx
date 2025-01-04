@@ -31,7 +31,7 @@ import { formatDate } from "@/lib/utils";
 import type { PostWithAuthorAndTags } from "@/types";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export interface TablePostsProps {
   initialData: {
@@ -53,27 +53,30 @@ const TablePosts = (
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
-  const loadPosts = async (page: number) => {
-    try {
-      setLoading(true);
-      const data = await getPaginatedAdminPosts(page);
-      setPosts(data.posts);
-      setTotalPages(data.totalPages);
-    } catch (error) {
-      console.error(error);
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to load posts",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+  const loadPosts = React.useCallback(
+    async (page: number) => {
+      try {
+        setLoading(true);
+        const data = await getPaginatedAdminPosts(page);
+        setPosts(data.posts);
+        setTotalPages(data.totalPages);
+      } catch (error) {
+        console.error(error);
+        toast({
+          variant: "destructive",
+          title: "Error",
+          description: "Failed to load posts",
+        });
+      } finally {
+        setLoading(false);
+      }
+    },
+    [toast],
+  );
 
   useEffect(() => {
     loadPosts(currentPage);
-  }, [currentPage]);
+  }, [currentPage, loadPosts]);
 
   const handleDelete = async (postId: string) => {
     try {

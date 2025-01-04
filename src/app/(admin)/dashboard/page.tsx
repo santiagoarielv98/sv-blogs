@@ -7,7 +7,7 @@ export default async function DashboardPage() {
   const data = await getPaginatedAdminPosts(1);
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <Button asChild>

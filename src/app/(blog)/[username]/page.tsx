@@ -1,7 +1,8 @@
 import { getUserByUsername } from "@/actions/user";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import Image from "next/image";
+import UserProfile from "@/components/user-profile";
+import type { User } from "@prisma/client";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -17,22 +18,7 @@ const UserDetail = async ({
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center gap-6">
-        <Image
-          src={
-            user.image ??
-            "https://static-00.iconduck.com/assets.00/profile-default-icon-256x256-tsi8241r.png"
-          }
-          alt={user.name}
-          width={128}
-          height={128}
-          className="rounded-full shadow-lg"
-        />
-        <div>
-          <h1 className="text-3xl font-bold mb-2">{user.name}</h1>
-          <Badge variant="secondary">@{user.username}</Badge>
-        </div>
-      </div>
+      <UserProfile user={user as unknown as User} />
 
       <div className="space-y-4">
         <h2 className="text-2xl font-semibold">Posts</h2>

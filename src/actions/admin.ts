@@ -21,6 +21,13 @@ export async function getPaginatedAdminPosts(page = 1) {
       },
       include: {
         tags: true,
+        author: {
+          select: {
+            username: true,
+            name: true,
+            image: true,
+          },
+        },
       },
       orderBy: {
         createdAt: "desc",

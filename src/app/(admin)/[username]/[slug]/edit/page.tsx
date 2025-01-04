@@ -1,17 +1,20 @@
-import EditPostForm from "@/components/edit-post-form";
+import PostForm from "@/components/form/post-form";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 
 const EditPostPage = async ({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; username: string }>;
 }) => {
-  const { slug } = await params;
+  const { slug, username } = await params;
 
   const post = await prisma.post.findFirst({
     where: {
       slug,
+      author: {
+        username,
+      },
     },
     include: {
       author: {
@@ -37,10 +40,9 @@ const EditPostPage = async ({
   }
 
   return (
-    <div>
-      <h1>Edit Post</h1>
-      <p>This is the new post page.</p>
-      <EditPostForm post={post} />
+    <div className="space-y-6">
+      <h1 className="text-3xl font-bold">Edit Post</h1>
+      <PostForm initialValues={post} />
     </div>
   );
 };

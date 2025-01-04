@@ -28,14 +28,14 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import { formatDate } from "@/lib/utils";
-import type { PostWithTags } from "@/types";
+import type { PostWithAuthorAndTags } from "@/types";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export interface TablePostsProps {
   initialData: {
-    posts: PostWithTags[];
+    posts: PostWithAuthorAndTags[];
     totalPages: number;
   };
 }
@@ -45,7 +45,9 @@ const TablePosts = (
     initialData: { posts: [], totalPages: 1 },
   },
 ) => {
-  const [posts, setPosts] = useState<PostWithTags[]>(initialData.posts);
+  const [posts, setPosts] = useState<PostWithAuthorAndTags[]>(
+    initialData.posts,
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(initialData.totalPages);
   const [loading, setLoading] = useState(true);
@@ -178,12 +180,12 @@ const TablePosts = (
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
                     <Button variant="ghost" size="icon" asChild>
-                      <Link href={`/post/${post.slug}`}>
+                      <Link href={`/${post.author.username}/${post.slug}`}>
                         <Eye className="h-4 w-4" />
                       </Link>
                     </Button>
                     <Button variant="ghost" size="icon" asChild>
-                      <Link href={`/post/${post.slug}/edit`}>
+                      <Link href={`/${post.author.username}/${post.slug}/edit`}>
                         <Pencil className="h-4 w-4" />
                       </Link>
                     </Button>

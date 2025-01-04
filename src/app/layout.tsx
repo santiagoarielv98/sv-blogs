@@ -6,6 +6,7 @@ import { auth } from "@/lib/auth";
 import { SessionProvider } from "next-auth/react";
 
 import "@/app/globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Sv - Blogs",
@@ -24,6 +25,7 @@ export default async function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <body className={`${outfit.className} antialiased`}>
         <SessionProvider session={session}>{children}</SessionProvider>
+        <Toaster />
       </body>
     </html>
   );

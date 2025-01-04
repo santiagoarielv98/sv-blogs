@@ -5,6 +5,17 @@ import {
   getPaginatedAdminPosts,
   togglePublishPost,
 } from "@/actions/admin";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,37 +28,17 @@ import {
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
 import { formatDate } from "@/lib/utils";
+import type { PostWithTags } from "@/types";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-
-interface Post {
-  id: string;
-  title: string;
-  published: boolean;
-  createdAt: Date;
-  tags: { id: string; name: string }[];
-  slug: string;
-}
 
 export default function DashboardPage() {
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<PostWithTags[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
-  const [postToDelete, setPostToDelete] = useState<string | null>(null);
 
   const loadPosts = async (page: number) => {
     try {
@@ -79,8 +70,7 @@ export default function DashboardPage() {
         description: "Post deleted successfully",
       });
       loadPosts(currentPage);
-      setPostToDelete(null);
-    } catch (error) {
+    } catch {
       toast({
         variant: "destructive",
         title: "Error",
@@ -97,7 +87,7 @@ export default function DashboardPage() {
         title: "Success",
         description: "Post status updated successfully",
       });
-    } catch (error) {
+    } catch {
       toast({
         variant: "destructive",
         title: "Error",

@@ -58,7 +58,7 @@ const NewPostPage = () => {
       });
 
       router.replace(`/${post.author.username}/${post.slug}/edit`);
-    } catch (error) {
+    } catch {
       toast({
         variant: "destructive",
         title: "Error",
@@ -96,7 +96,7 @@ const NewPostPage = () => {
                   <FormItem>
                     <FormLabel>Content</FormLabel>
                     <FormControl>
-                      <div className="min-h-[300px] border rounded-md">
+                      <div className="min-h-[300px]">
                         <ReactQuill
                           theme="snow"
                           {...field}

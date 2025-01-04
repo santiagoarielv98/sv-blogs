@@ -4,22 +4,28 @@ import { getPaginatedPosts } from "@/actions/post";
 import type { Prisma } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import PostCard from "./post-card";
+import PostCard from "./cards/post-card";
 import type { PostWithAuthorAndTags } from "@/types/post";
+import { LoaderCircle } from "lucide-react";
 
 interface ListPostsProps {
-  posts: PostWithAuthorAndTags[];
-  nextCursor: string | null;
+  initialState?: {
+    posts: PostWithAuthorAndTags[];
+    nextCursor: string | null;
+  };
   config?: Prisma.PostFindManyArgs;
 }
 
 export default function ListPosts({
-  posts = [],
-  nextCursor = null,
+  initialState: initialData = { posts: [], nextCursor: null },
   config,
 }: ListPostsProps) {
-  const [_posts, setPosts] = useState<PostWithAuthorAndTags[]>(posts);
-  const [_nextCursor, setNextCursor] = useState<string | null>(nextCursor);
+  const [posts, setPosts] = useState<PostWithAuthorAndTags[]>(
+    initialData.posts,
+  );
+  const [nextCursor, setNextCursor] = useState<string | null>(
+    initialData.nextCursor,
+  );
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(nextCursor !== null);
 
@@ -33,20 +39,17 @@ export default function ListPosts({
     setLoading(true);
 
     try {
-      const { nextCursor, posts } = await getPaginatedPosts(
-        _nextCursor!,
-        config,
-      );
+      const data = await getPaginatedPosts(nextCursor!, config);
 
-      setPosts((prev) => [...prev, ...posts]);
-      setNextCursor(nextCursor);
-      setHasMore(nextCursor !== null);
+      setPosts((prev) => [...prev, ...data.posts]);
+      setNextCursor(data.nextCursor);
+      setHasMore(data.nextCursor !== null);
     } catch (error) {
       console.error("Error fetching posts:", error);
     } finally {
       setLoading(false);
     }
-  }, [loading, hasMore, _nextCursor, config]);
+  }, [loading, hasMore, nextCursor, config]);
 
   useEffect(() => {
     if (inView) fetchPosts();
@@ -54,16 +57,16 @@ export default function ListPosts({
 
   return (
     <div className="space-y-6">
-      {_posts.map((post) => (
+      {posts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
 
       {hasMore && (
-        <div ref={ref} className="loading-indicator">
-          {loading ? <p>Loading more posts...</p> : null}
+        <div ref={ref} className="flex justify-center">
+          {loading ? <LoaderCircle size={32} className="animate-spin" /> : null}
         </div>
       )}
-      {!hasMore && <p>No more posts to show</p>}
+      {!hasMore && <p className="text-center">No more posts to show</p>}
     </div>
   );
 }

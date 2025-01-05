@@ -26,11 +26,11 @@ function PostCard({ post }: { post: PostWithAuthorAndTags }) {
             <div className="flex items-center text-xs text-muted-foreground gap-4">
               <span className="flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
-                {new Date(post.createdAt).toLocaleDateString()}
+                {new Date(post.publishedAt!).toLocaleDateString()}
               </span>
               <span className="flex items-center gap-1">
                 <Clock className="h-3 w-3" />
-                {new Date(post.createdAt).toLocaleTimeString()}
+                {new Date(post.publishedAt!).toLocaleTimeString()}
               </span>
             </div>
           </div>

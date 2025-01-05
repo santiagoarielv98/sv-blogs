@@ -14,7 +14,12 @@ const EditPostForm = ({ post }: { post: PostWithTags }) => {
         tags: post.tags.map((tag) => tag.name).join(", "),
         published: post.published,
       }}
-      onSubmit={editPost}
+      onSubmit={(data) =>
+        editPost({
+          id: post.id,
+          ...data,
+        })
+      }
     />
   );
 };

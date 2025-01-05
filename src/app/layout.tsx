@@ -13,7 +13,9 @@ export const metadata: Metadata = {
   description: "Mi blog personal",
 };
 
-const outfit = Outfit();
+const outfit = Outfit({
+  subsets: ["latin"],
+});
 
 export default async function RootLayout({
   children,

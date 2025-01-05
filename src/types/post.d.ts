@@ -2,7 +2,7 @@ import type { Post, Tag, User } from "@prisma/client";
 
 export type PostWithoutFields = Omit<
   Post,
-  "authorId" | "published" | "createdAt" | "updatedAt"
+  "authorId" | "createdAt" | "updatedAt"
 >;
 
 export interface PostWithTags extends PostWithoutFields {

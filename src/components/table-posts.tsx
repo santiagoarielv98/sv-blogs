@@ -1,11 +1,6 @@
 "use client";
 
 import {
-  deletePost,
-  getPaginatedAdminPosts,
-  togglePublishPost,
-} from "@/lib/db/admin";
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -27,7 +22,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
-import { formatDate } from "@/lib/utils";
+import {
+  deletePost,
+  getPaginatedAdminPosts,
+  togglePublishPost,
+} from "@/lib/db/admin";
 import type { PostWithAuthorAndTags } from "@/types";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
@@ -152,7 +151,7 @@ const TablePosts = (
             <TableRow>
               <TableHead>Title</TableHead>
               <TableHead>Status</TableHead>
-              <TableHead>Created</TableHead>
+              {/* <TableHead>Created</TableHead> */}
               <TableHead>Tags</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -170,7 +169,7 @@ const TablePosts = (
                     {post.published ? "Published" : "Draft"}
                   </Badge>
                 </TableCell>
-                <TableCell>{formatDate(post.createdAt)}</TableCell>
+                {/* <TableCell>{formatDate(post.createdAt)}</TableCell> */}
                 <TableCell>
                   <div className="flex gap-1 flex-wrap">
                     {post.tags.map((tag) => (

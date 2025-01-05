@@ -12,7 +12,7 @@ import Link from "next/link";
 
 function PostCard({ post }: { post: PostWithAuthorAndTags }) {
   return (
-    <Card className="transition-shadow hover:shadow-lg">
+    <Card className="transition-shadow hover:shadow-lg" role="article">
       <CardHeader className="space-y-4">
         <div className="flex items-center space-x-4">
           <Avatar>

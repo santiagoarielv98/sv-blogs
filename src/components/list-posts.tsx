@@ -56,12 +56,7 @@ export default function ListPosts({
   }, [fetchPosts, inView]);
 
   return (
-    <div
-      className="space-y-6"
-      role="feed"
-      aria-busy={loading}
-      aria-label="Posts list"
-    >
+    <div className="space-y-6" aria-busy={loading} aria-label="Posts list">
       {posts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}

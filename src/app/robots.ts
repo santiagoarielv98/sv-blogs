@@ -15,6 +15,7 @@ export default function robots(): MetadataRoute.Robots {
           "/new",
           "/404/*",
           "/403/*",
+          "/profile",
         ],
       },
     ],

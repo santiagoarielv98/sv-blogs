@@ -54,6 +54,7 @@ export default function ListTags({
               key={tag.id}
               asChild
               aria-label={`${tag.name} tag with ${tag._count?.posts} posts`}
+              role="listitem"
             >
               <Link href={`/tag/${tag.slug}`}>
                 {tag.name} ({tag._count?.posts})

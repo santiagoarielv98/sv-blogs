@@ -1,5 +1,11 @@
 import { getFirstPageOfPosts } from "@/lib/db";
 import ListPosts from "@/components/list-posts";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  description:
+    "Latest blog posts about web development, technology and programming",
+};
 
 const HomePage = async () => {
   const data = await getFirstPageOfPosts();

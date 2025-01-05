@@ -1,6 +1,20 @@
 import { getFirstPageOfPosts } from "@/lib/db";
 import ListPosts from "@/components/list-posts";
 import { Badge } from "@/components/ui/badge";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
+  return {
+    title: `Posts about ${slug}`,
+    description: `Explore all articles related to ${slug}`,
+  };
+}
 
 const TagDetailPage = async ({
   params,

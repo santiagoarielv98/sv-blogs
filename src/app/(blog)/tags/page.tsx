@@ -1,5 +1,11 @@
 import { getFirstPageOfTags } from "@/lib/db/tag";
 import ListTags from "@/components/list-tags";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Explore Tags",
+  description: "Explore all available topics and categories in the blog",
+};
 
 const TagsPage = async () => {
   const data = await getFirstPageOfTags();

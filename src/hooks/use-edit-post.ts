@@ -1,4 +1,4 @@
-import { postUpsertAction } from "@/actions/post";
+import { updatePost } from "@/lib/db";
 import type { EditPostInput } from "@/schemas/post-schema";
 import { useToast } from "./use-toast";
 
@@ -7,7 +7,7 @@ const useEditPost = () => {
 
   const onSubmit = async (values: EditPostInput) => {
     try {
-      const post = await postUpsertAction({
+      const post = await updatePost({
         ...values,
         tags: values.tags.split(",").map((tag) => tag.trim()),
       });

@@ -1,5 +1,5 @@
 import { getFirstPageOfPosts } from "@/lib/db";
-import { getUserByUsername } from "@/actions/user";
+import { getUserByUsername } from "@/lib/db";
 import ListPosts from "@/components/list-posts";
 import UserProfile from "@/components/user-profile";
 import type { User } from "@prisma/client";

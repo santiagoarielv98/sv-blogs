@@ -1,6 +1,6 @@
 "use client";
 
-import { getPaginatedTags } from "@/actions/tag";
+import { getPaginatedTags } from "@/lib/db/tag";
 import { Button } from "@/components/ui/button";
 import type { Tag } from "@prisma/client";
 import Link from "next/link";

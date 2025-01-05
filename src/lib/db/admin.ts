@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { DEFAULT_SELECT_USER } from "@/lib/db/select";
 import { prisma } from "@/lib/prisma";
 import { generateUniqueSlug } from "@/lib/slugify";
+import type { EditPostInput } from "@/schemas/post-schema";
 import { generateSlug } from "@/utils/slugify";
 
 const ITEMS_PER_PAGE = 10;
@@ -119,6 +120,39 @@ export const createPost = async (postData: {
       published,
       publishedAt: published ? new Date() : null,
       tags: {
+        connectOrCreate: tags.map((tag) => ({
+          where: { slug: generateSlug(tag) },
+          create: { name: tag, slug: generateSlug(tag) },
+        })),
+      },
+    },
+  });
+};
+
+export const updatePost = async ({
+  id: postId,
+  ...postData
+}: Omit<EditPostInput, "tags"> & { tags: string[] }) => {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error("User not authenticated");
+  }
+
+  const { title, content, published, tags } = postData;
+
+  return prisma.post.update({
+    where: {
+      id: postId,
+      authorId: session.user.id,
+    },
+    data: {
+      title,
+      content,
+      published,
+      publishedAt: published ? new Date() : null,
+      tags: {
+        set: [],
         connectOrCreate: tags.map((tag) => ({
           where: { slug: generateSlug(tag) },
           create: { name: tag, slug: generateSlug(tag) },

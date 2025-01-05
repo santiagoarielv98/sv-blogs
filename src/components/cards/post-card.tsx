@@ -12,7 +12,7 @@ import Link from "next/link";
 
 function PostCard({ post }: { post: PostWithAuthorAndTags }) {
   return (
-    <Card className="hover:shadow-lg transition-shadow">
+    <Card className="transition-shadow hover:shadow-lg">
       <CardHeader className="space-y-4">
         <div className="flex items-center space-x-4">
           <Avatar>
@@ -26,7 +26,7 @@ function PostCard({ post }: { post: PostWithAuthorAndTags }) {
             >
               {post.author.name}
             </Link>
-            <div className="flex items-center text-xs text-muted-foreground gap-4">
+            <div className="flex items-center gap-4 text-xs text-muted-foreground">
               <span className="flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
                 {new Date(post.publishedAt!).toLocaleDateString()}
@@ -39,13 +39,13 @@ function PostCard({ post }: { post: PostWithAuthorAndTags }) {
           </div>
         </div>
         <Link href={`/${post.author.username}/${post.slug}`}>
-          <h3 className="text-xl font-semibold hover:text-primary transition-colors">
+          <h3 className="text-xl font-semibold transition-colors hover:text-primary">
             {post.title}
           </h3>
         </Link>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-muted-foreground line-clamp-3">
+        <p className="line-clamp-3 text-sm text-muted-foreground">
           {post.content}
         </p>
       </CardContent>

@@ -17,7 +17,7 @@ const UserProfile = ({ user }: { user: User }) => {
         className="rounded-full shadow-lg"
       />
       <div>
-        <h1 className="text-3xl font-bold mb-2">{user.name}</h1>
+        <h1 className="mb-2 text-3xl font-bold">{user.name}</h1>
         <Badge variant="secondary">@{user.username}</Badge>
       </div>
     </div>

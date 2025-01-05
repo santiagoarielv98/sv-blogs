@@ -114,7 +114,7 @@ const TablePosts = (
   const renderPagination = () => {
     const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
     return (
-      <div className="flex justify-center gap-2 items-center">
+      <div className="flex items-center justify-center gap-2">
         <Button
           variant="outline"
           onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
@@ -145,7 +145,7 @@ const TablePosts = (
   };
   return (
     <>
-      <div className="border rounded-lg">
+      <div className="rounded-lg border">
         <Table>
           <TableHeader>
             <TableRow>
@@ -171,7 +171,7 @@ const TablePosts = (
                 </TableCell>
                 {/* <TableCell>{formatDate(post.createdAt)}</TableCell> */}
                 <TableCell>
-                  <div className="flex gap-1 flex-wrap">
+                  <div className="flex flex-wrap gap-1">
                     {post.tags.map((tag) => (
                       <Badge key={tag.id} variant="outline">
                         {tag.name}

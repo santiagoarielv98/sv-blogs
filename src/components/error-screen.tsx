@@ -38,7 +38,7 @@ const ErrorScreen = ({
   const router = useRouter();
 
   return (
-    <div className="min-h-[50vh] flex flex-col items-center justify-center text-center space-y-6">
+    <div className="flex min-h-[50vh] flex-col items-center justify-center space-y-6 text-center">
       <div className="space-y-2">
         {status && (
           <h1 className={errorScreenVariants({ variant, className })}>

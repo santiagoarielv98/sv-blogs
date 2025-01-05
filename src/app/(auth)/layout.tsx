@@ -5,7 +5,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Header variant="auth" />
-      <main className="container max-w-lg mx-auto p-4 mt-8">{children}</main>
+      <main className="container mx-auto mt-8 max-w-lg p-4">{children}</main>
     </div>
   );
 };

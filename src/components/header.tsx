@@ -34,7 +34,7 @@ const Header = ({ variant = "blog" }: HeaderProps) => {
     <header
       className={`sticky top-0 z-50 w-full border-b ${isAuth ? "bg-white shadow-sm" : "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"}`}
     >
-      <nav className="container max-w-4xl mx-auto flex h-14 items-center justify-between p-4">
+      <nav className="container mx-auto flex h-14 max-w-4xl items-center justify-between p-4">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center gap-2 font-semibold">
             <Blocks className="h-5 w-5" />

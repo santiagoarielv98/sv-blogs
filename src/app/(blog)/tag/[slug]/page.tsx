@@ -16,7 +16,7 @@ const TagDetailPage = async ({
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold flex items-center gap-2">
+      <h1 className="flex items-center gap-2 text-3xl font-bold">
         Posts tagged with <Badge variant="secondary">{slug}</Badge>
       </h1>
       <ListPosts initialState={data} config={config} />

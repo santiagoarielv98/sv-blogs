@@ -5,7 +5,7 @@ const BlogLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen">
       <Header />
-      <main className="container max-w-4xl mx-auto p-4 mt-8">{children}</main>
+      <main className="container mx-auto mt-8 max-w-4xl p-4">{children}</main>
     </div>
   );
 };

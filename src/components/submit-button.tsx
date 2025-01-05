@@ -8,7 +8,7 @@ export const SubmitButton = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <Button className="w-full" type="submit" disabled={isSubmitting}>
-      {isSubmitting ? <LoaderCircle className="animate-spin h-4 w-4" /> : null}
+      {isSubmitting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : null}
       {children}
     </Button>
   );

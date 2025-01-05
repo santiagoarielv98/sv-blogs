@@ -32,7 +32,7 @@ const PostDetail = async ({ post }: PostDetailProps) => {
 
       <h1 className="text-3xl font-bold">{post.title}</h1>
 
-      <div className="flex gap-2 flex-wrap">
+      <div className="flex flex-wrap gap-2">
         {post.tags.map((tag) => (
           <Badge key={tag.id} variant="secondary">
             {tag.name}

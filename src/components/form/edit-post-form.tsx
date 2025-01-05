@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import PostForm from "./post-form";
 import type { PostWithTags } from "@/types";
@@ -10,7 +11,7 @@ const EditPostForm = ({ post }: { post: PostWithTags }) => {
       initialValues={{
         title: post.title,
         content: post.content,
-        tags: post.tags.join(", "),
+        tags: post.tags.map((tag) => tag.name).join(", "),
         published: post.published,
       }}
       onSubmit={editPost}

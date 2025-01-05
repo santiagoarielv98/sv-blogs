@@ -1,4 +1,4 @@
-import { getFirstPageOfPosts } from "@/actions/post";
+import { getFirstPageOfPosts } from "@/lib/db";
 import ListPosts from "@/components/list-posts";
 import { Badge } from "@/components/ui/badge";
 

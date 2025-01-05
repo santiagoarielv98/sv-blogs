@@ -1,4 +1,4 @@
-import { getFirstPageOfPosts } from "@/actions/post";
+import { getFirstPageOfPosts } from "@/lib/db";
 import { getUserByUsername } from "@/actions/user";
 import ListPosts from "@/components/list-posts";
 import UserProfile from "@/components/user-profile";

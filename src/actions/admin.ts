@@ -2,6 +2,8 @@
 
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { generateUniqueSlug } from "@/lib/slugify";
+import { generateSlug } from "@/utils/slugify";
 
 const ITEMS_PER_PAGE = 10;
 
@@ -87,3 +89,35 @@ export async function togglePublishPost(postId: string) {
     },
   });
 }
+
+export const createPost = async (postData: {
+  title: string;
+  content: string;
+  published: boolean;
+  tags: string[];
+}) => {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error("User not authenticated");
+  }
+
+  const { title, content, published, tags } = postData;
+
+  return prisma.post.create({
+    data: {
+      title,
+      content,
+      authorId: session.user.id,
+      slug: await generateUniqueSlug(title),
+      published,
+      publishedAt: published ? new Date() : null,
+      tags: {
+        connectOrCreate: tags.map((tag) => ({
+          where: { slug: generateSlug(tag) },
+          create: { name: tag, slug: generateSlug(tag) },
+        })),
+      },
+    },
+  });
+};

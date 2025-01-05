@@ -1,6 +1,6 @@
 "use client";
 
-import { getPaginatedPosts } from "@/actions/post";
+import { getPaginatedPosts } from "@/lib/db";
 import type { Prisma } from "@prisma/client";
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";

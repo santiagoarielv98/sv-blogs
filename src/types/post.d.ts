@@ -1,9 +1,14 @@
 import type { Post, Tag, User } from "@prisma/client";
 
-export interface PostWithTags extends Post {
+export type PostWithoutFields = Omit<
+  Post,
+  "authorId" | "published" | "createdAt" | "updatedAt"
+>;
+
+export interface PostWithTags extends PostWithoutFields {
   tags: Pick<Tag, "id" | "name" | "slug">[];
 }
-export interface PostWithAuthorAndTags extends Post {
+export interface PostWithAuthorAndTags extends PostWithoutFields {
   tags: Pick<Tag, "id" | "name" | "slug">[];
   author: Pick<User, "id", "username" | "name" | "image">;
 }

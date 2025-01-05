@@ -1,4 +1,4 @@
-import PostForm from "@/components/form/post-form";
+import EditPostForm from "@/components/form/edit-post-form";
 import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 
@@ -17,14 +17,6 @@ const EditPostPage = async ({
       },
     },
     include: {
-      author: {
-        select: {
-          id: true,
-          name: true,
-          image: true,
-          username: true,
-        },
-      },
       tags: {
         select: {
           id: true,
@@ -42,7 +34,7 @@ const EditPostPage = async ({
   return (
     <div className="space-y-6">
       <h1 className="text-3xl font-bold">Edit Post</h1>
-      <PostForm initialValues={post} />
+      <EditPostForm post={post} />
     </div>
   );
 };

@@ -1,7 +1,6 @@
-import { ErrorScreen } from "@/components/error-screen";
 import EditPostForm from "@/components/form/edit-post-form";
 import { editPost } from "@/lib/db";
-import { notFound } from "next/navigation";
+import { redirect, RedirectType } from "next/navigation";
 
 const EditPostPage = async ({
   params,
@@ -14,7 +13,7 @@ const EditPostPage = async ({
     const post = await editPost(slug, username);
 
     if (!post) {
-      return notFound();
+      return redirect("/404/post-not-found", RedirectType.replace);
     }
 
     return (
@@ -25,14 +24,7 @@ const EditPostPage = async ({
     );
   } catch (error) {
     if (error instanceof Error && error.message.includes("Unauthorized")) {
-      return (
-        <ErrorScreen
-          variant="destructive"
-          title="Unauthorized Access"
-          message="You don't have permission to edit this post."
-          status={403}
-        />
-      );
+      redirect("/403/unauthorized", RedirectType.replace);
     }
     throw error;
   }

@@ -1,9 +1,8 @@
-import { getFirstPageOfPosts } from "@/lib/db";
-import { getUserByUsername } from "@/lib/db";
 import ListPosts from "@/components/list-posts";
 import UserProfile from "@/components/user-profile";
+import { getFirstPageOfPosts, getUserByUsername } from "@/lib/db";
 import type { User } from "@prisma/client";
-import { notFound } from "next/navigation";
+import { redirect, RedirectType } from "next/navigation";
 
 const UserDetail = async ({
   params,
@@ -13,7 +12,7 @@ const UserDetail = async ({
   const { username } = await params;
   const user = await getUserByUsername(username);
 
-  if (!user) return notFound();
+  if (!user) return redirect("/404/user-not-found", RedirectType.replace);
 
   const config = { where: { authorId: user.id } };
   const data = await getFirstPageOfPosts(config);

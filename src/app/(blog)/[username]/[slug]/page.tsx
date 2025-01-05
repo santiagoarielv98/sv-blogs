@@ -1,6 +1,6 @@
 import PostDetail from "@/components/post-detail";
 import { getPostBySlug } from "@/lib/db";
-import { notFound } from "next/navigation";
+import { redirect, RedirectType } from "next/navigation";
 
 const DetailPage = async ({
   params,
@@ -10,7 +10,7 @@ const DetailPage = async ({
   const { slug, username } = await params;
   const post = await getPostBySlug(slug, username);
 
-  if (!post) return notFound();
+  if (!post) return redirect("/404/post-not-found", RedirectType.replace);
 
   return <PostDetail post={post} />;
 };

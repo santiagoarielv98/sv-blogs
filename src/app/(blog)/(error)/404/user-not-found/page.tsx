@@ -1,7 +1,6 @@
-import React from "react";
 import { ErrorScreen } from "@/components/error-screen";
 
-const UserNotFound = () => {
+const UserNotFoundPage = () => {
   return (
     <ErrorScreen
       title="User Not Found"
@@ -10,4 +9,4 @@ const UserNotFound = () => {
   );
 };
 
-export default UserNotFound;
+export default UserNotFoundPage;

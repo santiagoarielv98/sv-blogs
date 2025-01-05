@@ -56,17 +56,37 @@ export default function ListPosts({
   }, [fetchPosts, inView]);
 
   return (
-    <div className="space-y-6">
+    <div
+      className="space-y-6"
+      role="feed"
+      aria-busy={loading}
+      aria-label="Posts list"
+    >
       {posts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
 
       {hasMore && (
-        <div ref={ref} className="flex justify-center">
-          {loading ? <LoaderCircle size={32} className="animate-spin" /> : null}
+        <div
+          ref={ref}
+          className="flex justify-center"
+          role="status"
+          aria-label="Loading more posts"
+        >
+          {loading ? (
+            <LoaderCircle
+              size={32}
+              className="animate-spin"
+              aria-hidden="true"
+            />
+          ) : null}
         </div>
       )}
-      {!hasMore && <p className="text-center">No more posts to show</p>}
+      {!hasMore && (
+        <p className="text-center" role="status">
+          No more posts to show
+        </p>
+      )}
     </div>
   );
 }

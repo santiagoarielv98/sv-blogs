@@ -145,8 +145,8 @@ const TablePosts = (
   };
   return (
     <>
-      <div className="rounded-lg border">
-        <Table>
+      <div className="rounded-lg border" role="region" aria-label="Posts table">
+        <Table aria-label="Posts management table">
           <TableHeader>
             <TableRow>
               <TableHead>Title</TableHead>
@@ -165,6 +165,14 @@ const TablePosts = (
                     variant={post.published ? "default" : "secondary"}
                     className="cursor-pointer"
                     onClick={() => handleTogglePublish(post.id)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        handleTogglePublish(post.id);
+                      }
+                    }}
+                    aria-label={`Toggle publish status: currently ${post.published ? "published" : "draft"}`}
                   >
                     {post.published ? "Published" : "Draft"}
                   </Badge>
@@ -181,12 +189,22 @@ const TablePosts = (
                 </TableCell>
                 <TableCell className="text-right">
                   <div className="flex justify-end gap-2">
-                    <Button variant="ghost" size="icon" asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      asChild
+                      aria-label={`View post ${post.title}`}
+                    >
                       <Link href={`/${post.author.username}/${post.slug}`}>
                         <Eye className="h-4 w-4" />
                       </Link>
                     </Button>
-                    <Button variant="ghost" size="icon" asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      asChild
+                      aria-label={`Edit post ${post.title}`}
+                    >
                       <Link href={`/${post.author.username}/${post.slug}/edit`}>
                         <Pencil className="h-4 w-4" />
                       </Link>

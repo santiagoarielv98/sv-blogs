@@ -13,7 +13,10 @@ const PostDetail = async ({ post }: PostDetailProps) => {
     <article className="space-y-6">
       <div className="flex items-center gap-4">
         <Avatar>
-          <AvatarImage src={post.author.image ?? undefined} />
+          <AvatarImage
+            src={post.author.image ?? undefined}
+            alt={`Avatar of ${post.author.name}`}
+          />
           <AvatarFallback>{post.author.name[0]}</AvatarFallback>
         </Avatar>
         <div>

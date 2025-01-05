@@ -38,15 +38,24 @@ const ErrorScreen = ({
   const router = useRouter();
 
   return (
-    <div className="flex min-h-[50vh] flex-col items-center justify-center space-y-6 text-center">
+    <div
+      className="flex min-h-[50vh] flex-col items-center justify-center space-y-6 text-center"
+      role="alert"
+      aria-labelledby="error-title"
+    >
       <div className="space-y-2">
         {status && (
-          <h1 className={errorScreenVariants({ variant, className })}>
+          <h1
+            className={errorScreenVariants({ variant, className })}
+            aria-hidden="true"
+          >
             {status}
           </h1>
         )}
-        <h2 className="text-3xl font-semibold tracking-tight">{title}</h2>
-        <p className="text-muted-foreground">{message}</p>
+        <h2 id="error-title" className="text-3xl font-semibold tracking-tight">
+          {title}
+        </h2>
+        <p role="status">{message}</p>
       </div>
       <div className="flex gap-4">
         {showBackButton && (
@@ -54,6 +63,7 @@ const ErrorScreen = ({
             variant="default"
             onClick={() => router.back()}
             className="min-w-[150px]"
+            aria-label="Go back to previous page"
           >
             Go Back
           </Button>

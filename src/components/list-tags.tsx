@@ -44,12 +44,16 @@ export default function ListTags({
   }, [loading, hasMore, nextCursor]);
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-wrap gap-4">
+    <div className="space-y-6" role="navigation" aria-label="Tags navigation">
+      <div className="flex flex-wrap gap-4" role="list">
         {tags.map((tag) => {
           const randomPostsCount = Math.floor(Math.random() * 100);
           return (
-            <Button key={tag.id} asChild>
+            <Button
+              key={tag.id}
+              asChild
+              aria-label={`${tag.name} tag with ${randomPostsCount} posts`}
+            >
               <Link href={`/tag/${tag.slug}`}>
                 {tag.name} ({randomPostsCount})
               </Link>
@@ -59,7 +63,12 @@ export default function ListTags({
       </div>
       <div className="flex justify-center">
         {hasMore && (
-          <Button onClick={fetchTags} disabled={loading}>
+          <Button
+            onClick={fetchTags}
+            disabled={loading}
+            aria-label="Load more tags"
+            aria-busy={loading}
+          >
             Load more tags
           </Button>
         )}

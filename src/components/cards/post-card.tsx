@@ -16,7 +16,10 @@ function PostCard({ post }: { post: PostWithAuthorAndTags }) {
       <CardHeader className="space-y-4">
         <div className="flex items-center space-x-4">
           <Avatar>
-            <AvatarImage src={post.author.image ?? undefined} />
+            <AvatarImage
+              src={post.author.image ?? undefined}
+              alt={`Avatar of ${post.author.name}`}
+            />
             <AvatarFallback>{post.author.name[0]}</AvatarFallback>
           </Avatar>
           <div className="space-y-1">
@@ -39,9 +42,9 @@ function PostCard({ post }: { post: PostWithAuthorAndTags }) {
           </div>
         </div>
         <Link href={`/${post.author.username}/${post.slug}`}>
-          <h3 className="text-xl font-semibold transition-colors hover:text-primary">
+          <h2 className="text-xl font-semibold transition-colors hover:text-primary">
             {post.title}
-          </h3>
+          </h2>
         </Link>
       </CardHeader>
       <CardContent>

@@ -33,10 +33,18 @@ const Header = ({ variant = "blog" }: HeaderProps) => {
   return (
     <header
       className={`sticky top-0 z-50 w-full border-b ${isAuth ? "bg-white shadow-sm" : "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"}`}
+      role="banner"
     >
-      <nav className="container mx-auto flex h-14 max-w-4xl items-center justify-between p-4">
+      <nav
+        className="container mx-auto flex h-14 max-w-4xl items-center justify-between p-4"
+        aria-label="Main navigation"
+      >
         <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center gap-2 font-semibold">
+          <Link
+            href="/"
+            className="flex items-center gap-2 font-semibold"
+            aria-label="SV Blogs Home"
+          >
             <Blocks className="h-5 w-5" />
             <span>SV Blogs</span>
           </Link>
@@ -62,29 +70,32 @@ const Header = ({ variant = "blog" }: HeaderProps) => {
 
           {session?.user ? (
             <DropdownMenu>
-              <DropdownMenuTrigger asChild>
+              <DropdownMenuTrigger asChild aria-label="User menu">
                 <Button variant="ghost" size="sm" className="gap-2">
                   <Avatar className="h-6 w-6">
-                    <AvatarImage src={session.user.image ?? undefined} />
+                    <AvatarImage
+                      src={session.user.image ?? undefined}
+                      alt={`Avatar of ${session.user.name}`}
+                    />
                     <AvatarFallback>{session.user.name?.[0]}</AvatarFallback>
                   </Avatar>
                   <span className="hidden md:inline">{session.user.name}</span>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem asChild>
+              <DropdownMenuContent align="end" className="w-56" role="menu">
+                <DropdownMenuItem asChild role="menuitem">
                   <Link href="/dashboard" className="flex items-center gap-2">
                     <LayoutDashboard className="h-4 w-4" />
                     Dashboard
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
+                <DropdownMenuItem asChild role="menuitem">
                   <Link href="/new" className="flex items-center gap-2">
                     <PenSquare className="h-4 w-4" />
                     Create Post
                   </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
+                <DropdownMenuItem asChild role="menuitem">
                   <Link href="/profile" className="flex items-center gap-2">
                     <User className="h-4 w-4" />
                     Profile
@@ -94,6 +105,7 @@ const Header = ({ variant = "blog" }: HeaderProps) => {
                 <DropdownMenuItem
                   className="flex items-center gap-2"
                   onClick={() => signOut()}
+                  role="menuitem"
                 >
                   <LogOut className="h-4 w-4" />
                   Logout

@@ -21,20 +21,6 @@ export const getUserByUsername = async (username: string) => {
       name: true,
       image: true,
       username: true,
-      posts: {
-        select: {
-          id: true,
-          title: true,
-          slug: true,
-          tags: {
-            select: {
-              id: true,
-              name: true,
-              slug: true,
-            },
-          },
-        },
-      },
     },
   });
 };

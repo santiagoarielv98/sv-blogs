@@ -138,11 +138,6 @@ export const getPostBySlug = async (slug: string) => {
       slug,
     },
     select: {
-      id: true,
-      title: true,
-      content: true,
-      slug: true,
-      createdAt: true,
       author: {
         select: {
           id: true,

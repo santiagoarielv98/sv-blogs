@@ -44,7 +44,7 @@ export default function ListTags({
   }, [loading, hasMore, nextCursor]);
 
   return (
-    <>
+    <div className="space-y-6">
       <div className="flex flex-wrap gap-4">
         {tags.map((tag) => {
           const randomPostsCount = Math.floor(Math.random() * 100);
@@ -64,6 +64,6 @@ export default function ListTags({
           </Button>
         )}
       </div>
-    </>
+    </div>
   );
 }

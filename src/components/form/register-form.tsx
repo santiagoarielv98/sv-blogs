@@ -1,5 +1,5 @@
 "use client";
-import { register } from "@/actions/register";
+import { register } from "@/lib/db/register";
 import { Button } from "@/components/ui/button";
 import {
   Card,

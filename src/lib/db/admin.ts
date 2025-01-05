@@ -1,7 +1,11 @@
 "use server";
 
 import { auth } from "@/lib/auth";
-import { DEFAULT_SELECT_USER } from "@/lib/db/select";
+import {
+  DEFAULT_SELECT_POST,
+  DEFAULT_SELECT_TAG,
+  DEFAULT_SELECT_USER,
+} from "@/lib/db/select";
 import { prisma } from "@/lib/prisma";
 import { generateUniqueSlug } from "@/lib/slugify";
 import type { EditPostInput } from "@/schemas/post-schema";
@@ -23,14 +27,13 @@ export async function getPaginatedAdminPosts(page = 1) {
       where: {
         authorId: session.user.id,
       },
-      include: {
-        tags: true,
+      select: {
+        ...DEFAULT_SELECT_POST,
+        tags: {
+          select: DEFAULT_SELECT_TAG,
+        },
         author: {
-          select: {
-            username: true,
-            name: true,
-            image: true,
-          },
+          select: DEFAULT_SELECT_USER,
         },
       },
       orderBy: {
@@ -89,6 +92,9 @@ export async function togglePublishPost(postId: string) {
       published: !post?.published,
       publishedAt: !post?.published ? new Date() : null,
     },
+    select: {
+      published: true,
+    },
   });
 }
 
@@ -120,10 +126,36 @@ export const createPost = async (postData: {
       published,
       publishedAt: published ? new Date() : null,
       tags: {
-        connectOrCreate: tags.map((tag) => ({
-          where: { slug: generateSlug(tag) },
-          create: { name: tag, slug: generateSlug(tag) },
-        })),
+        connectOrCreate: tags.map((tag) => {
+          const slug = generateSlug(tag);
+          return {
+            where: { slug },
+            create: { name: tag, slug },
+          };
+        }),
+      },
+    },
+  });
+};
+
+export const editPost = async (slug: string) => {
+  const session = await auth();
+
+  if (!session?.user?.id) {
+    throw new Error("User not authenticated");
+  }
+
+  return await prisma.post.findFirst({
+    where: {
+      slug: slug,
+      author: {
+        id: session.user.id,
+      },
+    },
+    select: {
+      ...DEFAULT_SELECT_POST,
+      tags: {
+        select: DEFAULT_SELECT_TAG,
       },
     },
   });
@@ -157,6 +189,12 @@ export const updatePost = async ({
           where: { slug: generateSlug(tag) },
           create: { name: tag, slug: generateSlug(tag) },
         })),
+      },
+    },
+    select: {
+      ...DEFAULT_SELECT_POST,
+      tags: {
+        select: DEFAULT_SELECT_TAG,
       },
     },
   });

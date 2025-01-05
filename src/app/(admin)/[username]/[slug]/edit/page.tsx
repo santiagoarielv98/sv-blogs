@@ -1,5 +1,5 @@
 import EditPostForm from "@/components/form/edit-post-form";
-import { prisma } from "@/lib/prisma";
+import { editPost } from "@/lib/db";
 import { notFound } from "next/navigation";
 
 const EditPostPage = async ({
@@ -7,25 +7,9 @@ const EditPostPage = async ({
 }: {
   params: Promise<{ slug: string; username: string }>;
 }) => {
-  const { slug, username } = await params;
+  const { slug } = await params;
 
-  const post = await prisma.post.findFirst({
-    where: {
-      slug,
-      author: {
-        username,
-      },
-    },
-    include: {
-      tags: {
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-        },
-      },
-    },
-  });
+  const post = await editPost(slug);
 
   if (!post) {
     return notFound();

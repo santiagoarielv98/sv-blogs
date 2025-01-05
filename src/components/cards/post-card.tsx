@@ -20,9 +20,12 @@ function PostCard({ post }: { post: PostWithAuthorAndTags }) {
             <AvatarFallback>{post.author.name[0]}</AvatarFallback>
           </Avatar>
           <div className="space-y-1">
-            <h2 className="text-sm font-medium hover:underline">
+            <Link
+              href={`/${post.author.username}`}
+              className="text-sm font-medium hover:underline"
+            >
               {post.author.name}
-            </h2>
+            </Link>
             <div className="flex items-center text-xs text-muted-foreground gap-4">
               <span className="flex items-center gap-1">
                 <Calendar className="h-3 w-3" />

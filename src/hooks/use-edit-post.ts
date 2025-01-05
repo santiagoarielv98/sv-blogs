@@ -1,6 +1,6 @@
 import { updatePost } from "@/lib/db";
 import type { EditPostInput } from "@/schemas/post-schema";
-import { useToast } from "./use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const useEditPost = () => {
   const { toast } = useToast();

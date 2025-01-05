@@ -1,7 +1,7 @@
 import { createPost } from "@/lib/db/admin";
 import type { CreatePostInput } from "@/schemas/post-schema";
 import { useRouter } from "next/navigation";
-import { useToast } from "./use-toast";
+import { useToast } from "@/hooks/use-toast";
 
 const useCreatePost = () => {
   const router = useRouter();

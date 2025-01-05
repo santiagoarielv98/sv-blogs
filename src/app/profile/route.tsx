@@ -11,5 +11,6 @@ export const GET = async () => {
       return redirect(`/${user.username}`);
     }
   }
-  return new Response(null, { status: 404 });
+
+  return redirect("/404/user-not-found");
 };

@@ -1,7 +1,7 @@
 import { faker } from "@faker-js/faker";
 import { PrismaClient } from "@prisma/client";
-import { hashPassword } from "../src/utils/password";
-import { generateSlug } from "../src/utils/slugify";
+import { hashPassword } from "@/utils/password";
+import { generateSlug } from "@/utils/slugify";
 
 const prisma = new PrismaClient();
 

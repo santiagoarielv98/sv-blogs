@@ -1,6 +1,6 @@
 import { generateHash } from "@/utils/hash";
 import { generateSlug } from "@/utils/slugify";
-import { prisma } from "./prisma";
+import { prisma } from "@/lib/prisma";
 
 export async function generateUniqueSlug(title: string) {
   const baseSlug = generateSlug(title);

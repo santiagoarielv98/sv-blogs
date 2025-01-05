@@ -64,3 +64,20 @@ export const getPaginatedPosts = async (
     nextCursor: hasMore ? posts[posts.length - 1].id : null,
   };
 };
+
+export const getPostBySlug = async (slug: string) => {
+  return prisma.post.findFirst({
+    where: {
+      slug,
+    },
+    select: {
+      ...DEFAULT_SELECT_POST,
+      author: {
+        select: DEFAULT_SELECT_USER,
+      },
+      tags: {
+        select: DEFAULT_SELECT_TAG,
+      },
+    },
+  });
+};

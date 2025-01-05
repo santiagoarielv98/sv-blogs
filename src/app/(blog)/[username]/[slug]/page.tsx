@@ -1,6 +1,5 @@
-import { getPostBySlug } from "@/actions/post";
 import PostDetail from "@/components/post-detail";
-import type { PostWithAuthorAndTags } from "@/types";
+import { getPostBySlug } from "@/lib/db";
 import { notFound } from "next/navigation";
 
 const DetailPage = async ({
@@ -13,7 +12,7 @@ const DetailPage = async ({
 
   if (!post) return notFound();
 
-  return <PostDetail post={post as unknown as PostWithAuthorAndTags} />;
+  return <PostDetail post={post} />;
 };
 
 export default DetailPage;

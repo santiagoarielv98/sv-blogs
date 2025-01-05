@@ -65,28 +65,3 @@ export const postUpsertAction = async (postData: {
     },
   });
 };
-
-export const getPostBySlug = async (slug: string) => {
-  return prisma.post.findFirst({
-    where: {
-      slug,
-    },
-    select: {
-      author: {
-        select: {
-          id: true,
-          name: true,
-          image: true,
-          username: true,
-        },
-      },
-      tags: {
-        select: {
-          id: true,
-          name: true,
-          slug: true,
-        },
-      },
-    },
-  });
-};

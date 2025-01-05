@@ -1,12 +1,11 @@
 import { postUpsertAction } from "@/actions/post";
+import type { EditPostInput } from "@/schemas/post-schema";
 import { useToast } from "./use-toast";
-import { useRouter } from "next/navigation";
-import type { CreatePostInput } from "@/schemas/post-schema";
 
 const useEditPost = () => {
-  const router = useRouter();
   const { toast } = useToast();
-  const editPost = async (values: CreatePostInput) => {
+
+  const onSubmit = async (values: EditPostInput) => {
     try {
       const post = await postUpsertAction({
         ...values,
@@ -15,21 +14,22 @@ const useEditPost = () => {
 
       toast({
         title: "Success",
-        description: "Post created successfully",
+        description: "Post edited successfully",
       });
 
-      router.replace(`/${post.author.username}/${post.slug}/edit`);
+      return post;
     } catch {
       toast({
         variant: "destructive",
         title: "Error",
-        description: "Failed to create post",
+        description: "Failed to edit post",
       });
     }
+    return null;
   };
 
   return {
-    editPost,
+    editPost: onSubmit,
   };
 };
 

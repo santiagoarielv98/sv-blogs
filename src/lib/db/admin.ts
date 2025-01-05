@@ -1,6 +1,7 @@
 "use server";
 
 import { auth } from "@/lib/auth";
+import { DEFAULT_SELECT_USER } from "@/lib/db/select";
 import { prisma } from "@/lib/prisma";
 import { generateUniqueSlug } from "@/lib/slugify";
 import { generateSlug } from "@/utils/slugify";
@@ -105,6 +106,11 @@ export const createPost = async (postData: {
   const { title, content, published, tags } = postData;
 
   return prisma.post.create({
+    include: {
+      author: {
+        select: DEFAULT_SELECT_USER,
+      },
+    },
     data: {
       title,
       content,

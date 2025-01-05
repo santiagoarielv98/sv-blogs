@@ -4,7 +4,7 @@ import {
   deletePost,
   getPaginatedAdminPosts,
   togglePublishPost,
-} from "@/actions/admin";
+} from "@/lib/db/admin";
 import {
   AlertDialog,
   AlertDialogAction,

@@ -1,4 +1,4 @@
-import { getPaginatedAdminPosts } from "@/actions/admin";
+import { getPaginatedAdminPosts } from "@/lib/db/admin";
 import TablePosts from "@/components/table-posts";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

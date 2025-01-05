@@ -1,14 +1,15 @@
-import { postUpsertAction } from "@/actions/post";
-import { useToast } from "./use-toast";
-import { useRouter } from "next/navigation";
+import { createPost } from "@/lib/db/admin";
 import type { CreatePostInput } from "@/schemas/post-schema";
+import { useRouter } from "next/navigation";
+import { useToast } from "./use-toast";
 
 const useCreatePost = () => {
   const router = useRouter();
   const { toast } = useToast();
-  const createPost = async (values: CreatePostInput) => {
+
+  const onSubmit = async (values: CreatePostInput) => {
     try {
-      const post = await postUpsertAction({
+      const post = await createPost({
         ...values,
         tags: values.tags.split(",").map((tag) => tag.trim()),
       });
@@ -29,7 +30,7 @@ const useCreatePost = () => {
   };
 
   return {
-    createPost,
+    createPost: onSubmit,
   };
 };
 

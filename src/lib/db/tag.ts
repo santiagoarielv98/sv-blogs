@@ -3,10 +3,17 @@
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@prisma/client";
 
+const TAGS_PER_PAGE = 50;
+
 const DEFAULT_ARGS: Prisma.TagFindManyArgs = {
-  take: 50,
+  take: TAGS_PER_PAGE,
   orderBy: { name: "asc" },
   where: { posts: { some: {} } },
+  include: {
+    _count: {
+      select: { posts: true },
+    },
+  },
 };
 
 export const getFirstPageOfTags = async () => {
@@ -15,7 +22,7 @@ export const getFirstPageOfTags = async () => {
   });
 
   const nextCursor =
-    tags.length > DEFAULT_ARGS.take! ? tags[tags.length - 1].id : null;
+    tags.length > TAGS_PER_PAGE - 1 ? tags[tags.length - 1].id : null;
 
   return {
     tags,
@@ -25,6 +32,7 @@ export const getFirstPageOfTags = async () => {
 
 export const getPaginatedTags = async (cursor: string) => {
   const tags = await prisma.tag.findMany({
+    ...DEFAULT_ARGS,
     take: DEFAULT_ARGS.take! + 1,
     cursor: { id: cursor },
     skip: 1,

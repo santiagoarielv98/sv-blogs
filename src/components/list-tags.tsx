@@ -6,9 +6,11 @@ import type { Tag } from "@prisma/client";
 import Link from "next/link";
 import React, { useState } from "react";
 
+type TagWithCount = Tag & { _count?: { posts: number } };
+
 interface ListTagsProps {
   initialState?: {
-    tags: Tag[];
+    tags: TagWithCount[];
     nextCursor: string | null;
   };
 }
@@ -19,7 +21,7 @@ export default function ListTags({
     nextCursor: null,
   },
 }: ListTagsProps) {
-  const [tags, setTags] = useState<Tag[]>(initialState.tags);
+  const [tags, setTags] = useState<TagWithCount[]>(initialState.tags);
   const [nextCursor, setNextCursor] = useState<string | null>(
     initialState.nextCursor,
   );
@@ -47,15 +49,14 @@ export default function ListTags({
     <div className="space-y-6" role="navigation" aria-label="Tags navigation">
       <div className="flex flex-wrap gap-4" role="list">
         {tags.map((tag) => {
-          const randomPostsCount = Math.floor(Math.random() * 100);
           return (
             <Button
               key={tag.id}
               asChild
-              aria-label={`${tag.name} tag with ${randomPostsCount} posts`}
+              aria-label={`${tag.name} tag with ${tag._count?.posts} posts`}
             >
               <Link href={`/tag/${tag.slug}`}>
-                {tag.name} ({randomPostsCount})
+                {tag.name} ({tag._count?.posts})
               </Link>
             </Button>
           );

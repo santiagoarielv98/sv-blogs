@@ -8,8 +8,10 @@ import {
   DEFAULT_SELECT_USER,
 } from "./select";
 
+const POSTS_PER_PAGE = 10;
+
 const DEFAULT_ARGS = {
-  take: 10,
+  take: POSTS_PER_PAGE,
   orderBy: { createdAt: "desc" },
   select: {
     ...DEFAULT_SELECT_POST,
@@ -51,12 +53,12 @@ export const getPaginatedPosts = async (
       published: true,
     },
     ...DEFAULT_ARGS,
-    take: DEFAULT_ARGS.take! + 1,
+    take: POSTS_PER_PAGE + 1,
     cursor: { id: cursor },
     skip: 1,
   });
 
-  const hasMore = posts.length > DEFAULT_ARGS.take!;
+  const hasMore = posts.length > POSTS_PER_PAGE;
   if (hasMore) posts.pop();
 
   return {

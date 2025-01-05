@@ -53,17 +53,33 @@ const RegisterForm = () => {
   return (
     <Card className="mx-auto max-w-md">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">Create an account</CardTitle>
-        <CardDescription>Enter your information to get started</CardDescription>
+        <CardTitle className="text-2xl font-bold" id="register-title">
+          Create an account
+        </CardTitle>
+        <CardDescription id="register-description">
+          Enter your information to get started
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <Button variant="outline" onClick={() => signIn("github")}>
-            <Github className="mr-2 h-4 w-4" />
+        <div
+          className="grid grid-cols-2 gap-4"
+          role="group"
+          aria-label="Social registration options"
+        >
+          <Button
+            variant="outline"
+            onClick={() => signIn("github")}
+            aria-label="Register with Github"
+          >
+            <Github className="mr-2 h-4 w-4" aria-hidden="true" />
             Github
           </Button>
-          <Button variant="outline" onClick={() => signIn("google")}>
-            <Mail className="mr-2 h-4 w-4" />
+          <Button
+            variant="outline"
+            onClick={() => signIn("google")}
+            aria-label="Register with Google"
+          >
+            <Mail className="mr-2 h-4 w-4" aria-hidden="true" />
             Google
           </Button>
         </div>
@@ -78,7 +94,12 @@ const RegisterForm = () => {
           </div>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4"
+            aria-labelledby="register-title"
+            aria-describedby="register-description"
+          >
             <FormField
               control={form.control}
               name="email"
@@ -90,10 +111,11 @@ const RegisterForm = () => {
                       type="email"
                       placeholder="name@example.com"
                       autoComplete="email"
+                      aria-describedby="email-error"
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage id="email-error" aria-live="polite" />
                 </FormItem>
               )}
             />

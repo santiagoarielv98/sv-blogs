@@ -47,17 +47,33 @@ const LoginForm = () => {
   return (
     <Card className="mx-auto max-w-md">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold">Welcome back</CardTitle>
-        <CardDescription>Sign in to your account to continue</CardDescription>
+        <CardTitle className="text-2xl font-bold" id="login-title">
+          Sign In
+        </CardTitle>
+        <CardDescription id="login-description">
+          Sign in to your account to continue
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div className="grid grid-cols-2 gap-4">
-          <Button variant="outline" onClick={() => signIn("github")}>
-            <Github className="mr-2 h-4 w-4" />
+        <div
+          className="grid grid-cols-2 gap-4"
+          role="group"
+          aria-label="Social login options"
+        >
+          <Button
+            variant="outline"
+            onClick={() => signIn("github")}
+            aria-label="Sign in with Github"
+          >
+            <Github className="mr-2 h-4 w-4" aria-hidden="true" />
             Github
           </Button>
-          <Button variant="outline" onClick={() => signIn("google")}>
-            <Mail className="mr-2 h-4 w-4" />
+          <Button
+            variant="outline"
+            onClick={() => signIn("google")}
+            aria-label="Sign in with Google"
+          >
+            <Mail className="mr-2 h-4 w-4" aria-hidden="true" />
             Google
           </Button>
         </div>
@@ -72,7 +88,12 @@ const LoginForm = () => {
           </div>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4"
+            aria-labelledby="login-title"
+            aria-describedby="login-description"
+          >
             <FormField
               control={form.control}
               name="email"
@@ -84,10 +105,11 @@ const LoginForm = () => {
                       type="email"
                       placeholder="name@example.com"
                       autoComplete="email"
+                      aria-describedby="email-error"
                       {...field}
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage id="email-error" aria-live="polite" />
                 </FormItem>
               )}
             />

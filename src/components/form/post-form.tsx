@@ -20,6 +20,7 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 import "react-quill-new/dist/quill.snow.css";
+import { SubmitButton } from "@/components/submit-button";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
@@ -53,9 +54,13 @@ const PostForm = ({ initialValues, onSubmit }: PostFormProps) => {
                 <FormItem>
                   <FormLabel>Title</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="Enter your post title" />
+                    <Input
+                      {...field}
+                      placeholder="Enter your post title"
+                      aria-describedby="title-description"
+                    />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage aria-live="polite" />
                 </FormItem>
               )}
             />
@@ -72,10 +77,11 @@ const PostForm = ({ initialValues, onSubmit }: PostFormProps) => {
                         theme="snow"
                         {...field}
                         className="h-[250px]"
+                        aria-label="Post content editor"
                       />
                     </div>
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage aria-live="polite" />
                 </FormItem>
               )}
             />
@@ -90,9 +96,10 @@ const PostForm = ({ initialValues, onSubmit }: PostFormProps) => {
                     <Input
                       {...field}
                       placeholder="react, nextjs, typescript (comma separated)"
+                      aria-describedby="tags-description"
                     />
                   </FormControl>
-                  <FormMessage />
+                  <FormMessage aria-live="polite" />
                 </FormItem>
               )}
             />
@@ -106,6 +113,7 @@ const PostForm = ({ initialValues, onSubmit }: PostFormProps) => {
                     <Switch
                       checked={field.value}
                       onCheckedChange={field.onChange}
+                      aria-label="Publish post toggle"
                     />
                   </FormControl>
                   <FormLabel>Publish immediately</FormLabel>
@@ -113,14 +121,15 @@ const PostForm = ({ initialValues, onSubmit }: PostFormProps) => {
               )}
             />
 
-            <div className="flex gap-4">
-              <Button type="submit" className="w-full">
+            <div className="flex gap-4" role="group" aria-label="Form actions">
+              <SubmitButton>
                 {form.getValues("published") ? "Publish Post" : "Save Draft"}
-              </Button>
+              </SubmitButton>
               <Button
                 type="button"
                 variant="outline"
                 onClick={() => router.back()}
+                disabled={form.formState.isSubmitting}
               >
                 Cancel
               </Button>

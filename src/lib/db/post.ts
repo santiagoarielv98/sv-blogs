@@ -65,10 +65,13 @@ export const getPaginatedPosts = async (
   };
 };
 
-export const getPostBySlug = async (slug: string) => {
+export const getPostBySlug = async (slug: string, username: string) => {
   return prisma.post.findFirst({
     where: {
       slug,
+      author: {
+        username,
+      },
     },
     select: {
       ...DEFAULT_SELECT_POST,

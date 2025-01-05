@@ -138,27 +138,34 @@ export const createPost = async (postData: {
   });
 };
 
-export const editPost = async (slug: string) => {
+export const editPost = async (slug: string, username: string) => {
   const session = await auth();
 
   if (!session?.user?.id) {
     throw new Error("User not authenticated");
   }
 
-  return await prisma.post.findFirst({
+  const post = await prisma.post.findFirst({
     where: {
       slug: slug,
       author: {
-        id: session.user.id,
+        username,
       },
     },
     select: {
       ...DEFAULT_SELECT_POST,
+      authorId: true,
       tags: {
         select: DEFAULT_SELECT_TAG,
       },
     },
   });
+
+  if (post && post.authorId !== session.user.id) {
+    throw new Error("Unauthorized: This post belongs to another user");
+  }
+
+  return post;
 };
 
 export const updatePost = async ({

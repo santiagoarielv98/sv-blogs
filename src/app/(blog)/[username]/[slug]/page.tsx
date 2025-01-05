@@ -5,10 +5,10 @@ import { notFound } from "next/navigation";
 const DetailPage = async ({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; username: string }>;
 }) => {
-  const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const { slug, username } = await params;
+  const post = await getPostBySlug(slug, username);
 
   if (!post) return notFound();
 

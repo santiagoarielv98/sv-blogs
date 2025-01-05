@@ -1,9 +1,10 @@
 import React from "react";
-import NotFoundScreen from "@/components/not-found-screen";
+import { ErrorScreen } from "@/components/error-screen";
 
 const PostNotFound = () => {
   return (
-    <NotFoundScreen
+    <ErrorScreen
+      variant="default"
       title="Post Not Found"
       message="Sorry, we couldn't find the post you're looking for."
     />

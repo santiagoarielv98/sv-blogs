@@ -46,3 +46,28 @@ export const getPaginatedTags = async (cursor: string) => {
     nextCursor: hasMore ? tags[tags.length - 1].id : null,
   };
 };
+
+export const searchTags = async (query: string) => {
+  if (!query) return [];
+
+  const tags = await prisma.tag.findMany({
+    where: {
+      name: {
+        contains: query.toLowerCase(),
+        mode: "insensitive",
+      },
+    },
+    take: 10,
+    orderBy: {
+      posts: {
+        _count: "desc",
+      },
+    },
+    select: {
+      name: true,
+      slug: true,
+    },
+  });
+
+  return tags;
+};

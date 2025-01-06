@@ -18,6 +18,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { TagInput } from "./tag-input";
 
 import "react-quill-new/dist/quill.snow.css";
 import { SubmitButton } from "@/components/submit-button";
@@ -37,7 +38,7 @@ const PostForm = ({ initialValues, onSubmit }: PostFormProps) => {
     defaultValues: {
       title: initialValues?.title ?? "",
       content: initialValues?.content ?? "",
-      tags: initialValues?.tags ?? "",
+      tags: initialValues?.tags ?? [],
       published: initialValues?.published ?? false,
     },
   });
@@ -72,37 +73,27 @@ const PostForm = ({ initialValues, onSubmit }: PostFormProps) => {
                 <FormItem>
                   <FormLabel>Content</FormLabel>
                   <FormControl>
-                    <div className="min-h-[300px]">
-                      <ReactQuill
-                        theme="snow"
-                        {...field}
-                        className="h-[250px]"
-                        aria-label="Post content editor"
-                      />
-                    </div>
+                    <input
+                      {...field}
+                      className="hidden"
+                      aria-hidden="true"
+                      readOnly
+                    />
                   </FormControl>
+                  <div className="min-h-[300px]">
+                    <ReactQuill
+                      {...field}
+                      theme="snow"
+                      className="h-[250px]"
+                      aria-label="Post content editor"
+                    />
+                  </div>
                   <FormMessage aria-live="polite" />
                 </FormItem>
               )}
             />
 
-            <FormField
-              control={form.control}
-              name="tags"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Tags</FormLabel>
-                  <FormControl>
-                    <Input
-                      {...field}
-                      placeholder="react, nextjs, typescript (comma separated)"
-                      aria-describedby="tags-description"
-                    />
-                  </FormControl>
-                  <FormMessage aria-live="polite" />
-                </FormItem>
-              )}
-            />
+            <TagInput />
 
             <FormField
               control={form.control}

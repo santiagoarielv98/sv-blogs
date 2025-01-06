@@ -11,7 +11,7 @@ const EditPostForm = ({ post }: { post: PostWithTags }) => {
       initialValues={{
         title: post.title,
         content: post.content,
-        tags: post.tags.map((tag) => tag.name).join(", "),
+        tags: post.tags.map((tag) => tag.name),
         published: post.published,
       }}
       onSubmit={(data) =>

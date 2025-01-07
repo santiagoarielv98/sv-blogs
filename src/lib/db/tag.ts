@@ -2,6 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@prisma/client";
+import { DEFAULT_SELECT_TAG } from "./select";
 
 const TAGS_PER_PAGE = 50;
 
@@ -14,6 +15,15 @@ const DEFAULT_ARGS: Prisma.TagFindManyArgs = {
       select: { posts: true },
     },
   },
+};
+
+export const getTagBySlug = async (slug: string) => {
+  const tag = await prisma.tag.findUnique({
+    where: { slug },
+    select: DEFAULT_SELECT_TAG,
+  });
+
+  return tag;
 };
 
 export const getFirstPageOfTags = async () => {
@@ -63,10 +73,7 @@ export const searchTags = async (query: string) => {
         _count: "desc",
       },
     },
-    select: {
-      name: true,
-      slug: true,
-    },
+    select: DEFAULT_SELECT_TAG,
   });
 
   return tags;

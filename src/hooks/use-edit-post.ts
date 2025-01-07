@@ -7,10 +7,7 @@ const useEditPost = () => {
 
   const onSubmit = async (values: EditPostInput) => {
     try {
-      const post = await updatePost({
-        ...values,
-        tags: values.tags.split(",").map((tag) => tag.trim()),
-      });
+      const post = await updatePost(values);
 
       toast({
         title: "Success",

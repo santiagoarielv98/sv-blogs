@@ -1,7 +1,8 @@
-import { getFirstPageOfPosts } from "@/lib/db";
+import { getFirstPageOfPosts, getTagBySlug } from "@/lib/db";
 import ListPosts from "@/components/list-posts";
 import { Badge } from "@/components/ui/badge";
 import type { Metadata } from "next";
+import { redirect, RedirectType } from "next/navigation";
 
 export async function generateMetadata({
   params,
@@ -22,8 +23,15 @@ const TagDetailPage = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
+
+  const tag = await getTagBySlug(slug);
+
+  if (!tag) {
+    return redirect("/404/tag-not-found", RedirectType.replace);
+  }
+
   const config = {
-    where: { tags: { some: { slug } } },
+    where: { tags: { some: { slug: tag.slug } } },
   };
 
   const data = await getFirstPageOfPosts(config);

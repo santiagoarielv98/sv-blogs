@@ -39,7 +39,7 @@ const UserDetail = async ({
 
   return (
     <div className="space-y-8">
-      <UserProfile user={user as unknown as User} />
+      <UserProfile user={user} />
 
       <div className="space-y-4">
         <h2 className="text-2xl font-semibold">Posts</h2>

@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { DEFAULT_SELECT_USER } from "./select";
 
 export const getProfile = async (email: string) => {
   return await prisma.user.findFirst({
@@ -16,11 +17,6 @@ export const getUserByUsername = async (username: string) => {
     where: {
       username,
     },
-    select: {
-      id: true,
-      name: true,
-      image: true,
-      username: true,
-    },
+    select: DEFAULT_SELECT_USER,
   });
 };

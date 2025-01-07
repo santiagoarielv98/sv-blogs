@@ -9,10 +9,7 @@ const useCreatePost = () => {
 
   const onSubmit = async (values: CreatePostInput) => {
     try {
-      const post = await createPost({
-        ...values,
-        tags: values.tags.split(",").map((tag) => tag.trim()),
-      });
+      const post = await createPost(values);
 
       toast({
         title: "Success",

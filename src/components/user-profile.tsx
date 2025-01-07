@@ -1,22 +1,18 @@
-import React from "react";
-import Image from "next/image";
-import type { User } from "@prisma/client";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import type { User } from "@/types";
 
 const UserProfile = ({ user }: { user: User }) => {
   return (
     <div className="flex items-center gap-6" role="banner">
-      <Image
-        src={
-          user.image ??
-          "https://static-00.iconduck.com/assets.00/profile-default-icon-256x256-tsi8241r.png"
-        }
-        alt={`Avatar of ${user.name}`}
-        width={128}
-        height={128}
-        className="rounded-full shadow-lg"
-        aria-label={`${user.name}'s profile picture`}
-      />
+      <Avatar className="h-32 w-32 shadow-lg">
+        <AvatarImage
+          src={user.image ?? undefined}
+          alt={`Avatar of ${user.name}`}
+          aria-label={`${user.name}'s profile picture`}
+        />
+        <AvatarFallback>{user.name?.[0]}</AvatarFallback>
+      </Avatar>
       <div role="contentinfo">
         <h1 className="mb-2 text-3xl font-bold">{user.name}</h1>
         <Badge variant="secondary">@{user.username}</Badge>

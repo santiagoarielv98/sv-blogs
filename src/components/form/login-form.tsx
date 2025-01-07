@@ -1,5 +1,6 @@
 "use client";
 
+import { SocialButtons } from "@/components/auth/social-buttons";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -21,7 +22,6 @@ import { Input } from "@/components/ui/input";
 import type { LoginSchema } from "@/schemas/login-schema";
 import { loginSchema } from "@/schemas/login-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Github, Mail } from "lucide-react";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -55,28 +55,7 @@ const LoginForm = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div
-          className="grid grid-cols-2 gap-4"
-          role="group"
-          aria-label="Social login options"
-        >
-          <Button
-            variant="outline"
-            onClick={() => signIn("github")}
-            aria-label="Sign in with Github"
-          >
-            <Github className="mr-2 h-4 w-4" aria-hidden="true" />
-            Github
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => signIn("google")}
-            aria-label="Sign in with Google"
-          >
-            <Mail className="mr-2 h-4 w-4" aria-hidden="true" />
-            Google
-          </Button>
-        </div>
+        <SocialButtons callbackUrl="/" />
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />

@@ -7,7 +7,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import type { PostWithAuthorAndTags } from "@/types";
-import { Calendar, Clock } from "lucide-react";
+import { Calendar } from "lucide-react";
 import Link from "next/link";
 
 function PostCard({ post }: { post: PostWithAuthorAndTags }) {
@@ -33,10 +33,6 @@ function PostCard({ post }: { post: PostWithAuthorAndTags }) {
               <span className="flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
                 {new Date(post.publishedAt!).toLocaleDateString()}
-              </span>
-              <span className="flex items-center gap-1">
-                <Clock className="h-3 w-3" />
-                {new Date(post.publishedAt!).toLocaleTimeString()}
               </span>
             </div>
           </div>

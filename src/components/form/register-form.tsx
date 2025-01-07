@@ -1,5 +1,5 @@
 "use client";
-import { register } from "@/lib/db/register";
+import { SocialButtons } from "@/components/auth/social-buttons";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -18,11 +18,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { register } from "@/lib/db/register";
 import type { RegisterSchema } from "@/schemas/register-schema";
 import { registerSchema } from "@/schemas/register-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Github, Mail } from "lucide-react";
-import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -61,28 +60,7 @@ const RegisterForm = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <div
-          className="grid grid-cols-2 gap-4"
-          role="group"
-          aria-label="Social registration options"
-        >
-          <Button
-            variant="outline"
-            onClick={() => signIn("github")}
-            aria-label="Register with Github"
-          >
-            <Github className="mr-2 h-4 w-4" aria-hidden="true" />
-            Github
-          </Button>
-          <Button
-            variant="outline"
-            onClick={() => signIn("google")}
-            aria-label="Register with Google"
-          >
-            <Mail className="mr-2 h-4 w-4" aria-hidden="true" />
-            Google
-          </Button>
-        </div>
+        <SocialButtons callbackUrl="/register" />
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />

@@ -5,8 +5,8 @@ import { generateSlug } from "../src/utils/slugify";
 
 const prisma = new PrismaClient();
 
-const MAX_USERS = 25; // 25
-const MAX_POSTS = 100; // 100
+const MAX_USERS = 0; // 25
+const MAX_POSTS = 0; // 100
 
 const FROM_DATE = new Date("2024-01-01T00:00:00.000Z"); // 2024-01-01
 const TO_DATE = new Date("2025-01-01T00:00:00.000Z"); // 2025-01-01

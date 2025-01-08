@@ -45,11 +45,20 @@ const RegisterForm = () => {
 
   const onSubmit = async (values: z.infer<typeof registerSchema>) => {
     try {
-      await register(values);
+      const response = await register(values);
+
+      if (!response.success && response.errors) {
+        Object.keys(response.errors).forEach((key) => {
+          form.setError(key as keyof RegisterSchema, {
+            message: response.errors![key as keyof RegisterSchema]?.[0],
+          });
+        });
+
+        return;
+      }
+
       router.push("/login");
-    } catch (error) {
-      console.error(error);
-    }
+    } catch {}
   };
 
   const isSubmitting = form.formState.isSubmitting || isLoading;

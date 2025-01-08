@@ -3,10 +3,14 @@ import { loginSchema } from "@/schemas/login-schema";
 import { comparePassword } from "@/utils/password";
 import { generateUsername } from "@/utils/username";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import NextAuth from "next-auth";
+import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+
+class UnregisteredUser extends CredentialsSignin {
+  code = "unregistered";
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -44,28 +48,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => {
-        try {
-          const { email, password } = loginSchema.parse(credentials);
+        const { email, password } = loginSchema.parse(credentials);
 
-          const user = await prisma.user.findFirstOrThrow({
-            where: {
-              email: email,
+        const user = await prisma.user.findUnique({
+          where: {
+            email: email,
+            accounts: {
+              some: {
+                provider: "email",
+              },
             },
-          });
+          },
+        });
 
-          const passwordMatches = await comparePassword(
-            password,
-            user.password!,
-          );
-
-          if (!passwordMatches) {
-            throw new Error("Password is not valid");
-          }
-
-          return user;
-        } catch {
-          return null;
+        if (!user) {
+          throw new UnregisteredUser();
         }
+
+        const passwordMatches = await comparePassword(password, user.password!);
+
+        if (!passwordMatches) {
+          throw new CredentialsSignin();
+        }
+
+        return user;
       },
     }),
   ],

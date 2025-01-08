@@ -29,8 +29,13 @@ import type { z } from "zod";
 import { SubmitButton } from "../submit-button";
 import React from "react";
 import useProviderAuth from "@/hooks/use-provider-auth";
+import { useSearchParams } from "next/navigation";
+import type { AuthError } from "@/constants/auth";
+import { errorMap } from "@/components/auth/error-map";
 
 const LoginForm = () => {
+  const search = useSearchParams();
+  const error = search.get("error") as AuthError;
   const { isLoading, authenticate } = useProviderAuth();
 
   const form = useForm<LoginSchema>({
@@ -116,6 +121,7 @@ const LoginForm = () => {
                 </FormItem>
               )}
             />
+            {error && errorMap[error]}
             <SubmitButton loading={isSubmitting}>
               Sign In with Email
             </SubmitButton>

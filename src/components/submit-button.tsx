@@ -5,13 +5,13 @@ import { useFormState } from "react-hook-form";
 
 export const SubmitButton = ({
   children,
-  disabled = false,
+  loading = false,
 }: {
   children: React.ReactNode;
-  disabled: boolean;
+  loading?: boolean;
 }) => {
   const { isSubmitting } = useFormState();
-  const isDisabled = isSubmitting || disabled;
+  const isDisabled = isSubmitting || loading;
   return (
     <Button
       className="w-full"

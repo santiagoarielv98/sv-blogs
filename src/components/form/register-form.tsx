@@ -27,8 +27,12 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 import { SubmitButton } from "../submit-button";
+import { signIn } from "next-auth/react";
+import React from "react";
 
 const RegisterForm = () => {
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
   const router = useRouter();
   const form = useForm<RegisterSchema>({
     resolver: zodResolver(registerSchema),
@@ -49,6 +53,14 @@ const RegisterForm = () => {
     }
   };
 
+  const handleProviderAuth = async (provider: "github" | "google") => {
+    setIsLoading(true);
+    await signIn(provider, { callbackUrl: "/" });
+    setIsLoading(false);
+  };
+
+  const isSubmitting = form.formState.isSubmitting || isLoading;
+
   return (
     <Card className="mx-auto max-w-md">
       <CardHeader className="space-y-1">
@@ -60,7 +72,10 @@ const RegisterForm = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <SocialButtons callbackUrl="/register" />
+        <SocialButtons
+          loading={isSubmitting}
+          onProviderAuth={handleProviderAuth}
+        />
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
@@ -149,7 +164,7 @@ const RegisterForm = () => {
                 </FormItem>
               )}
             />
-            <SubmitButton>Create Account</SubmitButton>
+            <SubmitButton loading={isSubmitting}>Create Account</SubmitButton>
           </form>
         </Form>
       </CardContent>

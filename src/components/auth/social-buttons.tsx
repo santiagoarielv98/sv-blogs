@@ -1,21 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Github, Mail } from "lucide-react";
-import { signIn } from "next-auth/react";
-import { useForm } from "react-hook-form";
 
-export function SocialButtons({ disabled = false }: { disabled: boolean }) {
-  const form = useForm();
-
-  const isDisabled = disabled || form.formState.isSubmitting;
-
-  const onSubmit = async (provider: string) => {
-    await form.handleSubmit(async () => {
-      await signIn(provider, {
-        callbackUrl: "/",
-      });
-    })();
-  };
-
+export function SocialButtons({
+  loading = false,
+  onProviderAuth,
+}: {
+  loading?: boolean;
+  onProviderAuth: (provider: "github" | "google") => void;
+}) {
   return (
     <div
       className="grid grid-cols-2 gap-4"
@@ -25,8 +17,8 @@ export function SocialButtons({ disabled = false }: { disabled: boolean }) {
       <Button
         type="button"
         variant="outline"
-        disabled={isDisabled}
-        onClick={() => onSubmit("github")}
+        disabled={loading}
+        onClick={() => onProviderAuth("github")}
         aria-label="Continue with Github"
       >
         <Github className="mr-2 h-4 w-4" aria-hidden="true" />
@@ -34,9 +26,9 @@ export function SocialButtons({ disabled = false }: { disabled: boolean }) {
       </Button>
       <Button
         type="button"
-        disabled={isDisabled}
+        disabled={loading}
         variant="outline"
-        onClick={() => onSubmit("google")}
+        onClick={() => onProviderAuth("google")}
         aria-label="Continue with Google"
       >
         <Mail className="mr-2 h-4 w-4" aria-hidden="true" />

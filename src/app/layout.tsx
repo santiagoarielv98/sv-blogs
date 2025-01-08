@@ -7,6 +7,7 @@ import { SessionProvider } from "next-auth/react";
 
 import "@/app/globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import Header from "@/components/header";
 
 export const metadata: Metadata = {
   title: {
@@ -52,7 +53,14 @@ export default async function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${outfit.className} antialiased`}>
-        <SessionProvider session={session}>{children}</SessionProvider>
+        <SessionProvider session={session}>
+          <div className="min-h-screen">
+            <Header />
+            <main className="container mx-auto max-w-4xl p-4 pt-16">
+              {children}
+            </main>
+          </div>
+        </SessionProvider>
         <Toaster />
       </body>
     </html>

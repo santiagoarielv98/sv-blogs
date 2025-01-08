@@ -68,7 +68,7 @@ const Header = ({ variant = "blog" }: HeaderProps) => {
           {session?.user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild aria-label="User menu">
-                <Button variant="ghost" size="sm" className="gap-2">
+                <Button variant="ghost" size="icon" className="rounded-full">
                   <Avatar className="h-6 w-6">
                     <AvatarImage
                       src={session.user.image ?? undefined}
@@ -76,7 +76,6 @@ const Header = ({ variant = "blog" }: HeaderProps) => {
                     />
                     <AvatarFallback>{session.user.name?.[0]}</AvatarFallback>
                   </Avatar>
-                  <span className="hidden md:inline">{session.user.name}</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56" role="menu">

@@ -31,12 +31,9 @@ const Header = ({ variant = "blog" }: HeaderProps) => {
   const isAuth = variant === "auth";
 
   return (
-    <header
-      className={`sticky top-0 z-50 w-full border-b ${isAuth ? "bg-white shadow-sm" : "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"}`}
-      role="banner"
-    >
+    <header className="sticky top-8 z-50 w-full px-4" role="banner">
       <nav
-        className="container mx-auto flex h-14 max-w-4xl items-center justify-between p-4"
+        className="container mx-auto flex h-14 max-w-2xl items-center justify-between rounded-xl border bg-background/95 p-4 backdrop-blur supports-[backdrop-filter]:bg-background/60"
         aria-label="Main navigation"
       >
         <div className="flex items-center gap-2">

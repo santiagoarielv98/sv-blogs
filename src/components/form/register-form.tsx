@@ -20,14 +20,13 @@ import {
 import { Input } from "@/components/ui/input";
 import useProviderAuth from "@/hooks/use-provider-auth";
 import { register } from "@/lib/db/register";
-import type { RegisterSchema } from "@/schemas/register-schema";
-import { registerSchema } from "@/schemas/register-schema";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { registerSchema, type RegisterSchema } from "@/schemas/register-schema";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 import { SubmitButton } from "../submit-button";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const RegisterForm = () => {
   const { isLoading, authenticate } = useProviderAuth();
@@ -48,9 +47,9 @@ const RegisterForm = () => {
       const response = await register(values);
 
       if (!response.success && response.errors) {
-        Object.keys(response.errors).forEach((key) => {
-          form.setError(key as keyof RegisterSchema, {
-            message: response.errors![key as keyof RegisterSchema]?.[0],
+        response.errors.forEach((error) => {
+          form.setError(error.path[0] as keyof RegisterSchema, {
+            message: error.message,
           });
         });
 

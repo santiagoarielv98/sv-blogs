@@ -18,6 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import useProviderAuth from "@/hooks/use-provider-auth";
 import { register } from "@/lib/db/register";
 import type { RegisterSchema } from "@/schemas/register-schema";
 import { registerSchema } from "@/schemas/register-schema";
@@ -27,11 +28,9 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import type { z } from "zod";
 import { SubmitButton } from "../submit-button";
-import { signIn } from "next-auth/react";
-import React from "react";
 
 const RegisterForm = () => {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const { isLoading, authenticate } = useProviderAuth();
 
   const router = useRouter();
   const form = useForm<RegisterSchema>({
@@ -53,12 +52,6 @@ const RegisterForm = () => {
     }
   };
 
-  const handleProviderAuth = async (provider: "github" | "google") => {
-    setIsLoading(true);
-    await signIn(provider, { callbackUrl: "/" });
-    setIsLoading(false);
-  };
-
   const isSubmitting = form.formState.isSubmitting || isLoading;
 
   return (
@@ -72,10 +65,7 @@ const RegisterForm = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <SocialButtons
-          loading={isSubmitting}
-          onProviderAuth={handleProviderAuth}
-        />
+        <SocialButtons loading={isSubmitting} onProviderAuth={authenticate} />
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />

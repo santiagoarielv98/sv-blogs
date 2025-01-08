@@ -28,9 +28,10 @@ import { useForm } from "react-hook-form";
 import type { z } from "zod";
 import { SubmitButton } from "../submit-button";
 import React from "react";
+import useProviderAuth from "@/hooks/use-provider-auth";
 
 const LoginForm = () => {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const { isLoading, authenticate } = useProviderAuth();
 
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
@@ -47,12 +48,6 @@ const LoginForm = () => {
     });
   };
 
-  const handleProviderAuth = async (provider: "github" | "google") => {
-    setIsLoading(true);
-    await signIn(provider, { callbackUrl: "/" });
-    setIsLoading(false);
-  };
-
   const isSubmitting = form.formState.isSubmitting || isLoading;
 
   return (
@@ -66,10 +61,7 @@ const LoginForm = () => {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <SocialButtons
-          loading={isSubmitting}
-          onProviderAuth={handleProviderAuth}
-        />
+        <SocialButtons loading={isSubmitting} onProviderAuth={authenticate} />
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />

@@ -1,9 +1,16 @@
 import { faker } from "@faker-js/faker";
+import type { User } from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
 import { hashPassword } from "../src/utils/password";
 import { generateSlug } from "../src/utils/slugify";
 
 const prisma = new PrismaClient();
+
+const MAX_USERS = 0; // 25
+const MAX_POSTS = 0; // 100
+
+const FROM_DATE = new Date("2024-01-01T00:00:00.000Z"); // 2024-01-01
+const TO_DATE = new Date("2025-01-01T00:00:00.000Z"); // 2025-01-01
 
 const _tags = [
   { name: "JavaScript", slug: "javascript" },
@@ -23,7 +30,13 @@ async function main() {
       prisma.tag.upsert({
         where: { slug: tag.slug },
         update: {},
-        create: tag,
+        create: {
+          ...tag,
+          createdAt: faker.date.between({
+            from: FROM_DATE,
+            to: TO_DATE,
+          }),
+        },
       }),
     ),
   );
@@ -39,7 +52,7 @@ async function main() {
       password: await hashPassword("password"),
       emailVerified: new Date(),
       posts: {
-        create: Array.from({ length: 100 }).map(() => {
+        create: Array.from({ length: MAX_POSTS }).map(() => {
           const title = faker.lorem.sentence();
           return {
             title,
@@ -48,8 +61,8 @@ async function main() {
             published: true,
             publishedAt: new Date(),
             createdAt: faker.date.between({
-              from: new Date(1735689600000),
-              to: new Date(1787139200000),
+              from: FROM_DATE,
+              to: TO_DATE,
             }),
             tags: {
               connect: faker.helpers
@@ -62,8 +75,10 @@ async function main() {
     },
   });
 
-  await Promise.all(
-    Array.from({ length: 25 }).map(async () => {
+  await createAccount(demo);
+
+  const users = await Promise.all(
+    Array.from({ length: MAX_USERS }).map(async () => {
       const email = faker.internet.email();
       const username = faker.internet.username();
       return prisma.user.create({
@@ -75,7 +90,7 @@ async function main() {
           password: await hashPassword("password"),
           emailVerified: new Date(),
           posts: {
-            create: Array.from({ length: 100 }).map(() => {
+            create: Array.from({ length: MAX_POSTS }).map(() => {
               const title = faker.lorem.sentence();
               return {
                 title,
@@ -84,8 +99,8 @@ async function main() {
                 published: true,
                 publishedAt: new Date(),
                 createdAt: faker.date.between({
-                  from: new Date(1735689600000),
-                  to: new Date(1787139200000),
+                  from: FROM_DATE,
+                  to: TO_DATE,
                 }),
                 tags: {
                   connect: faker.helpers
@@ -100,7 +115,20 @@ async function main() {
     }),
   );
 
+  await Promise.all(users.map(createAccount));
+
   console.log({ demo });
+}
+
+async function createAccount(user: User) {
+  return prisma.account.create({
+    data: {
+      provider: "email",
+      userId: user.id,
+      providerAccountId: user.id.toString(),
+      type: "email",
+    },
+  });
 }
 
 main()

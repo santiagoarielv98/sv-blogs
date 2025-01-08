@@ -1,17 +1,19 @@
+import { getFirstPageOfPosts } from "@/lib/db";
 import ListPosts from "@/components/list-posts";
-import { prisma } from "@/lib/prisma";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  description:
+    "Latest blog posts about web development, technology and programming",
+};
 
 const HomePage = async () => {
-  const posts = await prisma.post.findMany({
-    take: 10,
-    orderBy: { createdAt: "desc" },
-  });
-
-  const nextCursor = posts.length > 0 ? posts[posts.length - 1].id : null;
+  const data = await getFirstPageOfPosts();
 
   return (
-    <div className="space-y-4">
-      <ListPosts posts={posts} nextCursor={nextCursor} />
+    <div className="space-y-6">
+      <h1 className="text-3xl font-bold">Latest Posts</h1>
+      <ListPosts initialState={data} />
     </div>
   );
 };

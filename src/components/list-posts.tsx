@@ -1,22 +1,33 @@
 "use client";
 
-import type { Post } from "@prisma/client";
-import React, { useState, useEffect } from "react";
+import { getPaginatedPosts } from "@/lib/db";
+import type { Prisma } from "@prisma/client";
+import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import PostCard from "./cards/post-card";
+import type { PostWithAuthorAndTags } from "@/types/post";
+import { LoaderCircle } from "lucide-react";
 
 interface ListPostsProps {
-  posts: Post[];
-  nextCursor: string | null;
+  initialState?: {
+    posts: PostWithAuthorAndTags[];
+    nextCursor: string | null;
+  };
+  config?: Prisma.PostFindManyArgs;
 }
 
 export default function ListPosts({
-  posts = [],
-  nextCursor = null,
+  initialState: initialData = { posts: [], nextCursor: null },
+  config,
 }: ListPostsProps) {
-  const [_posts, setPosts] = useState<Post[]>(posts);
-  const [_nextCursor, setNextCursor] = useState<string | null>(nextCursor);
+  const [posts, setPosts] = useState<PostWithAuthorAndTags[]>(
+    initialData.posts,
+  );
+  const [nextCursor, setNextCursor] = useState<string | null>(
+    initialData.nextCursor,
+  );
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+  const [hasMore, setHasMore] = useState(nextCursor !== null);
 
   const { ref, inView } = useInView({
     triggerOnce: false,
@@ -28,8 +39,7 @@ export default function ListPosts({
     setLoading(true);
 
     try {
-      const res = await fetch(`/api/posts?take=10&cursor=${_nextCursor || ""}`);
-      const data = await res.json();
+      const data = await getPaginatedPosts(nextCursor!, config);
 
       setPosts((prev) => [...prev, ...data.posts]);
       setNextCursor(data.nextCursor);
@@ -39,37 +49,39 @@ export default function ListPosts({
     } finally {
       setLoading(false);
     }
-  }, [loading, hasMore, _nextCursor]);
+  }, [loading, hasMore, nextCursor, config]);
 
   useEffect(() => {
     if (inView) fetchPosts();
   }, [fetchPosts, inView]);
 
-  useEffect(() => {
-    console.log(
-      "posts",
-      posts.map((post) => post.id),
-    );
-  }, [posts]);
-
   return (
-    <div className="posts-container">
-      {_posts.map((post) => (
-        <div key={post.id} className="post bg-gray-100 p-4 mb-4 rounded shadow">
-          <h2 className="text-lg font-bold">{post.title}</h2>
-          <p className="text-sm">{post.content}</p>
-          <small className="text-gray-500">
-            {new Date(post.createdAt).toLocaleString()}
-          </small>
-        </div>
+    <div className="space-y-6" aria-busy={loading} aria-label="Posts list">
+      {posts.map((post) => (
+        <PostCard key={post.id} post={post} />
       ))}
 
       {hasMore && (
-        <div ref={ref} className="loading-indicator">
-          {loading ? <p>Loading more posts...</p> : null}
+        <div
+          ref={ref}
+          className="flex justify-center"
+          role="status"
+          aria-label="Loading more posts"
+        >
+          {loading ? (
+            <LoaderCircle
+              size={32}
+              className="animate-spin"
+              aria-hidden="true"
+            />
+          ) : null}
         </div>
       )}
-      {!hasMore && <p>No more posts to show</p>}
+      {!hasMore && (
+        <p className="text-center" role="status">
+          No more posts to show
+        </p>
+      )}
     </div>
   );
 }

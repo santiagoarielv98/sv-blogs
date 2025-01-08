@@ -1,5 +1,21 @@
-import { getPosts } from "@/lib/api";
-import Link from "next/link";
+import { getFirstPageOfPosts, getTagBySlug } from "@/lib/db";
+import ListPosts from "@/components/list-posts";
+import { Badge } from "@/components/ui/badge";
+import type { Metadata } from "next";
+import { redirect, RedirectType } from "next/navigation";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+
+  return {
+    title: `Posts about ${slug}`,
+    description: `Explore all articles related to ${slug}`,
+  };
+}
 
 const TagDetailPage = async ({
   params,
@@ -7,30 +23,25 @@ const TagDetailPage = async ({
   params: Promise<{ slug: string }>;
 }) => {
   const { slug } = await params;
-  const posts = await getPosts({
-    take: 10,
-    where: {
-      tags: {
-        some: {
-          slug,
-        },
-      },
-    },
-  });
+
+  const tag = await getTagBySlug(slug);
+
+  if (!tag) {
+    return redirect("/404/tag-not-found", RedirectType.replace);
+  }
+
+  const config = {
+    where: { tags: { some: { slug: tag.slug } } },
+  };
+
+  const data = await getFirstPageOfPosts(config);
 
   return (
-    <div className="space-y-4">
-      {posts.map((post) => (
-        <div key={post.id}>
-          <h1>{post.title}</h1>
-          <div className="space-x-2">
-            {post.tags.map((tag) => (
-              <small key={tag.id}>{tag.name}</small>
-            ))}
-          </div>
-          <Link href={`/${post.author.username}/${post.slug}`}>Read more</Link>
-        </div>
-      ))}
+    <div className="space-y-6">
+      <h1 className="flex items-center gap-2 text-3xl font-bold">
+        Posts tagged with <Badge variant="secondary">{slug}</Badge>
+      </h1>
+      <ListPosts initialState={data} config={config} />
     </div>
   );
 };

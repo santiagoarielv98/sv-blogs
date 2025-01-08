@@ -1,7 +1,28 @@
-import { getUserByUsername } from "@/lib/api";
-import Image from "next/image";
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import ListPosts from "@/components/list-posts";
+import UserProfile from "@/components/user-profile";
+import { getFirstPageOfPosts, getUserByUsername } from "@/lib/db";
+import type { User } from "@prisma/client";
+import { redirect, RedirectType } from "next/navigation";
+import type { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ username: string }>;
+}): Promise<Metadata> {
+  const { username } = await params;
+  const user = await getUserByUsername(username);
+
+  if (!user)
+    return {
+      title: "User not found",
+    };
+
+  return {
+    title: `${user.name || username}'s Profile`,
+    description: `Posts and articles written by ${user.name || username}`,
+  };
+}
 
 const UserDetail = async ({
   params,
@@ -9,32 +30,21 @@ const UserDetail = async ({
   params: Promise<{ username: string }>;
 }) => {
   const { username } = await params;
-
   const user = await getUserByUsername(username);
 
-  if (!user) {
-    return notFound();
-  }
+  if (!user) return redirect("/404/user-not-found", RedirectType.replace);
+
+  const config = { where: { authorId: user.id } };
+  const data = await getFirstPageOfPosts(config);
 
   return (
-    <div>
-      <h1>{user.name}</h1>
-      <Image
-        src={
-          user.image ??
-          "https://static-00.iconduck.com/assets.00/profile-default-icon-256x256-tsi8241r.png"
-        }
-        alt={user.name}
-        width={128}
-        height={128}
-      />
-      <ul className="space-y-4">
-        {user.posts.map((post) => (
-          <li key={post.id}>
-            <Link href={`${user.username}/${post.slug}`}>{post.title}</Link>
-          </li>
-        ))}
-      </ul>
+    <div className="space-y-8">
+      <UserProfile user={user} />
+
+      <div className="space-y-4">
+        <h2 className="text-2xl font-semibold">Posts</h2>
+        <ListPosts initialState={data} config={config} />
+      </div>
     </div>
   );
 };

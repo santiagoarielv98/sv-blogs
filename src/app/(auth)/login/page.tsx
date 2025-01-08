@@ -1,32 +1,8 @@
-"use client";
-import { signIn } from "next-auth/react";
+import LoginForm from "@/components/form/login-form";
+import React from "react";
 
 const LoginPage = () => {
-  const credentialsAction = (formData: FormData) => {
-    signIn("credentials", {
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-      redirectTo: "/",
-    });
-  };
-  return (
-    <div>
-      <h1>Login Page</h1>
-      <p>This is the login page</p>
-
-      <form action={credentialsAction}>
-        <label>
-          Email:
-          <input type="text" name="email" autoComplete="email" autoFocus />
-        </label>
-        <label>
-          Password:
-          <input type="password" name="password" />
-        </label>
-        <button type="submit">Login</button>
-      </form>
-    </div>
-  );
+  return <LoginForm />;
 };
 
 export default LoginPage;

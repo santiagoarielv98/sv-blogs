@@ -1,31 +1,51 @@
-import { getPostBySlug } from "@/lib/api";
-import Link from "next/link";
-import { notFound } from "next/navigation";
+import PostDetail from "@/components/post-detail";
+import { getPostBySlug } from "@/lib/db";
+import { redirect, RedirectType } from "next/navigation";
+import type { Metadata } from "next";
 
-const PostDetail = async ({
+export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{ slug: string; username: string }>;
+}): Promise<Metadata> {
+  const { slug, username } = await params;
+  const post = await getPostBySlug(slug, username);
+
+  if (!post)
+    return {
+      title: "Post not found",
+    };
+
+  return {
+    title: post.title,
+    description: `${post.title} - An article by ${username}`,
+    // description:
+    //   post.description || `${post.title} - An article by ${username}`,
+    authors: [{ name: username }],
+    openGraph: {
+      title: post.title,
+      description: `${post.title} - An article by ${username}`,
+      // description: post.description,
+      type: "article",
+      ...(post.publishedAt && {
+        publishedTime: post.publishedAt.toISOString(),
+      }),
+      authors: [username],
+    },
+  };
+}
+
+const DetailPage = async ({
+  params,
+}: {
+  params: Promise<{ slug: string; username: string }>;
 }) => {
-  const { slug } = await params;
+  const { slug, username } = await params;
+  const post = await getPostBySlug(slug, username);
 
-  const post = await getPostBySlug(slug);
+  if (!post) return redirect("/404/post-not-found", RedirectType.replace);
 
-  if (!post) {
-    return notFound();
-  }
-
-  return (
-    <div>
-      <h1>{post.title}</h1>
-      <p>{post.content}</p>
-      <p>
-        <small>
-          By <Link href={`/${post.author.username}`}>{post.author.name}</Link>
-        </small>
-      </p>
-    </div>
-  );
+  return <PostDetail post={post} />;
 };
 
-export default PostDetail;
+export default DetailPage;

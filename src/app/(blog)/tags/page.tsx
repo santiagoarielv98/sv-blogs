@@ -1,17 +1,19 @@
-import { getTags } from "@/lib/api";
-import Link from "next/link";
+import { getFirstPageOfTags } from "@/lib/db/tag";
+import ListTags from "@/components/list-tags";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Explore Tags",
+  description: "Explore all available topics and categories in the blog",
+};
 
 const TagsPage = async () => {
-  const tags = await getTags();
+  const data = await getFirstPageOfTags();
 
   return (
-    <div className="space-y-4">
-      {tags.map((tag) => (
-        <div key={tag.id}>
-          <h1>{tag.name}</h1>
-          <Link href={`/tag/${tag.slug}`}>Read more</Link>
-        </div>
-      ))}
+    <div className="space-y-6">
+      <h1 className="text-3xl font-bold">Tags</h1>
+      <ListTags initialState={data} />
     </div>
   );
 };

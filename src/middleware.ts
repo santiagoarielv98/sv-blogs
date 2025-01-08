@@ -3,7 +3,8 @@ import { auth } from "@/lib/auth";
 const authRoutes = ["/new", "/dashboard"];
 
 export default auth((req) => {
-  const isLogginIn = req.auth;
+  const isLogginIn = !!req.auth;
+
   const isAuthRoute = authRoutes.some((route) =>
     req.nextUrl.pathname.startsWith(route),
   );

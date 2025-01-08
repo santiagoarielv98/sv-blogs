@@ -1,12 +1,12 @@
 import { prisma } from "@/lib/prisma";
-import { loginSchema } from "@/schemas/login-schema";
-import { comparePassword } from "@/utils/password";
 import { generateUsername } from "@/utils/username";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+import Credentials from "next-auth/providers/credentials";
+import { loginSchema } from "@/schemas/login-schema";
+import { comparePassword } from "@/utils/password";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -20,7 +20,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           name: profile.name || profile.login,
           email: profile.email,
           image: profile.avatar_url,
-          username: profile.login || generateUsername(profile.name!),
+          username: profile.login,
         };
       },
     }),
@@ -43,6 +43,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => {
+        console.log("2-credentials,", credentials);
         try {
           const { email, password } = loginSchema.parse(credentials);
 
@@ -76,24 +77,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     newUser: "/register",
   },
   callbacks: {
+    authorized(params) {
+      if (params.auth?.user) {
+        params.request.auth = params.auth?.user;
+      }
+      return !!params.auth;
+    },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.sub!;
-
-        // Obtener username del usuario
-        const user = await prisma.user.findUnique({
-          where: { id: token.sub },
-          select: { username: true },
-        });
-
-        if (user) {
-          // session.user.username = user.username;
-        }
+        session.user.id = token.sub! || (token.id as string);
       }
       return session;
     },
-    async jwt({ token, user, account, profile }) {
-      console.log("jwt", { token, user, account, profile });
+    async jwt({ token, user, account }) {
       if (user && account) {
         // Si es un nuevo usuario de OAuth, asegúrate de que tenga username
         if (account.provider !== "credentials" /* && !user.username */) {

@@ -1,12 +1,12 @@
 import { prisma } from "@/lib/prisma";
+import { loginSchema } from "@/schemas/login-schema";
+import { comparePassword } from "@/utils/password";
 import { generateUsername } from "@/utils/username";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import Credentials from "next-auth/providers/credentials";
-import { loginSchema } from "@/schemas/login-schema";
-import { comparePassword } from "@/utils/password";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -14,7 +14,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     GithubProvider({
       clientId: process.env.GITHUB_ID!,
       clientSecret: process.env.GITHUB_SECRET!,
-      profile(profile) {
+      async profile(profile) {
         return {
           id: profile.id.toString(),
           name: profile.name || profile.login,
@@ -23,6 +23,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           username: profile.login,
         };
       },
+      allowDangerousEmailAccountLinking: true,
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_ID!,
@@ -43,7 +44,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         password: {},
       },
       authorize: async (credentials) => {
-        console.log("2-credentials,", credentials);
         try {
           const { email, password } = loginSchema.parse(credentials);
 
@@ -89,13 +89,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
       return session;
     },
-    async jwt({ token, user, account }) {
+    async jwt({ token, user, account, profile }) {
       if (user && account) {
-        // Si es un nuevo usuario de OAuth, asegúrate de que tenga username
-        if (account.provider !== "credentials" /* && !user.username */) {
+        if (account.provider !== "credentials") {
           await prisma.user.update({
             where: { id: user.id },
-            data: { username: generateUsername(user.name || "") },
+            data: {
+              name: user.name || profile?.name || "",
+              image: user.image
+                ? user.image
+                : account.provider === "github"
+                  ? profile?.avatar_url
+                  : account.provider === "google"
+                    ? profile?.picture
+                    : null,
+              emailVerified: new Date(),
+              username: user.username || generateUsername(user.name || ""),
+            },
           });
         }
       }

@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import type { User } from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
 import { hashPassword } from "../src/utils/password";
 import { generateSlug } from "../src/utils/slugify";
@@ -74,7 +75,9 @@ async function main() {
     },
   });
 
-  await Promise.all(
+  await createAccount(demo);
+
+  const users = await Promise.all(
     Array.from({ length: MAX_USERS }).map(async () => {
       const email = faker.internet.email();
       const username = faker.internet.username();
@@ -112,7 +115,20 @@ async function main() {
     }),
   );
 
+  await Promise.all(users.map(createAccount));
+
   console.log({ demo });
+}
+
+async function createAccount(user: User) {
+  return prisma.account.create({
+    data: {
+      provider: "email",
+      userId: user.id,
+      providerAccountId: user.id.toString(),
+      type: "email",
+    },
+  });
 }
 
 main()

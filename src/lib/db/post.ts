@@ -27,6 +27,7 @@ const DEFAULT_ARGS = {
 export const getFirstPageOfPosts = async (
   args?: Prisma.PostFindManyArgs,
   search?: string,
+  tags?: string[],
 ) => {
   const posts = await prisma.post.findMany({
     ...args,
@@ -34,7 +35,19 @@ export const getFirstPageOfPosts = async (
       ...args?.where,
       published: true,
       ...(search && {
-        OR: [{ title: { contains: search, mode: "insensitive" } }],
+        OR: [
+          { title: { contains: search, mode: "insensitive" } },
+          { content: { contains: search, mode: "insensitive" } },
+        ],
+      }),
+      ...(tags?.length && {
+        tags: {
+          some: {
+            slug: {
+              in: tags,
+            },
+          },
+        },
       }),
     },
     ...DEFAULT_ARGS,
@@ -52,6 +65,7 @@ export const getPaginatedPosts = async (
   cursor: string,
   args?: Prisma.PostFindManyArgs,
   search?: string,
+  tags?: string[],
 ) => {
   const posts = await prisma.post.findMany({
     ...args,
@@ -59,7 +73,19 @@ export const getPaginatedPosts = async (
       ...args?.where,
       published: true,
       ...(search && {
-        OR: [{ title: { contains: search, mode: "insensitive" } }],
+        OR: [
+          { title: { contains: search, mode: "insensitive" } },
+          { content: { contains: search, mode: "insensitive" } },
+        ],
+      }),
+      ...(tags?.length && {
+        tags: {
+          some: {
+            slug: {
+              in: tags,
+            },
+          },
+        },
       }),
     },
     ...DEFAULT_ARGS,
@@ -95,4 +121,22 @@ export const getPostBySlug = async (slug: string, username: string) => {
       },
     },
   });
+};
+
+export const getPublishedTags = async () => {
+  const tags = await prisma.tag.findMany({
+    where: {
+      posts: {
+        some: {
+          published: true,
+        },
+      },
+    },
+    select: DEFAULT_SELECT_TAG,
+    orderBy: {
+      name: "asc",
+    },
+  });
+
+  return tags;
 };

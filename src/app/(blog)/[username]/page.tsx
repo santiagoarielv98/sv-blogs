@@ -1,9 +1,12 @@
 import ListPosts from "@/components/list-posts";
 import UserProfile from "@/components/user-profile";
-import { getFirstPageOfPosts, getUserByUsername } from "@/lib/db";
-import type { User } from "@prisma/client";
-import { redirect, RedirectType } from "next/navigation";
+import {
+  getFirstPageOfPosts,
+  getPublishedTags,
+  getUserByUsername,
+} from "@/lib/db";
 import type { Metadata } from "next";
+import { redirect, RedirectType } from "next/navigation";
 
 export async function generateMetadata({
   params,
@@ -35,7 +38,11 @@ const UserDetail = async ({
   if (!user) return redirect("/404/user-not-found", RedirectType.replace);
 
   const config = { where: { authorId: user.id } };
-  const data = await getFirstPageOfPosts(config);
+
+  const [data, tags] = await Promise.all([
+    getFirstPageOfPosts(config),
+    getPublishedTags(),
+  ]);
 
   return (
     <div className="space-y-8">
@@ -43,7 +50,7 @@ const UserDetail = async ({
 
       <div className="space-y-4">
         <h2 className="text-2xl font-semibold">Posts</h2>
-        <ListPosts initialState={data} config={config} />
+        <ListPosts initialState={data} config={config} tags={tags} />
       </div>
     </div>
   );

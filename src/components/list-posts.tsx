@@ -8,6 +8,7 @@ import PostCard from "./cards/post-card";
 import type { PostWithAuthorAndTags } from "@/types/post";
 import { LoaderCircle } from "lucide-react";
 import SearchBar from "./search-bar";
+import { TagFilter } from "./tag-filter";
 
 interface ListPostsProps {
   initialState?: {
@@ -15,11 +16,13 @@ interface ListPostsProps {
     nextCursor: string | null;
   };
   config?: Prisma.PostFindManyArgs;
+  tags: Array<{ id: string; name: string; slug: string }>;
 }
 
 export default function ListPosts({
   initialState: initialData = { posts: [], nextCursor: null },
   config,
+  tags,
 }: ListPostsProps) {
   const [posts, setPosts] = useState<PostWithAuthorAndTags[]>(
     initialData.posts,
@@ -30,6 +33,7 @@ export default function ListPosts({
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(nextCursor !== null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   const { ref, inView } = useInView({
     triggerOnce: false,
@@ -39,7 +43,17 @@ export default function ListPosts({
   const handleSearch = async (term: string) => {
     setSearchTerm(term);
     setLoading(true);
-    const data = await getFirstPageOfPosts(config, term);
+    const data = await getFirstPageOfPosts(config, term, selectedTags);
+    setPosts(data.posts);
+    setNextCursor(data.nextCursor);
+    setHasMore(data.nextCursor !== null);
+    setLoading(false);
+  };
+
+  const handleTagSelect = async (tags: string[]) => {
+    setSelectedTags(tags);
+    setLoading(true);
+    const data = await getFirstPageOfPosts(config, searchTerm, tags);
     setPosts(data.posts);
     setNextCursor(data.nextCursor);
     setHasMore(data.nextCursor !== null);
@@ -51,7 +65,12 @@ export default function ListPosts({
     setLoading(true);
 
     try {
-      const data = await getPaginatedPosts(nextCursor!, config, searchTerm);
+      const data = await getPaginatedPosts(
+        nextCursor!,
+        config,
+        searchTerm,
+        selectedTags,
+      );
       setPosts((prev) => [...prev, ...data.posts]);
       setNextCursor(data.nextCursor);
       setHasMore(data.nextCursor !== null);
@@ -60,7 +79,7 @@ export default function ListPosts({
     } finally {
       setLoading(false);
     }
-  }, [loading, hasMore, nextCursor, config, searchTerm]);
+  }, [loading, hasMore, nextCursor, config, searchTerm, selectedTags]);
 
   useEffect(() => {
     if (inView) fetchPosts();
@@ -68,7 +87,16 @@ export default function ListPosts({
 
   return (
     <div className="space-y-6">
-      <SearchBar onSearch={handleSearch} />
+      <div className="sticky top-24 z-20 mx-auto flex max-w-2xl items-center justify-center gap-4 sm:justify-end sm:pr-4">
+        <SearchBar onSearch={handleSearch} />
+        {tags.length > 0 && (
+          <TagFilter
+            tags={tags}
+            selectedTags={selectedTags}
+            onTagSelect={handleTagSelect}
+          />
+        )}
+      </div>
 
       <div className="space-y-6" aria-busy={loading} aria-label="Posts list">
         {posts.map((post) => (

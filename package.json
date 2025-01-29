@@ -48,6 +48,7 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@faker-js/faker": "^9.3.0",
+    "@tailwindcss/typography": "^0.5.16",
     "@types/bcryptjs": "^2.4.6",
     "@types/lodash": "^4.17.14",
     "@types/node": "^20.17.11",

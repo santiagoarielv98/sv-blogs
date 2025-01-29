@@ -3,11 +3,12 @@ import type { User } from "@prisma/client";
 import { PrismaClient } from "@prisma/client";
 import { hashPassword } from "../src/utils/password";
 import { generateSlug } from "../src/utils/slugify";
+import { generateBlogContent } from "../src/utils/content-generator";
 
 const prisma = new PrismaClient();
 
-const MAX_USERS = 0; // 25
-const MAX_POSTS = 0; // 100
+const MAX_USERS = 25; // 25
+const MAX_POSTS = 100; // 100
 
 const FROM_DATE = new Date("2024-01-01T00:00:00.000Z"); // 2024-01-01
 const TO_DATE = new Date("2025-01-01T00:00:00.000Z"); // 2025-01-01
@@ -56,7 +57,7 @@ async function main() {
           const title = faker.lorem.sentence();
           return {
             title,
-            content: faker.lorem.paragraphs(20),
+            content: generateBlogContent(), // Usar el nuevo generador
             slug: generateSlug(title),
             published: true,
             publishedAt: new Date(),
@@ -94,7 +95,7 @@ async function main() {
               const title = faker.lorem.sentence();
               return {
                 title,
-                content: faker.lorem.paragraphs(5),
+                content: generateBlogContent(),
                 slug: generateSlug(title),
                 published: true,
                 publishedAt: new Date(),

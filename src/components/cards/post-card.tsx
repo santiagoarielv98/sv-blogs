@@ -2,9 +2,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
-  CardContent,
   CardFooter,
-  CardHeader,
+  CardHeader
 } from "@/components/ui/card";
 import type { PostWithAuthorAndTags } from "@/types";
 import { Calendar } from "lucide-react";
@@ -43,11 +42,6 @@ function PostCard({ post }: { post: PostWithAuthorAndTags }) {
           </h2>
         </Link>
       </CardHeader>
-      <CardContent>
-        <p className="line-clamp-3 text-sm text-muted-foreground">
-          {post.content}
-        </p>
-      </CardContent>
       <CardFooter>
         <div className="flex flex-wrap gap-2">
           {post.tags.map((tag) => (

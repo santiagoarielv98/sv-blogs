@@ -53,6 +53,7 @@ Crea un archivo `.env` con:
 npx prisma migrate dev 
 ```
 
+
 5. Inicia el servidor de desarrollo:
 ```bash
 npm run dev

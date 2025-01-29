@@ -24,12 +24,18 @@ const DEFAULT_ARGS = {
   },
 } as const;
 
-export const getFirstPageOfPosts = async (args?: Prisma.PostFindManyArgs) => {
+export const getFirstPageOfPosts = async (
+  args?: Prisma.PostFindManyArgs,
+  search?: string,
+) => {
   const posts = await prisma.post.findMany({
     ...args,
     where: {
       ...args?.where,
       published: true,
+      ...(search && {
+        OR: [{ title: { contains: search, mode: "insensitive" } }],
+      }),
     },
     ...DEFAULT_ARGS,
   });
@@ -45,12 +51,16 @@ export const getFirstPageOfPosts = async (args?: Prisma.PostFindManyArgs) => {
 export const getPaginatedPosts = async (
   cursor: string,
   args?: Prisma.PostFindManyArgs,
+  search?: string,
 ) => {
   const posts = await prisma.post.findMany({
     ...args,
     where: {
       ...args?.where,
       published: true,
+      ...(search && {
+        OR: [{ title: { contains: search, mode: "insensitive" } }],
+      }),
     },
     ...DEFAULT_ARGS,
     take: POSTS_PER_PAGE + 1,

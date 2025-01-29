@@ -26,7 +26,7 @@ export default function SearchBar({ onSearch }: SearchBarProps) {
   );
 
   return (
-    <div className="relative">
+    <div className="sticky top-24 z-20 mx-auto max-w-sm bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
       <Input
         placeholder="Search posts..."

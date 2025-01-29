@@ -53,6 +53,9 @@ Crea un archivo `.env` con:
 npx prisma migrate dev 
 ```
 
+> **Nota**: Este comando ejecutará automáticamente un script de seed que creará datos de prueba y un usuario demo para desarrollo:
+> - Email: demo@example.com
+> - Password: password
 
 5. Inicia el servidor de desarrollo:
 ```bash

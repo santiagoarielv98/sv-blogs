@@ -1,10 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import {
-  Card,
-  CardFooter,
-  CardHeader
-} from "@/components/ui/card";
+import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import type { PostWithAuthorAndTags } from "@/types";
 import { Calendar } from "lucide-react";
 import Link from "next/link";

@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 interface HeaderProps {
   variant?: "auth" | "blog";
@@ -64,6 +65,8 @@ const Header = ({ variant = "blog" }: HeaderProps) => {
               </Button>
             </>
           )}
+
+          <ThemeToggle />
 
           {session?.user ? (
             <DropdownMenu>

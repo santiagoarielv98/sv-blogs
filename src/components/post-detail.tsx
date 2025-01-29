@@ -45,7 +45,7 @@ const PostDetail = async ({ post }: PostDetailProps) => {
       {/* post.content -> <p>example</p> */}
 
       <div
-        className="prose dark:prose-invert max-w-none"
+        className="prose max-w-none dark:prose-invert"
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
     </article>

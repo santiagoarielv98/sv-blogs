@@ -2,6 +2,7 @@
 
 import { SocialButtons } from "@/components/auth/social-buttons";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
@@ -32,6 +33,7 @@ import useProviderAuth from "@/hooks/use-provider-auth";
 import { useSearchParams } from "next/navigation";
 import type { AuthError } from "@/constants/auth";
 import { errorMap } from "@/components/auth/error-map";
+import { demoCredentials } from "@/constants/auth";
 
 const LoginForm = () => {
   const search = useSearchParams();
@@ -41,8 +43,8 @@ const LoginForm = () => {
   const form = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: demoCredentials.email,
+      password: demoCredentials.password,
     },
   });
 
@@ -61,8 +63,14 @@ const LoginForm = () => {
         <CardTitle className="text-2xl font-bold" id="login-title">
           Sign In
         </CardTitle>
-        <CardDescription id="login-description">
+        <CardDescription id="login-description" className="space-y-2">
           Sign in to your account to continue
+          <div className="pt-2">
+            <Badge variant="secondary" className="text-xs">
+              💡 Demo Credentials: {demoCredentials.email} /{" "}
+              {demoCredentials.password}
+            </Badge>
+          </div>
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">

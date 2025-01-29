@@ -3,3 +3,8 @@ export enum AuthError {
   Credentials = "credentials",
   Unregistered = "unregistered",
 }
+
+export const demoCredentials = {
+  email: "demo@example.com",
+  password: "password",
+};

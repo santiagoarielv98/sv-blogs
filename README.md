@@ -11,13 +11,18 @@ Una plataforma moderna de blogs construida con Next.js 15 y TypeScript. Diseñad
 - **Características clave**: Autenticación con GitHub/Google, editor WYSIWYG, modo oscuro/claro
 - **Público objetivo**: Desarrolladores y creadores de contenido técnico
 
+
+## 📸 Imagenes del Proyecto
+![Captura de pantalla 2021-10-14 191048](public/images/sv-blogs-1.webp)
+![Captura de pantalla 2021-10-14 191116](public/images/sv-blogs-2.webp)
+
 ## ✨ Características Destacadas
 - Autenticación social con GitHub y Google
 - Editor de texto enriquecido con React Quill
 - Temas claro/oscuro con next-themes
-- UI moderna con Radix UI y Tailwind
+- UI moderna con shadcn/ui
 - Base de datos PostgreSQL con Prisma
-- Animaciones fluidas con Framer Motion
+<!-- - Animaciones fluidas con Framer Motion -->
 
 ## 🛠️ Stack Tecnológico
 | Frontend                | Backend        | Utilidades            |
@@ -25,8 +30,8 @@ Una plataforma moderna de blogs construida con Next.js 15 y TypeScript. Diseñad
 | Next.js 15             | Prisma         | TypeScript           |
 | React 19               | PostgreSQL     | ESLint/Prettier      |
 | Tailwind CSS           | NextAuth.js    | Zod                 |
-| Radix UI               | bcryptjs       | React Hook Form      |
-| Framer Motion          |                | slugify             |
+| shadcn/ui              | bcryptjs       | React Hook Form      |
+|                        |                | slugify             |
 
 ## ⚙️ Instalación
 1. Clona el repositorio:
@@ -50,7 +55,12 @@ Crea un archivo `.env` con:
 
 4. Ejecuta las migraciones de la base de datos:
 ```bash
-npx prisma migrate dev 
+npx prisma migrate dev
+```
+
+5. Ejecuta el script de seed:
+```bash
+npx prisma db seed
 ```
 
 > **Nota**: Este comando ejecutará automáticamente un script de seed que creará datos de prueba y un usuario demo para desarrollo:
@@ -72,8 +82,9 @@ npm run dev
 
 ## 📬 Contacto
 Santiago Ariel - [GitHub](https://github.com/santiagoarielv98)
+Porfolio - [santiagoarielv98.vercel.app](https://santiagoarielv98.vercel.app/)
 
 ## 🙌 Agradecimientos
 - [Next.js](https://nextjs.org)
-- [Radix UI](https://www.radix-ui.com)
+- [shadcn/ui](https://ui.shadcn.com)
 - [Prisma](https://www.prisma.io)

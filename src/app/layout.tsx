@@ -8,6 +8,7 @@ import { SessionProvider } from "next-auth/react";
 import "@/app/globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import Header from "@/components/header";
+import { ThemeProvider } from "@/providers/theme-provider";
 
 export const metadata: Metadata = {
   title: {
@@ -54,12 +55,19 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${outfit.className} antialiased`}>
         <SessionProvider session={session}>
-          <div className="min-h-screen">
-            <Header />
-            <main className="container mx-auto max-w-4xl p-4 pt-16">
-              {children}
-            </main>
-          </div>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="min-h-screen">
+              <Header />
+              <main className="container mx-auto max-w-4xl p-4 pt-16">
+                {children}
+              </main>
+            </div>
+          </ThemeProvider>
         </SessionProvider>
         <Toaster />
       </body>

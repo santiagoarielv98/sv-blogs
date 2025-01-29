@@ -1,36 +1,79 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SV Blogs
 
-## Getting Started
+![Badge en Desarollo](https://img.shields.io/badge/STATUS-EN%20DESAROLLO-green?style=for-the-badge)
+![GitHub last commit](https://img.shields.io/github/last-commit/santiagoarielv98/sv-blogs?style=for-the-badge)
+![GitHub license](https://img.shields.io/github/license/santiagoarielv98/sv-blogs?style=for-the-badge)
 
-First, run the development server:
+## 📋 Descripción
+Una plataforma moderna de blogs construida con Next.js 15 y TypeScript. Diseñada para ofrecer una experiencia de blogging fluida y elegante con autenticación de usuarios, editor de contenido rico y diseño adaptable.
 
+- **Propósito**: Crear una plataforma de blogs moderna y accesible
+- **Características clave**: Autenticación con GitHub/Google, editor WYSIWYG, modo oscuro/claro
+- **Público objetivo**: Desarrolladores y creadores de contenido técnico
+
+## ✨ Características Destacadas
+- Autenticación social con GitHub y Google
+- Editor de texto enriquecido con React Quill
+- Temas claro/oscuro con next-themes
+- UI moderna con Radix UI y Tailwind
+- Base de datos PostgreSQL con Prisma
+- Animaciones fluidas con Framer Motion
+
+## 🛠️ Stack Tecnológico
+| Frontend                | Backend        | Utilidades            |
+|------------------------|----------------|----------------------|
+| Next.js 15             | Prisma         | TypeScript           |
+| React 19               | PostgreSQL     | ESLint/Prettier      |
+| Tailwind CSS           | NextAuth.js    | Zod                 |
+| Radix UI               | bcryptjs       | React Hook Form      |
+| Framer Motion          |                | slugify             |
+
+## ⚙️ Instalación
+1. Clona el repositorio:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/santiagoarielv98/sv-blogs.git
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Instala dependencias:
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Configura las variables de entorno:
+Crea un archivo `.env` con:
+- DATABASE_URL
+- AUTH_SECRET
+- AUTH_GITHUB_ID
+- AUTH_GITHUB_SECRET
+- GOOGLE_ID
+- GOOGLE_SECRET
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Ejecuta las migraciones de la base de datos:
+```bash
+npx prisma migrate dev 
+```
 
-## Learn More
+> **Nota**: Este comando ejecutará automáticamente un script de seed que creará datos de prueba y un usuario demo para desarrollo:
+> - Email: demo@example.com
+> - Password: password
 
-To learn more about Next.js, take a look at the following resources:
+5. Inicia el servidor de desarrollo:
+```bash
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🤝 Cómo Contribuir
+1. Haz un Fork del proyecto
+2. Crea tu Feature Branch (`git checkout -b feature/NuevaFuncionalidad`)
+3. Commit tus cambios (`git commit -m 'Agrega NuevaFuncionalidad'`)
+4. Push a la Branch (`git push origin feature/NuevaFuncionalidad`)
+5. Abre un Pull Request
 
-## Deploy on Vercel
+## 📬 Contacto
+Santiago Ariel - [GitHub](https://github.com/santiagoarielv98)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🙌 Agradecimientos
+- [Next.js](https://nextjs.org)
+- [Radix UI](https://www.radix-ui.com)
+- [Prisma](https://www.prisma.io)

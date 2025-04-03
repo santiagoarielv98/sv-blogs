@@ -2,11 +2,11 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
 interface CommentReplyFormProps {
-  replyContent: string;
-  submitting: boolean;
-  onReplyContentChange: (content: string) => void;
-  onCancelReply: () => void;
-  onSubmitReply: () => void;
+  readonly replyContent: string;
+  readonly submitting: boolean;
+  readonly onReplyContentChange: (content: string) => void;
+  readonly onCancelReply: () => void;
+  readonly onSubmitReply: () => void;
 }
 
 export function CommentReplyForm({

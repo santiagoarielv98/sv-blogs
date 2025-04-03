@@ -13,8 +13,8 @@ import Link from "next/link";
 import type { CommentType } from "@/hooks/use-comments";
 
 interface CommentReplyProps {
-  reply: CommentType;
-  onDelete: (id: string) => void;
+  readonly reply: CommentType;
+  readonly onDelete: (id: string) => void;
 }
 
 export function CommentReply({ reply, onDelete }: CommentReplyProps) {
@@ -26,7 +26,7 @@ export function CommentReply({ reply, onDelete }: CommentReplyProps) {
       <CardHeader className="flex flex-row items-center gap-4 pb-2">
         <Avatar className="h-6 w-6">
           <AvatarImage
-            src={reply.author.image || undefined}
+            src={reply.author.image ?? undefined}
             alt={reply.author.name}
           />
           <AvatarFallback>{reply.author.name[0]}</AvatarFallback>

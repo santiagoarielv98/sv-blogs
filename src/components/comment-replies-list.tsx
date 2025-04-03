@@ -2,8 +2,8 @@ import type { CommentType } from "@/hooks/use-comments";
 import { CommentReply } from "@/components/comment-reply";
 
 interface CommentRepliesListProps {
-  replies: CommentType[];
-  onDelete: (id: string) => void;
+  readonly replies: CommentType[];
+  readonly onDelete: (id: string) => void;
 }
 
 export function CommentRepliesList({

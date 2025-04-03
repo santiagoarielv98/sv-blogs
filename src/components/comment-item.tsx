@@ -15,15 +15,15 @@ import { CommentReplyForm } from "@/components/comment-reply-form";
 import { CommentRepliesList } from "@/components/comment-replies-list";
 
 interface CommentItemProps {
-  comment: CommentType;
-  isReplyOpen: boolean;
-  replyContent: string;
-  submitting: boolean;
-  onReplyContentChange: (content: string) => void;
-  onToggleReply: () => void;
-  onCancelReply: () => void;
-  onSubmitReply: () => void;
-  onDelete: (id: string) => void;
+  readonly comment: CommentType;
+  readonly isReplyOpen: boolean;
+  readonly replyContent: string;
+  readonly submitting: boolean;
+  readonly onReplyContentChange: (content: string) => void;
+  readonly onToggleReply: () => void;
+  readonly onCancelReply: () => void;
+  readonly onSubmitReply: () => void;
+  readonly onDelete: (id: string) => void;
 }
 
 export function CommentItem({
@@ -45,7 +45,7 @@ export function CommentItem({
       <CardHeader className="flex flex-row items-center gap-4 pb-2">
         <Avatar className="h-8 w-8">
           <AvatarImage
-            src={comment.author.image || undefined}
+            src={comment.author.image ?? undefined}
             alt={comment.author.name}
           />
           <AvatarFallback>{comment.author.name[0]}</AvatarFallback>

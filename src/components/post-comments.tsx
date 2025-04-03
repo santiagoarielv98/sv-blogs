@@ -10,7 +10,7 @@ import { useCommentActions } from "@/hooks/use-comment-actions";
 import { useReplyState } from "@/hooks/use-reply-state";
 import { CommentItem } from "@/components/comment-item";
 
-export default function PostComments({ postId }: { postId: string }) {
+export default function PostComments({ postId }: { readonly postId: string }) {
   const { data: session } = useSession();
   const [newComment, setNewComment] = useState("");
 

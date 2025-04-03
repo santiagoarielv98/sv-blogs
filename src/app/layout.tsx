@@ -15,6 +15,11 @@ export const metadata: Metadata = {
     default: "Sv - Blogs",
     template: "%s | Sv - Blogs",
   },
+  icons: {
+    icon: "/blocks.svg",
+    shortcut: "/blocks.svg",
+    apple: "/blocks.svg",
+  },
   description:
     "Personal blog about web development, technology and programming",
   keywords: [

@@ -19,3 +19,13 @@ export const DEFAULT_SELECT_POST = {
   published: true,
   publishedAt: true,
 };
+
+export const DEFAULT_SELECT_COMMENT = {
+  id: true,
+  content: true,
+  createdAt: true,
+  updatedAt: true,
+  parentId: true,
+  postId: true,
+  authorId: true,
+};

@@ -40,6 +40,7 @@ const DetailPage = async ({
 }: {
   params: Promise<{ slug: string; username: string }>;
 }) => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const { slug, username } = await params;
   const post = await getPostBySlug(slug, username);
 

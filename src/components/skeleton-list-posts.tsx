@@ -1,6 +1,6 @@
 import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
-import { getRandomNumber } from "@/types/number";
+import { getRandomNumber } from "@/utils/number";
 
 export interface SkeletonListPostsProps {
   hideFilter?: boolean;

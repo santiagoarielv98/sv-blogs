@@ -10,7 +10,7 @@ export interface PostDetailProps {
 
 const PostDetail = async ({ post }: PostDetailProps) => {
   return (
-    <article className="space-y-6">
+    <article className="mb-8 space-y-6">
       <div className="flex items-center gap-4">
         <Avatar>
           <AvatarImage

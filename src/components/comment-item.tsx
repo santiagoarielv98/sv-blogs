@@ -1,7 +1,6 @@
 import { useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Card,
   CardContent,
@@ -12,6 +11,8 @@ import { formatDistanceToNow } from "date-fns";
 import { ReplyIcon, TrashIcon } from "lucide-react";
 import Link from "next/link";
 import type { CommentType } from "@/hooks/use-comments";
+import { CommentReplyForm } from "@/components/comment-reply-form";
+import { CommentRepliesList } from "@/components/comment-replies-list";
 
 interface CommentItemProps {
   comment: CommentType;
@@ -90,73 +91,16 @@ export function CommentItem({
       </CardFooter>
 
       {isReplyOpen && (
-        <div className="px-4 pb-4">
-          <Textarea
-            value={replyContent}
-            onChange={(e) => onReplyContentChange(e.target.value)}
-            placeholder="Write a reply..."
-            className="mb-2"
-          />
-          <div className="flex justify-end gap-2">
-            <Button variant="outline" size="sm" onClick={onCancelReply}>
-              Cancel
-            </Button>
-            <Button
-              size="sm"
-              onClick={onSubmitReply}
-              disabled={submitting || !replyContent.trim()}
-            >
-              Reply
-            </Button>
-          </div>
-        </div>
+        <CommentReplyForm
+          replyContent={replyContent}
+          submitting={submitting}
+          onReplyContentChange={onReplyContentChange}
+          onCancelReply={onCancelReply}
+          onSubmitReply={onSubmitReply}
+        />
       )}
 
-      {comment.replies && comment.replies.length > 0 && (
-        <div className="mb-4 ml-8 border-l pl-4">
-          {comment.replies.map((reply) => (
-            <Card key={reply.id} className="mb-2 shadow-sm">
-              <CardHeader className="flex flex-row items-center gap-4 pb-2">
-                <Avatar className="h-6 w-6">
-                  <AvatarImage
-                    src={reply.author.image || undefined}
-                    alt={reply.author.name}
-                  />
-                  <AvatarFallback>{reply.author.name[0]}</AvatarFallback>
-                </Avatar>
-                <div>
-                  <Link
-                    href={`/${reply.author.username}`}
-                    className="font-medium hover:underline"
-                  >
-                    {reply.author.name}
-                  </Link>
-                  <p className="text-xs text-muted-foreground">
-                    {formatDistanceToNow(new Date(reply.createdAt), {
-                      addSuffix: true,
-                    })}
-                  </p>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="whitespace-pre-wrap">{reply.content}</p>
-              </CardContent>
-              <CardFooter className="pt-0">
-                {session?.user?.id === reply.author.id && (
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => onDelete(reply.id)}
-                  >
-                    <TrashIcon className="mr-1 h-4 w-4" />
-                    Delete
-                  </Button>
-                )}
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      )}
+      <CommentRepliesList replies={comment.replies || []} onDelete={onDelete} />
     </Card>
   );
 }

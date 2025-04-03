@@ -9,6 +9,7 @@ import { useComments } from "@/hooks/use-comments";
 import { useCommentActions } from "@/hooks/use-comment-actions";
 import { useReplyState } from "@/hooks/use-reply-state";
 import { CommentItem } from "@/components/comment-item";
+import { SkeletonListComments } from "./skeleton-list-comments";
 
 export default function PostComments({ postId }: { readonly postId: string }) {
   const { data: session } = useSession();
@@ -40,6 +41,33 @@ export default function PostComments({ postId }: { readonly postId: string }) {
     }
   };
 
+  const renderComments = () => {
+    if (loading) {
+      return <SkeletonListComments />;
+    }
+    if (comments.length > 0) {
+      return comments.map((comment) => (
+        <CommentItem
+          key={comment.id}
+          comment={comment}
+          isReplyOpen={replyingTo === comment.id}
+          replyContent={replyContent}
+          submitting={submitting}
+          onReplyContentChange={setReplyContent}
+          onToggleReply={() => toggleReply(comment.id)}
+          onCancelReply={cancelReply}
+          onSubmitReply={() => handleSubmitReply(comment.id)}
+          onDelete={removeComment}
+        />
+      ));
+    }
+    return (
+      <p className="text-muted-foreground">
+        No comments yet. Be the first to comment!
+      </p>
+    );
+  };
+
   return (
     <div className="mt-8">
       <h2 className="mb-4 text-2xl font-bold">Comments</h2>
@@ -69,32 +97,7 @@ export default function PostComments({ postId }: { readonly postId: string }) {
         </p>
       )}
 
-      {loading ? (
-        <div className="animate-pulse space-y-4">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-32 rounded-md bg-muted"></div>
-          ))}
-        </div>
-      ) : comments.length > 0 ? (
-        comments.map((comment) => (
-          <CommentItem
-            key={comment.id}
-            comment={comment}
-            isReplyOpen={replyingTo === comment.id}
-            replyContent={replyContent}
-            submitting={submitting}
-            onReplyContentChange={setReplyContent}
-            onToggleReply={() => toggleReply(comment.id)}
-            onCancelReply={cancelReply}
-            onSubmitReply={() => handleSubmitReply(comment.id)}
-            onDelete={removeComment}
-          />
-        ))
-      ) : (
-        <p className="text-muted-foreground">
-          No comments yet. Be the first to comment!
-        </p>
-      )}
+      {renderComments()}
     </div>
   );
 }

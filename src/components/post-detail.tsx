@@ -29,7 +29,7 @@ const PostDetail = async ({ post }: PostDetailProps) => {
           </Link>
           <div className="flex items-center text-sm text-muted-foreground">
             <CalendarIcon className="mr-1 h-3 w-3" />
-            {new Date(post.publishedAt!).toLocaleDateString()}
+            {new Date(post.publishedAt).toLocaleDateString()}
           </div>
         </div>
       </div>

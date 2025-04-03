@@ -2,14 +2,18 @@ import React from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getRandomNumber } from "@/types/number";
 
-const SkeletonListPosts = () => {
+export interface SkeletonListPostsProps {
+  hideFilter?: boolean;
+}
+
+const SkeletonListPosts = ({ hideFilter = false }: SkeletonListPostsProps) => {
   const widths = ["w-1/4", "w-1/3", "w-1/2", "w-2/3", "w-3/4", "w-full"];
 
   return (
     <div className="space-y-6">
       <div className="sticky top-24 z-20 mx-auto flex max-w-2xl items-center justify-center gap-4 sm:justify-end sm:pr-4">
         <Skeleton className="h-9 w-64" />
-        <Skeleton className="h-9 w-9" />
+        {!hideFilter && <Skeleton className="h-9 w-9" />}
       </div>
 
       <div className="space-y-6" aria-busy="true" aria-label="Loading posts">

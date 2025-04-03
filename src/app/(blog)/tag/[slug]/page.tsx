@@ -22,6 +22,7 @@ const TagDetailPage = async ({
 }: {
   params: Promise<{ slug: string }>;
 }) => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
   const { slug } = await params;
 
   const tag = await getTagBySlug(slug);

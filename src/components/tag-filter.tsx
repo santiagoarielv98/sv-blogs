@@ -15,9 +15,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { cn } from "@/lib/utils";
 
 interface TagFilterProps {
-  tags: { name: string; slug: string }[];
-  selectedTags: string[];
-  onTagSelect: (tags: string[]) => void;
+  readonly tags: { name: string; slug: string }[];
+  readonly selectedTags: string[];
+  readonly onTagSelect: (tags: string[]) => void;
 }
 
 export function TagFilter({ tags, selectedTags, onTagSelect }: TagFilterProps) {

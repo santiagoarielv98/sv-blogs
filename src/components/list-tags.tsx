@@ -9,7 +9,7 @@ import React, { useState } from "react";
 type TagWithCount = Tag & { _count?: { posts: number } };
 
 interface ListTagsProps {
-  initialState?: {
+  readonly initialState?: {
     tags: TagWithCount[];
     nextCursor: string | null;
   };
@@ -46,15 +46,14 @@ export default function ListTags({
   }, [loading, hasMore, nextCursor]);
 
   return (
-    <div className="space-y-6" role="navigation" aria-label="Tags navigation">
-      <div className="flex flex-wrap gap-4" role="list">
+    <div className="space-y-6" aria-label="Tags navigation">
+      <div className="flex flex-wrap gap-4">
         {tags.map((tag) => {
           return (
             <Button
               key={tag.id}
               asChild
               aria-label={`${tag.name} tag with ${tag._count?.posts} posts`}
-              role="listitem"
             >
               <Link href={`/tag/${tag.slug}`}>
                 {tag.name} ({tag._count?.posts})

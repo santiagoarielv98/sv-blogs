@@ -6,7 +6,7 @@ import { Input } from "./ui/input";
 import { useDebouncedCallback } from "use-debounce";
 
 interface SearchBarProps {
-  onSearch: (term: string) => void;
+  readonly onSearch: (term: string) => void;
 }
 
 export default function SearchBar({ onSearch }: SearchBarProps) {

@@ -34,7 +34,10 @@ export default {
           throw new UnregisteredUser();
         }
 
-        const passwordMatches = await comparePassword(password, user.password!);
+        const passwordMatches = await comparePassword(
+          password,
+          user.password as string,
+        );
 
         if (!passwordMatches) {
           throw new CredentialsSignin();

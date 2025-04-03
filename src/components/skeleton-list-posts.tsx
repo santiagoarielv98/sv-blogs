@@ -24,7 +24,6 @@ const SkeletonListPosts = ({ hideFilter = false }: SkeletonListPostsProps) => {
             <div
               key={index}
               className="rounded-lg border p-6 shadow-sm"
-              role="status"
               aria-label="Loading post card"
             >
               <div className="flex items-center space-x-4">

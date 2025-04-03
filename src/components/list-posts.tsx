@@ -11,12 +11,12 @@ import SearchBar from "./search-bar";
 import { TagFilter } from "./tag-filter";
 
 interface ListPostsProps {
-  initialState?: {
+  readonly initialState?: {
     posts: PostWithAuthorAndTags[];
     nextCursor: string | null;
   };
-  config?: Prisma.PostFindManyArgs;
-  tags: Array<{ id: string; name: string; slug: string }>;
+  readonly config?: Prisma.PostFindManyArgs;
+  readonly tags: Array<{ id: string; name: string; slug: string }>;
 }
 
 export default function ListPosts({
@@ -107,7 +107,6 @@ export default function ListPosts({
           <div
             ref={ref}
             className="flex justify-center"
-            role="status"
             aria-label="Loading more posts"
           >
             {loading ? (
@@ -119,11 +118,7 @@ export default function ListPosts({
             ) : null}
           </div>
         )}
-        {!hasMore && (
-          <p className="text-center" role="status">
-            No more posts to show
-          </p>
-        )}
+        {!hasMore && <p className="text-center">No more posts to show</p>}
       </div>
     </div>
   );

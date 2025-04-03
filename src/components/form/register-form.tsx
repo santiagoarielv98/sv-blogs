@@ -60,7 +60,7 @@ const RegisterForm = () => {
     } catch {}
   };
 
-  const isSubmitting = form.formState.isSubmitting || isLoading;
+  const isSubmitting = form.formState.isSubmitting ?? isLoading;
 
   return (
     <Card className="mx-auto max-w-md">

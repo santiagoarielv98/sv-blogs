@@ -11,7 +11,7 @@ export const SubmitButton = ({
   loading?: boolean;
 }) => {
   const { isSubmitting } = useFormState();
-  const isDisabled = isSubmitting || loading;
+  const isDisabled = isSubmitting ?? loading;
   return (
     <Button
       className="w-full"

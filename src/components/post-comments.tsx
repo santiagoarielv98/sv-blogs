@@ -82,7 +82,7 @@ export default function PostComments({ postId }: { readonly postId: string }) {
           />
           <Button
             type="submit"
-            disabled={submitting || !newComment.trim()}
+            disabled={submitting ?? !newComment.trim()}
             className="ml-auto"
           >
             Post Comment

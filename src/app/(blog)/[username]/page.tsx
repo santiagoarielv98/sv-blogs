@@ -22,8 +22,8 @@ export async function generateMetadata({
     };
 
   return {
-    title: `${user.name || username}'s Profile`,
-    description: `Posts and articles written by ${user.name || username}`,
+    title: `${user.name ?? username}'s Profile`,
+    description: `Posts and articles written by ${user.name ?? username}`,
   };
 }
 

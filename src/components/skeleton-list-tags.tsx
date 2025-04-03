@@ -5,15 +5,14 @@ const SkeletonListTags = () => {
   const widths = ["w-20", "w-24", "w-28", "w-32", "w-36", "w-40"];
 
   return (
-    <div className="space-y-6" role="navigation" aria-label="Tags navigation">
-      <div className="flex flex-wrap gap-4" role="list">
+    <div className="space-y-6" aria-label="Tags navigation">
+      <div className="flex flex-wrap gap-4">
         {Array.from({ length: 12 }).map((_, i) => (
           <Skeleton
             key={i}
             className={`h-10 ${
               widths[Math.floor(Math.random() * widths.length)]
             } rounded-md`}
-            role="listitem"
           />
         ))}
       </div>

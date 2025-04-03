@@ -5,11 +5,11 @@ export function SocialButtons({
   loading = false,
   onProviderAuth,
 }: {
-  loading?: boolean;
-  onProviderAuth: (provider: "github" | "google") => void;
+  readonly loading?: boolean;
+  readonly onProviderAuth: (provider: "github" | "google") => void;
 }) {
   return (
-    <div
+    <fieldset
       className="grid grid-cols-2 gap-4"
       role="group"
       aria-label="Social login options"
@@ -34,6 +34,6 @@ export function SocialButtons({
         <Mail className="mr-2 h-4 w-4" aria-hidden="true" />
         Google
       </Button>
-    </div>
+    </fieldset>
   );
 }

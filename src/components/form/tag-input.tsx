@@ -119,7 +119,6 @@ export function TagInput() {
               <FormControl>
                 <Button
                   variant="outline"
-                  role="combobox"
                   aria-expanded={open}
                   aria-autocomplete="list"
                   className="justify-betweentext-left w-full font-normal"
@@ -184,11 +183,7 @@ export function TagInput() {
           </Popover>
 
           {tags?.length > 0 && (
-            <div
-              className="flex flex-wrap gap-2"
-              role="list"
-              aria-label="Selected tags"
-            >
+            <div className="flex flex-wrap gap-2" aria-label="Selected tags">
               {tags.map((tag) => (
                 <TagBadge key={tag} tag={tag} onRemove={handleUnselect} />
               ))}

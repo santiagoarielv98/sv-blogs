@@ -67,11 +67,12 @@ export function generateBlogContent(): string {
           content += `<blockquote>\n  <p>${faker.lorem.sentence()}</p>\n  <cite>— ${faker.person.fullName()}</cite>\n</blockquote>\n\n`;
           break;
 
-        case 4:
+        case 4: {
           // Código
           const snippet = faker.helpers.arrayElement(codeSnippets);
           content += `<pre><code class="language-${snippet.language}">${snippet.code}</code></pre>\n\n`;
           break;
+        }
 
         case 5:
           // Lista ordenada

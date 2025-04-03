@@ -8,7 +8,6 @@ const SkeletonPostDetail = () => {
   return (
     <article
       className="mb-8 space-y-6"
-      role="status"
       aria-busy="true"
       aria-label="Loading post details"
     >

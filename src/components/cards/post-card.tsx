@@ -5,9 +5,9 @@ import type { PostWithAuthorAndTags } from "@/types";
 import { Calendar } from "lucide-react";
 import Link from "next/link";
 
-function PostCard({ post }: { post: PostWithAuthorAndTags }) {
+function PostCard({ post }: { readonly post: PostWithAuthorAndTags }) {
   return (
-    <Card className="transition-shadow hover:shadow-lg" role="article">
+    <Card className="transition-shadow hover:shadow-lg">
       <CardHeader className="space-y-4">
         <div className="flex items-center space-x-4">
           <Avatar>
@@ -27,7 +27,7 @@ function PostCard({ post }: { post: PostWithAuthorAndTags }) {
             <div className="flex items-center gap-4 text-xs text-muted-foreground">
               <span className="flex items-center gap-1">
                 <Calendar className="h-3 w-3" />
-                {new Date(post.publishedAt!).toLocaleDateString()}
+                {new Date(post.publishedAt).toLocaleDateString()}
               </span>
             </div>
           </div>

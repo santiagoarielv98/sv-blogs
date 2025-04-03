@@ -73,12 +73,7 @@ const PostForm = ({ initialValues, onSubmit }: PostFormProps) => {
                 <FormItem>
                   <FormLabel>Content</FormLabel>
                   <FormControl>
-                    <input
-                      {...field}
-                      className="hidden"
-                      aria-hidden="true"
-                      readOnly
-                    />
+                    <input {...field} className="hidden" readOnly />
                   </FormControl>
                   <div className="min-h-[300px]">
                     <ReactQuill
@@ -112,7 +107,7 @@ const PostForm = ({ initialValues, onSubmit }: PostFormProps) => {
               )}
             />
 
-            <div className="flex gap-4" role="group" aria-label="Form actions">
+            <div className="flex gap-4" aria-label="Form actions">
               <SubmitButton>
                 {form.getValues("published") ? "Publish Post" : "Save Draft"}
               </SubmitButton>

@@ -145,7 +145,7 @@ const TablePosts = (
   };
   return (
     <>
-      <div className="rounded-lg border" role="region" aria-label="Posts table">
+      <section className="rounded-lg border" aria-label="Posts table">
         <Table aria-label="Posts management table">
           <TableHeader>
             <TableRow>
@@ -165,7 +165,6 @@ const TablePosts = (
                     variant={post.published ? "default" : "secondary"}
                     className="cursor-pointer"
                     onClick={() => handleTogglePublish(post.id)}
-                    role="button"
                     tabIndex={0}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
@@ -239,7 +238,7 @@ const TablePosts = (
             ))}
           </TableBody>
         </Table>
-      </div>
+      </section>
 
       {renderPagination()}
     </>

@@ -44,7 +44,7 @@ const ErrorScreen = ({
       aria-labelledby="error-title"
     >
       <div className="space-y-2">
-        {status && (
+        {!!status && (
           <h1
             className={errorScreenVariants({ variant, className })}
             aria-hidden="true"
@@ -55,7 +55,7 @@ const ErrorScreen = ({
         <h2 id="error-title" className="text-3xl font-semibold tracking-tight">
           {title}
         </h2>
-        <p role="status">{message}</p>
+        <output>{message}</output>
       </div>
       <div className="flex gap-4">
         {showBackButton && (

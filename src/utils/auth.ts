@@ -1,3 +1,5 @@
+"only server";
+
 import { prisma } from "@/lib/prisma";
 import { generateUsername } from "./username";
 import type { Account, Profile, User } from "next-auth";

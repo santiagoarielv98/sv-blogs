@@ -1,5 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import PostComments from "@/components/post-comments";
 import type { PostWithAuthorAndTags } from "@/types";
 import { CalendarIcon } from "lucide-react";
 import Link from "next/link";
@@ -48,6 +49,9 @@ const PostDetail = async ({ post }: PostDetailProps) => {
         className="prose max-w-none dark:prose-invert"
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
+
+      {/* Add comments section */}
+      <PostComments postId={post.id} />
     </article>
   );
 };

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { generateUsername } from "@/utils/username";
+import { updateUserFromOAuth } from "@/utils/auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import NextAuth from "next-auth";
 import authConfig from "./auth.config";
@@ -29,21 +29,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user, account, profile }) {
       if (user && account) {
         if (account.provider !== "credentials") {
-          await prisma.user.update({
-            where: { id: user.id },
-            data: {
-              name: user.name || profile?.name || "",
-              image: user.image
-                ? user.image
-                : account.provider === "github"
-                  ? profile?.avatar_url
-                  : account.provider === "google"
-                    ? profile?.picture
-                    : null,
-              emailVerified: new Date(),
-              username: user.username || generateUsername(user.name || ""),
-            },
-          });
+          await updateUserFromOAuth(user, account, profile);
         }
       }
       return token;

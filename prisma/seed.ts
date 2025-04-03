@@ -118,6 +118,28 @@ async function main() {
 
   await Promise.all(users.map(createAccount));
 
+  const [posts, _users] = await Promise.all([
+    prisma.post.findMany(),
+    prisma.user.findMany(),
+  ]);
+
+  await Promise.all(
+    posts.map((post) => {
+      const randomUser = faker.helpers.arrayElement(_users);
+      return prisma.comment.create({
+        data: {
+          content: faker.lorem.sentence(),
+          postId: post.id,
+          authorId: randomUser.id,
+          createdAt: faker.date.between({
+            from: FROM_DATE,
+            to: TO_DATE,
+          }),
+        },
+      });
+    }),
+  );
+
   console.log({ demo });
 }
 

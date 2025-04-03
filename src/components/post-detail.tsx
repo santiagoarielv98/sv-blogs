@@ -43,14 +43,12 @@ const PostDetail = async ({ post }: PostDetailProps) => {
           </Badge>
         ))}
       </div>
-      {/* post.content -> <p>example</p> */}
 
       <div
         className="prose max-w-none dark:prose-invert"
         dangerouslySetInnerHTML={{ __html: post.content }}
       />
 
-      {/* Add comments section */}
       <PostComments postId={post.id} />
     </article>
   );

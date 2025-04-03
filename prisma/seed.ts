@@ -57,7 +57,7 @@ async function main() {
           const title = faker.lorem.sentence();
           return {
             title,
-            content: generateBlogContent(), // Usar el nuevo generador
+            content: generateBlogContent(),
             slug: generateSlug(title),
             published: true,
             publishedAt: new Date(),

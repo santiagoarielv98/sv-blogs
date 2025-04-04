@@ -61,8 +61,6 @@ export const replyToComment = async (
       },
     },
   });
-
-  console.log("Prueba");
 };
 
 export const getCommentsByPostId = async (postId: string) => {

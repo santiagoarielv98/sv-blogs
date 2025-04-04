@@ -55,8 +55,6 @@ export const replyToComment = async (
       parentId: commentId,
     },
     select: {
-
-      
       ...DEFAULT_SELECT_COMMENT,
       author: {
         select: DEFAULT_SELECT_USER,

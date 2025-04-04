@@ -33,7 +33,7 @@ export default function ListTags({
     setLoading(true);
 
     try {
-      const data = await getPaginatedTags(nextCursor!);
+      const data = await getPaginatedTags(nextCursor as string);
 
       setTags((prev) => [...prev, ...data.tags]);
       setNextCursor(data.nextCursor);

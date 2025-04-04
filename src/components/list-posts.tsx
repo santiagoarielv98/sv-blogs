@@ -66,7 +66,7 @@ export default function ListPosts({
 
     try {
       const data = await getPaginatedPosts(
-        nextCursor!,
+        nextCursor as string,
         config,
         searchTerm,
         selectedTags,
